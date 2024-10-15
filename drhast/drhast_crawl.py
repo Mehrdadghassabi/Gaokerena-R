@@ -48,12 +48,9 @@ def save_qas(url_to_scrape,file_name):
         'Answer': [
         ]
     }
-    i = 0
     for link in links:
-        if i != 0:
-           data['Question'].append(get_question(link))
-           data['Answer'].append(get_answer(link))
-        i +=1
+        data['Question'].append(get_question(link))
+        data['Answer'].append(get_answer(link))
     df = pd.DataFrame(data)
     df.to_excel(file_name, index=False)
     print(f"Data written to {file_name} successfully.")
