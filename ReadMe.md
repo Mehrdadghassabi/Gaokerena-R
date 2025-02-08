@@ -1,1 +1,1 @@
-we crawled data from [drhast](https://drhast.com/q/), using [this code](https://github.com/Mehrdadghassabi/PediQA/blob/main/drhast/drhast_crawl.py)
+MF3QA is a Medical Free Form Farsi Question Answering dataset
