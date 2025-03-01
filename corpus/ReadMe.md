@@ -1,1 +1,1 @@
-MF3QA is a Medical Free Form Farsi Question Answering dataset
+download the corpus from [here](https://drive.google.com/file/d/11iTI9YpShmEkMHMzj4sERn8Fs4Cpty7N/view?usp=sharing)
