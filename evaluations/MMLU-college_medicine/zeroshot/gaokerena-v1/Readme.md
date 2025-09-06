@@ -1,3 +1,3 @@
-visit this [link](https://github.com/Mehrdadghassabi/Gaokerena-V/edit/main/evaluation/multiple_choice_qa/MMLU-college_medicine/gaokerena/Readme.md)
+visit this [link](https://github.com/Mehrdadghassabi/Gaokerena-V/tree/main/evaluation/multiple_choice_qa/MMLU-college_medicine/gaokerena)
 
-the Accuracy on MMLU-professional_medicine is: 0.4393063583815029
+the Accuracy on MMLU_college_medicine is: 0.4393063583815029
