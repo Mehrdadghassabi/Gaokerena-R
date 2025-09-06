@@ -1,3 +1,3 @@
-Code has been inhereted from [here](https://github.com/nyuolab/MedMobile/tree/main/Evaluation)
+visit this [link](https://github.com/Mehrdadghassabi/Gaokerena-V/tree/main/evaluation/multiple_choice_qa/kopp/gaokerena)
 
-the Accuracy on MMLU_Anatomy is: 0.4074074074074074
+the Accuracy on KOPP: 0.3869047619047619
