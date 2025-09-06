@@ -1,3 +1,3 @@
-Code has been inhereted from [here](https://github.com/nyuolab/MedMobile/tree/main/Evaluation)
+visit this [link](https://github.com/Mehrdadghassabi/Gaokerena-V/tree/main/evaluation/multiple_choice_qa/MMLU-medical_genetics/aya_expanse)
 
-the Accuracy on MMLU_Anatomy is: 0.4074074074074074
+the Accuracy on MMLU-medical_genetics is: 0.49
