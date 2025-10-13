@@ -67,11 +67,14 @@ Recent efforts to enhance reasoning have largely focused on prompting or fine-tu
 In the absence of architectures with intrinsic reasoning capabilities, such approaches provide only an approximation of genuine cognitive reasoning. Nevertheless, these efforts represent necessary steps toward achieving more reasoning-capable AI systems.
 
 The present work aims to address this challenge by enhancing the reasoning abilities of a small Persian language model, aya-expanse-8b
-\cite{b5}, using Reinforcement Learning with AI Feedback (RLAIF)
-\cite{b6} and Direct Preference Optimization (DPO)
-\cite{b7}. We call this improved model gaokerena-R. While its predecessor, gaokerena-V
-\cite{b8}, exhibited superior medical knowledge using straightforward prompting tasks, gaokerena-R outperformed it on Chain-of-Thought (CoT) reasoning tasks
-\cite{b9}. Notably, gaokerena-R was trained on a much smaller dataset, emphasizing reasoning enhancement over data scale, whereas gaokerena-V relied on extensive training on a large medical corpus and the MF3QA dataset.
+\cite{b5}. We first prompt the model to generate Chain-of-Thought (CoT) trajectories for multiple-choice medical questions. These responses are then reviewed and corrected using DeepSeek-R, a model adept at reasoning, to rectify errors. This process constitutes Reinforcement Learning with AI Feedback (RLAIF)
+\cite{b6}. By pairing incorrect and corrected CoT trajectories, we subsequently apply Direct Preference Optimization (DPO)
+\cite{b7} to enhance the reasoning capabilities of the baseline model.
+
+We call this improved model gaokerena-R. While its predecessor, gaokerena-V
+\cite{b8}, demonstrated superior medical knowledge in straightforward prompting tasks, gaokerena-R outperformed it when evaluated using Chain-of-Thought (CoT) prompting
+\cite{b9}. Notably, gaokerena-R was trained on a much smaller dataset, focusing on reasoning enhancement rather than data scale, whereas gaokerena-V relied on extensive training on a large medical corpus and the MF3QA dataset
+\cite{b8}.
 
 Our findings highlight an important insight: in low-resource domains such as Persian medical AI, strengthening reasoning capabilities can be more effective than training on vast datasets. This underscores the importance of developing reasoning-oriented approaches, particularly in languages and fields with limited data availability. By improving reasoning abilities in smaller models, we can make meaningful progress toward practical, resource-efficient AI systems.
 	
