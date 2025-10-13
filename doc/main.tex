@@ -1,0 +1,122 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+		T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+	
+\title{Enhancing Reasoning Skills in Small Persian Medical Language Models Can Outperform Large-Scale Data Training}
+	
+\author{\IEEEauthorblockN{1\textsuperscript{st} Mehrdad Ghassabi}
+		\IEEEauthorblockA{\textit{Faculty of Computer Engineering} \\
+			\textit{University of Isfahan}\\
+			Isfahan, Iran \\
+			m.ghassabi@eng.ui.ac.ir}
+		\and
+		\IEEEauthorblockN{2\textsuperscript{nd} Sadra Hakim}
+		\IEEEauthorblockA{\textit{School of Computer Science} \\
+			\textit{University of Windsor}\\
+			Windsor, Canada \\
+			sadrahakim@uwindsor.ca}
+		\and
+		\IEEEauthorblockN{3\textsuperscript{rd} Hamidreza Baradaran Kashani}
+		\IEEEauthorblockA{\textit{Faculty of Computer Engineering} \\
+			\textit{University of Isfahan}\\
+			Isfahan, Iran \\
+			hrb.kashani@eng.ui.ac.ir }
+		\and
+		\IEEEauthorblockN{4\textsuperscript{th} Pedram Rostami}
+		\IEEEauthorblockA{\textit{School of Electrical and Computer Engineering} \\
+			\textit{University of Tehran}\\
+			Tehran, Iran \\
+			pedram.rostami@ut.ac.ir}
+	}
+	
+	\maketitle
+	
+	\begin{abstract}
+Enhancing reasoning capabilities in small language models is critical for specialized applications such as medical question answering, particularly in underrepresented languages like Persian. In this study, we employ Reinforcement Learning with AI Feedback (RLAIF) and Direct preference optimization (DPO) to improve the reasoning skills of a general-purpose Persian language model. To achieve this, we translated a multiple-choice medical question-answering dataset into Persian and used RLAIF to generate rejected-preferred answer pairs, which are essential for DPO training. By prompting both teacher and student models to produce Chain-of-Thought (CoT) reasoning responses, we compiled a dataset containing correct and incorrect reasoning trajectories. This dataset, comprising 2 million tokens in preferred answers and 2.5 million tokens in rejected ones, was used to train a baseline model, significantly enhancing its medical reasoning capabilities in Persian. Remarkably, the resulting model outperformed its predecessor, gaokerena-V, which was trained on approximately 57 million tokens, despite leveraging a much smaller dataset. These results highlight the efficiency and effectiveness of reasoning-focused training approaches in developing domain-specific language models with limited data availability.
+	\end{abstract}
+	
+	\begin{IEEEkeywords}
+		system2 deep learning,small language model,medical language models, RLAIF, direct policy optimization
+	\end{IEEEkeywords}
+	
+	\section{Introduction}
+In 2019, at the NeurIPS conference, Yoshua Bengio highlighted a critical limitation of current deep learning systems: their inability to perform tasks requiring robust reasoning skills
+\cite{b1}.
+While these systems excel at intuitive, perception-driven tasks, they struggle with reasoning-based challenges that demand deeper cognitive processing. This observation echoes Daniel Kahneman’s distinction between “fast” and “slow” thinking in cognitive science
+\cite{b2}.
+Fast, intuitive thinking aligns with the strengths of current AI systems, whereas slow, deliberate reasoning remains a significant weakness.
+
+One proposed solution to this deficiency is the revival of symbolic AI methods through neurosymbolic approaches. However, Bengio cautioned against such methods due to scalability issues. Instead, he urged the development of new architectures capable of out-of-distribution generalization—a core requirement for genuine reasoning.
+
+The Transformer architecture
+\cite{b3}, which underpins most modern language models, suffers from the same deficiency. Transformers often make “stupid mistakes” when faced with reasoning-intensive problems, prompting researchers to enlarge models and datasets in an attempt to achieve better results across tasks. This approach arguably simulates System 2 reasoning within a fundamentally System 1 framework.
+
+This limitation becomes even more pronounced in smaller language models, where restricted capacity and limited data exacerbate reasoning challenges. In domains such as medicine—where reasoning, interpretation, and decision-making are essential—these weaknesses become especially consequential.
+
+Recent efforts to enhance reasoning have largely focused on prompting or fine-tuning methods that enable models to imitate reasoning behavior rather than truly engage in it—a phenomenon we refer to as the “illusion of thinking”
+\cite{b4}.
+In the absence of architectures with intrinsic reasoning capabilities, such approaches provide only an approximation of genuine cognitive reasoning. Nevertheless, these efforts represent necessary steps toward achieving more reasoning-capable AI systems.
+
+The present work aims to address this challenge by enhancing the reasoning abilities of a small Persian language model, aya-expanse-8b
+\cite{b5}, using Reinforcement Learning with AI Feedback (RLAIF)
+\cite{b6} and Direct Preference Optimization (DPO)
+\cite{b7}. We call this improved model gaokerena-R. While its predecessor, gaokerena-V
+\cite{b8}, exhibited superior medical knowledge using straightforward prompting tasks, gaokerena-R outperformed it on Chain-of-Thought (CoT) reasoning tasks
+\cite{b9}. Notably, gaokerena-R was trained on a much smaller dataset, emphasizing reasoning enhancement over data scale, whereas gaokerena-V relied on extensive training on a large medical corpus and the MF3QA dataset.
+
+Our findings highlight an important insight: in low-resource domains such as Persian medical AI, strengthening reasoning capabilities can be more effective than training on vast datasets. This underscores the importance of developing reasoning-oriented approaches, particularly in languages and fields with limited data availability. By improving reasoning abilities in smaller models, we can make meaningful progress toward practical, resource-efficient AI systems.
+	
+	\section{Related Work}
+	\subsection{Related Work In Medical Domain}
+         \subsection{Related Work In Other Domain}
+
+
+         \section{Data}
+
+
+           \section{Training}
+           \subsection{Direct preference Optimization}
+           \subsection{Carbon Footprint}
+
+            \section{Result}
+             \subsection{Result using straight prompt}
+            \subsection{Result using COT prompt}
+            \subsection{Comparing gaokerena-V \& gaokerena-R }
+
+            \section{Future research}
+	
+	
+	
+	\begin{thebibliography}{00}
+		\bibitem{b1}
+                Bengio, Yoshua. "From system 1 deep learning to system 2 deep learning." Neural Information Processing Systems. 2019. 
+               \bibitem{b2}
+               Kahneman, Daniel. "Thinking, fast and slow." Farrar, Straus and Giroux (2011).
+               \bibitem{b3}
+		Vaswani, Ashish, et al. "Attention is all you need." Advances in neural information processing systems 30 (2017).
+              \bibitem{b4}
+		Shojaee, P., et al. "The Illusion of Thinking: Understanding the Strengths and Limitations of Reasoning Models via the Lens of Problem Complexity. Apple." 2025,
+              \bibitem{b5}
+               Dang, John, et al. "Aya expanse: Combining research breakthroughs for a new multilingual frontier." arXiv preprint arXiv:2412.04261 (2024).
+              \bibitem{b6}
+              Lee, Harrison, et al. "Rlaif vs. rlhf: Scaling reinforcement learning from human feedback with ai feedback, 2024." URL https://arxiv. org/abs/2309.00267 2309 (2023).
+              \bibitem{b7}
+              Rafailov, Rafael, et al. "Direct preference optimization: Your language model is secretly a reward model." Advances in neural information processing systems 36 (2023): 53728-53741.
+             \bibitem{b8}
+             Ghassabi, Mehrdad, et al. "Leveraging Online Data to Enhance Medical Knowledge in a Small Persian Language Model." arXiv preprint arXiv:2505.16000 (2025).
+             \bibitem{b9}
+             Wei, Jason, et al. "Chain-of-thought prompting elicits reasoning in large language models." Advances in neural information processing systems 35 (2022): 24824-24837.
+         
+	\end{thebibliography}
+	
+	
+\end{document}
