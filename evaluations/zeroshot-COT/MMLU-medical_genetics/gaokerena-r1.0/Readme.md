@@ -1,6 +1,6 @@
-Accuracy: 0.49
+Accuracy: 0.5
 
-Accuracy with neg: 0.39
+Accuracy with neg: 0.4
 
 pass@1: 0.5
 
