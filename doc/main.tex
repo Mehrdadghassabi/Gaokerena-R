@@ -195,6 +195,32 @@ This evaluation framework provides a more robust estimation of reasoning consist
 		\end{tabular}
 		\label{tab:med_reasoning_capabillities_NM_comparison}
 	\end{table}
+           
+           \subsubsection{Pass@K}
+The pass@k metric, originally introduced by B. Brown et al.~\cite{b20}, 
+provides a robust measure for evaluating language models that generate varying outputs for the same input across multiple samples. It quantifies the probability that a model produces at least one correct answer within \(k\) independent attempts, thereby offering a more comprehensive assessment of reasoning reliability and sample diversity. The formal definition of the metric is as follows, where \(N\) denotes the total number of generated samples and \(C_i\) represents the number of correct samples for problem \(i\):
+
+\begin{equation}
+\text{pass@k} = \frac{1}{\text{\# of problems}} \sum_{i=1}^{\text{\# of problems}} \left( 1 -  \frac{\binom{N - C_i}{k}}{\binom{N}{k}} \right)
+\end{equation}
+
+Following the same experimental setup described earlier, we computed pass@k scores for \(k = 1, 2, 3\) using both the FA\_MED\_MMLU dataset and the IBMSEE (September 2023) dataset. The evaluation included the Gaokerena-R, Gaokerena-V, and aya-expanse-8b models. The results for the FA\_MED\_MMLU dataset are illustrated in Figure
+\ref{fig1}, while the IBMSEE (September 2023) results are shown in Figure
+\ref{fig2}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{fig1.png}
+    \caption{pass@k results on the FA\_MED\_MMLU dataset using Chain-of-Thought prompting}
+    \label{fig1}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{fig2.png}
+    \caption{pass@k results on the IBMSEE (September 2023) dataset using Chain-of-Thought prompting}
+    \label{fig2}
+\end{figure}
 
            \subsection{Medical Knowledge}
            \subsection{Final Evaluation}
@@ -239,6 +265,8 @@ This evaluation framework provides a more robust estimation of reasoning consist
              Wu, Tianhao, et al. "Thinking llms: General instruction following with thought generation." arXiv preprint arXiv:2410.10630 (2024).
              \bibitem{b19}
              Ho, Namgyu, Laura Schmid, and Se-Young Yun. "Large language models are reasoning teachers." arXiv preprint arXiv:2212.10071 (2022).
+             \bibitem{b20}
+             Brown, Bradley, et al. "Large language monkeys: Scaling inference compute with repeated sampling." arXiv preprint arXiv:2407.21787 (2024).
             
          
 	\end{thebibliography}

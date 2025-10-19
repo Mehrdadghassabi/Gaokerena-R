@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.9.15)  19 OCT 2025 03:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.9.15)  19 OCT 2025 20:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -366,6 +366,28 @@ oshot-
 
 
 [3]
+<fig1.png, id=20, 748.29562pt x 496.85625pt>
+File: fig1.png Graphic file (type png)
+<use fig1.png>
+Package pdftex.def Info: fig1.png  used on input line 213.
+(pdftex.def)             Requested size: 252.0pt x 167.32162pt.
+<fig2.png, id=22, 374.14781pt x 246.1697pt>
+File: fig2.png Graphic file (type png)
+<use fig2.png>
+Package pdftex.def Info: fig2.png  used on input line 220.
+(pdftex.def)             Requested size: 201.60077pt x 132.64417pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \vbox (badness 1189) has occurred while \output is active []
+
+
+
+
+
+[4 <./fig1.png> <./fig2.png>]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -381,7 +403,7 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[4
+[5
 
 ] (./main.aux)
  ***********
@@ -390,24 +412,31 @@ L3 programming layer <2025-08-13>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4215 strings out of 467799
- 64780 string characters out of 5436040
- 501805 words of memory out of 5000000
- 32822 multiletter control sequences out of 15000+600000
+ 4236 strings out of 467799
+ 65121 string characters out of 5436040
+ 501853 words of memory out of 5000000
+ 32843 multiletter control sequences out of 15000+600000
  670905 words of font info for 128 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,11n,65p,1326b,336s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texl
-ive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2025/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2025/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2025/texmf-dist/fonts/type1/
-urw/times/utmb8a.pfb><c:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.
-pfb><c:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/20
-25/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (4 pages, 110420 bytes).
+<c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/tex
+live/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2025
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><c:/texlive/2025/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmmi7.pfb><c:/texlive/2025/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmr6.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb
+><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texliv
+e/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2025/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/texlive/2025/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2025/texmf-dist/fonts/type1
+/urw/times/utmb8a.pfb><c:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a
+.pfb><c:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2
+025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (5 pages, 328433 bytes).
 PDF statistics:
- 58 PDF objects out of 1000 (max. 8388607)
- 35 compressed objects within 1 object stream
+ 106 PDF objects out of 1000 (max. 8388607)
+ 62 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
