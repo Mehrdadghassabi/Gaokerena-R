@@ -23,7 +23,7 @@
 		\IEEEauthorblockA{\textit{School of Computer Science} \\
 			\textit{University of Windsor}\\
 			Windsor, Canada \\
-			sadrahakim@uwindsor.ca}
+			hakim6@uwindsor.ca}
 		\and
 		\IEEEauthorblockN{3\textsuperscript{rd} Hamidreza Baradaran Kashani}
 		\IEEEauthorblockA{\textit{Faculty of Computer Engineering} \\
@@ -79,24 +79,125 @@ We call this improved model gaokerena-R. While its predecessor, gaokerena-V
 Our findings highlight an important insight: in low-resource domains such as Persian medical AI, strengthening reasoning capabilities can be more effective than training on vast datasets. This underscores the importance of developing reasoning-oriented approaches, particularly in languages and fields with limited data availability. By improving reasoning abilities in smaller models, we can make meaningful progress toward practical, resource-efficient AI systems.
 	
 	\section{Related Work}
+To the best of our knowledge, no prior work has focused on developing Persian medical reasoning language models. Existing Persian medical models, including our previous Gaokerena-V, mainly address knowledge representation and general language understanding with limited attention to reasoning.
+
+ L. Pan et al. reviewed several valuable studies on enhancing reasoning capabilities in language models.
+\cite{b10}
+Accordingly, we focus here on English-language works that offer methodological insights into generating and integrating reasoning data for improving medical language models.
 	\subsection{Related Work In Medical Domain}
+One of the notable efforts in developing small-scale medical reasoning language models is MedSSS
+\cite{b11}.
+This framework focuses on fine-graining the intermediate reasoning steps to enhance the reasoning ability of medical models. To accomplish this, the authors applied the Monte Carlo Tree Search (MCTS)
+\cite{b12}
+algorithm on medical multiple-choice question-answering datasets to synthesize structured reasoning trajectories using a policy model. Based on this approach, they constructed three datasets supporting different stages of training: a dataset for Supervised Fine-Tuning (SFT) of the policy model, a rejected–preferred answer dataset for Direct Preference Optimization (DPO)
+\cite{b13}
+,and a soft dual-side label dataset for fine-tuning the Process Reward Model (PRM).Finally, the trained Policy Model was used as the primary reasoning policy, while the trained Process Reward Model acted as a decoding guide to refine and evaluate the reasoning process during generation.
+
+Another significant contribution in this field is MedReason
+\cite{b14}. 
+In this work, the authors leveraged a structured medical knowledge graph to transform conventional question–answer (Q\&A) pairs into detailed medical reasoning trajectories. Each trajectory represented the step-by-step logical pathway connecting a clinical question to its correct answer, grounded in medical knowledge relationships such as symptoms, diagnoses, treatments, and physiological mechanisms. By constructing a reasoning-enriched dataset in this manner, the authors were able to fine-tune a baseline language model on these structured reasoning examples. This approach led to a marked improvement in the model’s ability to perform reasoning-intensive tasks within the medical domain, demonstrating the effectiveness of incorporating knowledge graph–based reasoning supervision into the training process. The findings from MedReason further emphasize the importance of structured reasoning representations as a means of improving the interpretability and analytical depth of medical language models.
+
+Another important advancement in the development of medical reasoning models is HuatuoGPT-o1
+\cite{b15}. 
+In this work, the authors introduced a verification-guided reasoning framework designed to improve the logical consistency and accuracy of generated reasoning trajectories. Specifically, they employed a verifier model to assess and guide the policy model during reasoning generation, ensuring that each reasoning path adhered closely to factual correctness and medical plausibility. By filtering and refining reasoning trajectories through this verification process, they created a high-quality dataset composed of verified reasoning sequences. The authors then leveraged both supervised fine-tuning and reinforcement learning techniques to train their baseline language model using these verified data. This dual training approach allowed the model to not only imitate correct reasoning behaviors but also internalize reasoning principles through reward-driven optimization. As a result, HuatuoGPT-o1 demonstrated significant improvements in reasoning accuracy and reliability across a variety of medical question-answering and diagnostic tasks, highlighting the potential of verifier-guided learning frameworks in advancing medical reasoning language models.
+
+
          \subsection{Related Work In Other Domain}
+Perhaps the most influential recent work in the broader field of AI reasoning is DeepSeek-R
+\cite{b16}. Building upon the DeepSeek-V3-Base model, the authors introduced a reinforcement learning framework based on Gradient Regularized Policy Optimization (GRPO)
+\cite{b17} 
+to explicitly enhance the model’s reasoning capabilities. In this setup, the reinforcement learning process was guided by a reward function specifically designed to evaluate and maximize reasoning performance. Through this training paradigm, DeepSeek-R demonstrated remarkable improvements in logical reasoning and problem-solving accuracy across various benchmarks.  
+However, the application of reinforcement learning also introduced several side effects. While reasoning performance improved substantially, the model’s readability and linguistic coherence deteriorated, and instances of language mixing became more frequent. To address these issues, the authors incorporated a small amount of cold-start supervised data and adopted a multi-stage training pipeline. This additional fine-tuning phase helped restore natural language fluency and readability while retaining the strong reasoning skills acquired through reinforcement learning. The resulting model, DeepSeek-R, thus represents a critical step forward in reasoning-oriented AI, demonstrating that reinforcement learning can significantly enhance reasoning ability—provided it is balanced with targeted fine-tuning to maintain linguistic quality.
+
+Another notable contribution in the area of reasoning enhancement is Thought Preference Optimization (TPO)
+\cite{b18}. 
+In this work, the authors proposed a preference-based framework for improving reasoning quality in language models. Given a question, the model first generates multiple candidate reasoning trajectories. These responses are then evaluated by a judge model, which identifies the best and worst samples based on reasoning correctness and coherence. The collected best–worst pairs are subsequently used to train the baseline model through Direct Preference Optimization (DPO), encouraging it to prefer higher-quality reasoning paths. This approach effectively aligns the model’s reasoning process with human-like evaluative feedback, demonstrating that reasoning quality can be substantially improved through structured preference optimization rather than relying solely on scale or supervised data.
+
+Another relevant study was conducted by N. Ho et al.
+\cite{b19},
+who explored the transfer of reasoning capabilities from large language models to smaller ones. In their approach, a smaller model was fine-tuned using data generated by a larger model that exhibited stronger reasoning performance. The larger model produced reasoning trajectories and question–answer pairs that served as high-quality supervision signals for the smaller model. Through this distillation process, the smaller model effectively learned reasoning strategies and problem-solving patterns from its larger counterpart, achieving competitive reasoning performance with significantly reduced computational cost. This work demonstrates that reasoning ability can be efficiently transferred across models of different scales through targeted fine-tuning on reasoning-oriented synthetic data.
+          \section{Proposed Methods}
+           
+          \section{Results}
+In this section, we compare the newly developed Gaokerena-R model with its predecessor, Gaokerena-V. While Gaokerena-V was trained on a large medical corpus and demonstrates strong factual knowledge and retrieval capabilities, Gaokerena-R was specifically designed to enhance medical reasoning. Owing to its reasoning-focused training pipeline, Gaokerena-R was trained on a substantially smaller dataset, resulting in slightly reduced coverage of general medical knowledge. However, this trade-off enabled it to develop deeper reasoning competence, allowing it to perform better on tasks requiring multi-step inference and logical consistency.  
+
+In the final evaluation, we compared the performance of Gaokerena-V under direct (straight) prompting with that of Gaokerena-R when provided with Chain-of-Thought (CoT) prompts. The results highlight that Gaokerena-R, despite its smaller scale and limited training data, achieves superior reasoning performance through structured reasoning guidance, demonstrating the effectiveness of reasoning-centered optimization over pure data scaling.
+          \subsection{Medical Reasoning Capabillities}
+To assess the medical reasoning capabilities of the models, we performed evaluations using the FA\_MED\_MMLU dataset
+\footnote{Available at huggingface.co/datasets/gaokerena/FA\_MED\_MMLU}.
+ Both Gaokerena-V and Gaokerena-R were prompted
+\footnote{Evaluation prompts are available at github.com/Mehrdadghassabi/Gaokerena-R/blob/main/evaluations/zeroshot-COT/kopp/gaokerena-r1.0/Untitled2.ipynb} 
+to generate Chain-of-Thought (CoT) reasoning traces with a temperature setting of 1.0. For each question, five independent samples were generated, and a majority-voting mechanism was applied to determine the final answer: if three or more of the five generations selected the same option, that option was chosen as the final prediction; otherwise, the question was left unanswered to reflect model uncertainty.  
+
+This evaluation framework provides a more robust estimation of reasoning consistency and agreement across multiple reasoning trajectories. The results are presented in Table
+\ref{tab:med_reasoning_capabillities_WNM_comparison}
+ for the without negative marking setting, and in Table
+\ref{tab:med_reasoning_capabillities_NM_comparison}
+ for the with negative marking setting. These two scoring schemes allow for a fair comparison of the models’ reasoning accuracy under different evaluation criteria.
 
 
-         \section{Data}
+	\begin{table}[ht]
+		\centering
+		\caption{Chain-of-Thought Prompted Performance Without Negative Marking}
+		\begin{tabular}{|l|c|c|c|}  
+			\hline
+			\textbf{} & \textbf{gao} & \textbf{gao} & \textbf{aya-} \\ 
+			& \textbf{kerena-R} &  \textbf{kerena-V} & \textbf{expanse-8b} \\
+			&   & &(baseline)  \\ \hline
+			MMLU- &  &  &  \\ 
+			anatomy(fa)  & \textbf{42.22} & 39.25  & 40.74 \\ \hline
+			MMLU- &    &  &  \\
+			medical-genetics(fa) & \textbf{50.0}  & 41.0  & 45.0 \\ \hline
+			MMLU- &  &    &  \\
+			college-medicine(fa) & 47.97  & 37.57  &\textbf{48.55}  \\ \hline
+			MMLU- &    &  &  \\
+			clinical-knowledge(fa)& \textbf{55.84} & 46.79  & 54.71  \\ \hline
+			MMLU- &  &  &  \\
+			professional-& \textbf{44.85} & 37.13 & 43.75 \\
+                        medicine(fa)& &  &  \\ \hline
+			MMLU- &  &  &  \\
+			college-biology(fa)& \textbf{48.61} & 36.80 & 43.75 \\ \hline
+			MMLU(avg) & \textbf{48.76} & 40.40 & 47.10 \\ \hline
+			IBMSEE Sept2023 & \textbf{38.69}  & 29.76 & 35.71  \\ \hline
+			Number of&  &  &  \\
+			parameters & 8b & 8b & 8b \\ \hline
+			inference time & $\approx 5 \times 35s$ & $\approx 5 \times 35s$ & $\approx 5 \times 35s$ \\  \hline
+		\end{tabular}
+		\label{tab:med_reasoning_capabillities_WNM_comparison}
+	\end{table}
 
+	\begin{table}[ht]
+		\centering
+		\caption{Chain-of-Thought Prompted Performance With Negative Marking}
+		\begin{tabular}{|l|c|c|c|}  
+			\hline
+			\textbf{} & \textbf{gao} & \textbf{gao} & \textbf{aya-} \\ 
+			& \textbf{kerena-R} &  \textbf{kerena-V} & \textbf{expanse-8b} \\
+			&   & &(baseline)  \\ \hline
+			MMLU- &  &  &  \\ 
+			anatomy(fa)  & \textbf{29.13} & 27.65  & 24.93  \\ \hline
+			MMLU- &    &  &  \\
+			medical-genetics(fa) & \textbf{40.0}  & 32.0  & 33.0  \\ \hline
+			MMLU- &  &    &  \\
+			college-medicine(fa) & \textbf{34.68}  & 25.24  & 34.48  \\ \hline
+			MMLU- &    &  &  \\
+			clinical-knowledge(fa)& \textbf{44.65} & 35.59  & 42.51  \\ \hline
+			MMLU- &  &  &  \\
+			professional-& \textbf{30.39} & 25.0 & \textbf{30.39}   \\
+                        medicine(fa)& &  &  \\ \hline
+			MMLU- &  &  &  \\
+			college-biology(fa)& \textbf{36.80} & 25.0  & 30.09  \\ \hline
+			MMLU(avg) & \textbf{36.14} & 28.57  & 33.55  \\ \hline
+			IBMSEE Sept2023 & \textbf{24.60}  & 15.87 & 19.84   \\ \hline
+			Number of&  &  &  \\
+			parameters & 8b & 8b & 8b \\ \hline
+			inference time & $\approx 5 \times 35s$ & $\approx 5 \times 35s$ & $\approx 5 \times 35s$ \\  \hline
+		\end{tabular}
+		\label{tab:med_reasoning_capabillities_NM_comparison}
+	\end{table}
 
-           \section{Training}
-           \subsection{Direct preference Optimization}
-           \subsection{Carbon Footprint}
-
-            \section{Result}
-             \subsection{Result using straight prompt}
-            \subsection{Result using COT prompt}
-            \subsection{Comparing gaokerena-V \& gaokerena-R }
-
-            \section{Future research}
-	
+           \subsection{Medical Knowledge}
+           \subsection{Final Evaluation}
 	
 	
 	\begin{thebibliography}{00}
@@ -118,6 +219,27 @@ Our findings highlight an important insight: in low-resource domains such as Per
              Ghassabi, Mehrdad, et al. "Leveraging Online Data to Enhance Medical Knowledge in a Small Persian Language Model." arXiv preprint arXiv:2505.16000 (2025).
              \bibitem{b9}
              Wei, Jason, et al. "Chain-of-thought prompting elicits reasoning in large language models." Advances in neural information processing systems 35 (2022): 24824-24837.
+             \bibitem{b10}
+             Pan, Liangming, et al. "Automatically correcting large language models: Surveying the landscape of diverse self-correction strategies." arXiv preprint arXiv:2308.03188 (2023).
+             \bibitem{b11}
+             Jiang, Shuyang, et al. "MedS$^ 3$: Towards Medical Slow Thinking with Self-Evolved Soft Dual-sided Process Supervision." arXiv preprint arXiv:2501.12051 (2025).
+             \bibitem{b12}
+             Coulom, Rémi. "Efficient selectivity and backup operators in Monte-Carlo tree search." International conference on computers and games. Berlin, Heidelberg: Springer Berlin Heidelberg, 2006.
+             \bibitem{b13}
+             Rafailov, Rafael, et al. "Direct preference optimization: Your language model is secretly a reward model." Advances in neural information processing systems 36 (2023): 53728-53741.
+             \bibitem{b14}
+             Wu, Juncheng, et al. "Medreason: Eliciting factual medical reasoning steps in llms via knowledge graphs. ArXiv, abs/2504.00993, 2025."
+             \bibitem{b15}
+             Chen, Junying, et al. "Huatuogpt-o1, towards medical complex reasoning with llms." arXiv preprint arXiv:2412.18925 (2024).
+             \bibitem{b16}
+             Guo, Daya, et al. "Deepseek-r1: Incentivizing reasoning capability in llms via reinforcement learning." arXiv preprint arXiv:2501.12948 (2025).
+             \bibitem{b17}
+             Shao, Zhihong, et al. "Deepseekmath: Pushing the limits of mathematical reasoning in open language models." arXiv preprint arXiv:2402.03300 (2024).
+             \bibitem{b18}
+             Wu, Tianhao, et al. "Thinking llms: General instruction following with thought generation." arXiv preprint arXiv:2410.10630 (2024).
+             \bibitem{b19}
+             Ho, Namgyu, Laura Schmid, and Se-Young Yun. "Large language models are reasoning teachers." arXiv preprint arXiv:2212.10071 (2022).
+            
          
 	\end{thebibliography}
 	

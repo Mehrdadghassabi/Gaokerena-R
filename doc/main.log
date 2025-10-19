@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.9.15)  13 OCT 2025 23:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.9.15)  19 OCT 2025 03:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -348,6 +348,25 @@ Underfull \hbox (badness 2717) in paragraph at lines 63--64
 
 ]
 
+
+
+[2]
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--129
+[][][]\OT1/ptm/m/n/8 Evaluation prompts are avail-able at
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--129
+\OT1/ptm/m/n/8 github.com/Mehrdadghassabi/Gaokerena-R/blob/main/evaluations/zer
+oshot-
+ []
+
+
+
+[3]
+
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
 
@@ -362,7 +381,7 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[2
+[4
 
 ] (./main.aux)
  ***********
@@ -371,21 +390,24 @@ L3 programming layer <2025-08-13>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4170 strings out of 467799
- 64205 string characters out of 5436040
- 482290 words of memory out of 5000000
- 32784 multiletter control sequences out of 15000+600000
- 661524 words of font info for 105 fonts, out of 8000000 for 9000
+ 4215 strings out of 467799
+ 64780 string characters out of 5436040
+ 501805 words of memory out of 5000000
+ 32822 multiletter control sequences out of 15000+600000
+ 670905 words of font info for 128 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,11n,65p,1326b,336s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2025
-/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/texlive/2025/texmf-dist/fonts
-/type1/urw/times/utmr8a.pfb><c:/texlive/2025/texmf-dist/fonts/type1/urw/times/u
-tmri8a.pfb>
-Output written on main.pdf (2 pages, 65109 bytes).
+<c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texl
+ive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2025/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2025/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2025/texmf-dist/fonts/type1/
+urw/times/utmb8a.pfb><c:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.
+pfb><c:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/20
+25/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (4 pages, 110420 bytes).
 PDF statistics:
- 32 PDF objects out of 1000 (max. 8388607)
- 19 compressed objects within 1 object stream
+ 58 PDF objects out of 1000 (max. 8388607)
+ 35 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
