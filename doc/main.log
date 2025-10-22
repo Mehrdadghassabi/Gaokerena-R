@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.9.15)  19 OCT 2025 20:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.9.15)  22 OCT 2025 20:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -351,43 +351,61 @@ Underfull \hbox (badness 2717) in paragraph at lines 63--64
 
 
 [2]
+<fig1.png, id=13, 793.96625pt x 217.81375pt>
+File: fig1.png Graphic file (type png)
+<use fig1.png>
+Package pdftex.def Info: fig1.png  used on input line 125.
+(pdftex.def)             Requested size: 252.0pt x 69.13348pt.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 129--129
+<fig2.png, id=15, 773.89125pt x 289.08pt>
+File: fig2.png Graphic file (type png)
+<use fig2.png>
+Package pdftex.def Info: fig2.png  used on input line 132.
+(pdftex.def)             Requested size: 252.0pt x 94.13072pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 146--146
 [][][]\OT1/ptm/m/n/8 Evaluation prompts are avail-able at
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 129--129
+Underfull \hbox (badness 10000) in paragraph at lines 146--146
 \OT1/ptm/m/n/8 github.com/Mehrdadghassabi/Gaokerena-R/blob/main/evaluations/zer
 oshot-
  []
 
 
 
-[3]
-<fig1.png, id=20, 748.29562pt x 496.85625pt>
-File: fig1.png Graphic file (type png)
-<use fig1.png>
-Package pdftex.def Info: fig1.png  used on input line 213.
-(pdftex.def)             Requested size: 252.0pt x 167.32162pt.
-<fig2.png, id=22, 374.14781pt x 246.1697pt>
-File: fig2.png Graphic file (type png)
-<use fig2.png>
-Package pdftex.def Info: fig2.png  used on input line 220.
-(pdftex.def)             Requested size: 201.60077pt x 132.64417pt.
+[3 <./fig1.png> <./fig2.png>]
 
+<fig3.png, id=21, 748.29562pt x 496.85625pt>
+File: fig3.png Graphic file (type png)
+<use fig3.png>
+Package pdftex.def Info: fig3.png  used on input line 236.
+(pdftex.def)             Requested size: 252.0pt x 167.32162pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<fig4.png, id=22, 374.14781pt x 246.1697pt>
+File: fig4.png Graphic file (type png)
+<use fig4.png>
+Package pdftex.def Info: fig4.png  used on input line 243.
+(pdftex.def)             Requested size: 201.60077pt x 132.64417pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \vbox (badness 1189) has occurred while \output is active []
+Underfull \hbox (badness 1960) in paragraph at lines 284--287
+[]\OT1/ptm/m/n/10 As pre-vi-ously dis-cussed, gaokerena-V per-forms bet-ter
+ []
 
 
 
+[4]
 
 
-[4 <./fig1.png> <./fig2.png>]
+
+[5 <./fig3.png> <./fig4.png>]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -403,19 +421,23 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[5
+[6
 
 ] (./main.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-08-13>
  ***********
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 4236 strings out of 467799
- 65121 string characters out of 5436040
- 501853 words of memory out of 5000000
- 32843 multiletter control sequences out of 15000+600000
+ 4255 strings out of 467799
+ 65401 string characters out of 5436040
+ 515012 words of memory out of 5000000
+ 32862 multiletter control sequences out of 15000+600000
  670905 words of font info for 128 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,11n,65p,1326b,336s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -433,10 +455,10 @@ onts/type1/public/amsfonts/cm/cmsy8.pfb><c:/texlive/2025/texmf-dist/fonts/type1
 /urw/times/utmb8a.pfb><c:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a
 .pfb><c:/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2
 025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (5 pages, 328433 bytes).
+Output written on main.pdf (6 pages, 380208 bytes).
 PDF statistics:
- 106 PDF objects out of 1000 (max. 8388607)
- 62 compressed objects within 1 object stream
+ 113 PDF objects out of 1000 (max. 8388607)
+ 64 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
