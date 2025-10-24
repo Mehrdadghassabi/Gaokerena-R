@@ -8,15 +8,11 @@
 ## 📒 Table of Contents
 - [📒 Table of Contents](#-table-of-contents)
 - [📍 Overview](#-overview)
-- [🌱 Our contribution](#-our-contribution)
-- [🕵🏼‍♀️ Features](#-features)
-- [📚 Base model](#-base-model)
 - [🏃 Training process](#-training-process)
 - [📊 Results](#-Results)
 - [⚠️ Risks and Limitations](#-risks-and-limitations)
 - [⛔️ License](#-license)
 - [🤝 Collaborators](#-collaborators)
-- [🙏🏼 Acknowledgement](#-acknowledgement)
 
 ---
 
