@@ -176,7 +176,8 @@ We randomly selected 1,000 questions from its training set and appended them to 
 The resulting dataset contained 19,000 Persian medical multiple-choice questions in total.
 
           \section{Carbon Footprint}
-The carbon footprint of our DPO fine-tuning process was estimated based on the hardware configuration and total runtime. The procedure ran for a combined total of 1 hour on an NVIDIA H100 PCIe 80 GB GPU.Assuming an average power consumption of 350 watts per GPU, the total energy usage was approximately 0.35 kWh. Using the average carbon intensity of the Canadian electricity grid, where our server was located (0.086 kilograms of CO2 equivalent per kWh), this corresponds to an estimated emission of 0.0301 kilograms of CO2 equivalent generated during the fine-tuning process
+The carbon footprint of our DPO fine-tuning process was estimated based on the hardware configuration and total runtime. The procedure ran for a combined total of 1 hour on an NVIDIA H100 PCIe 80 GB GPU, with approximately 43 GB of VRAM utilized during training. The training loss curve is shown in Figure \ref{fig3}. Assuming an average power consumption of 350 watts per GPU, the total energy usage was approximately 0.35 kWh. Using the average carbon intensity of the Canadian electricity grid, where our server was located (0.086 kilograms of CO2 equivalent per kWh \cite{b24}), this corresponds to an estimated emission of 0.0301 kilograms of CO2 equivalent generated during the fine-tuning process. Compared to our previous model, gaokerena-V, which emitted 2.66 kilograms of CO2, this represents a substantial reduction in environmental impact.\cite{b25}
+
 
 \begin{figure}[h]
     \centering
@@ -270,7 +271,7 @@ These two scoring schemes allow for a fair comparison of the models’ reasoning
            
            \subsubsection{Pass@K}
 The pass@k metric, originally introduced by B. Brown et al.
-\cite{b24}, 
+\cite{b26}, 
 provides a robust measure for evaluating language models that generate varying outputs for the same input across multiple samples. It quantifies the probability that a model produces at least one correct answer within \(k\) independent attempts, thereby offering a more comprehensive assessment of reasoning reliability and sample diversity. The formal definition of the metric is given in Formula
 \ref{fr:passatk}
 , where \(N\) denotes the total number of generated samples and \(C_i\) represents the number of correct samples for problem \(i\).
@@ -345,7 +346,7 @@ Interestingly, the approximately equal performance of gaokerena-R and its baseli
 
            \subsection{Final Evaluation}
 As previously discussed, gaokerena-V performs better when prompted directly, whereas gaokerena-R excels when prompted with a Chain-of-Thought (CoT) format that encourages step-by-step reasoning before producing an answer. One key advantage of CoT prompting—particularly when combined with multiple sampling and majority voting—is that it provides a natural measure of model certainty. If the generated responses converge on the same option across samples, the model can be considered confident; conversely, a wide dispersion among responses indicates uncertainty. This approach offers a practical alternative to directly querying the model’s self-assessed confidence
-\cite{b25}
+\cite{b27}
 , a capability that smaller models generally lack due to their limited self-awareness and introspective reasoning abilities.
 
 In cases where gaokerena-R exhibits uncertainty (i.e., when multiple distinct answers are produced), we employ the baseline model, aya-expanse-8b, as an auxiliary verifier. The outputs from gaokerena-R are presented to aya-expanse-8b, which is tasked with selecting the option containing the least incorrect or inconsistent information. This hybrid evaluation framework enables us to combine the reasoning strengths of gaokerena-R with the broader knowledge coverage of aya-expanse-8b. 
@@ -442,8 +443,13 @@ Achieving prompt invariance would represent an important step toward more reliab
              \bibitem{b23}
              Ranjbar Kalahroodi, Mohammad Javad, et al. "PersianMedQA: Evaluating Large Language Models on a Persian-English Bilingual Medical Question Answering Benchmark." arXiv preprint arXiv:2506.00250 (2025).
              \bibitem{b24}
-             Brown, Bradley, et al. "Large language monkeys: Scaling inference compute with repeated sampling." arXiv preprint arXiv:2407.21787 (2024).
+             Canadian Climate Institute. “The Big Switch in Canada’s Electricity Emissions.” 440 Megatonnes, 2023, https://440megatonnes.ca/insight/the-big-switch-in-canada-s-electricity-emissions
+. Accessed 21 Oct. 2025.
              \bibitem{b25}
+             Lacoste, Alexandre, et al. "Quantifying the carbon emissions of machine learning." arXiv preprint arXiv:1910.09700 (2019).
+             \bibitem{b26}
+             Brown, Bradley, et al. "Large language monkeys: Scaling inference compute with repeated sampling." arXiv preprint arXiv:2407.21787 (2024).
+             \bibitem{b27}
              Zhang, Mozhi, et al. "Calibrating the confidence of large language models by eliciting fidelity." arXiv preprint arXiv:2404.02655 (2024).
             
          
