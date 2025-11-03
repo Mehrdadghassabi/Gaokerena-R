@@ -25,11 +25,11 @@ In both approaches, a teacher model guides the baseline model using Direct Prefe
 We primarily used Method A due to the time-consuming nature of Method B.
 
 ### Method A
-
+In this method, a teacher model tries to correct the student model’s reasoning errors.
 <img width="521" height="407" alt="fig1" src="https://github.com/user-attachments/assets/e998c3ac-8fb7-4fea-a59b-92fa69d30355" />
 
 ### Method B
-
+In this method, a teacher model critiques the student’s answer and guides it through a conversation to reach the correct answer.
 <img width="551" height="365" alt="fig2" src="https://github.com/user-attachments/assets/9866f85d-6102-4168-99e9-7b289f1ea9c5" />
 
 ## 📊 Results
