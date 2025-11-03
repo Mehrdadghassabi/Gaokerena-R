@@ -25,10 +25,12 @@ In both approaches, a teacher model guides the baseline model using Direct Prefe
 We primarily used Method A due to the time-consuming nature of Method B.
 
 ### Method A
-<img width="556" height="417" alt="fig3" src="https://github.com/user-attachments/assets/b1919428-1a5e-4b29-9626-b77c3bf0e835" />
+
+<img width="521" height="407" alt="fig1" src="https://github.com/user-attachments/assets/e998c3ac-8fb7-4fea-a59b-92fa69d30355" />
 
 ### Method B
-<img width="994" height="660" alt="fig4" src="https://github.com/user-attachments/assets/8df68f3a-fb57-4db1-87fb-2656242bdf3d" />
+
+<img width="551" height="365" alt="fig2" src="https://github.com/user-attachments/assets/9866f85d-6102-4168-99e9-7b289f1ea9c5" />
 
 ## 📊 Results
 
