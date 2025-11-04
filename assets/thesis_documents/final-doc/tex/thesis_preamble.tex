@@ -1,0 +1,27 @@
+\coverPage
+
+\ifoptiondraft{}{
+    \besmPage
+    \titlePage
+    \davaranPage
+    \esalatPage
+    \taghdimPage
+    \ghadrdaniPage
+}
+\abstractPage
+
+\newpage\cleardoublepage
+\pagenumbering{harfi} % آ، ب، ...
+\tableofcontents \clearpage
+
+\ifoptiondraft{
+    \listoftodos
+}{
+    \listoffigures \clearpage
+    \listoftables  \clearpage
+    \addcontentsline{toc}{chapter}{\listalgorithmname}
+    \listofalgorithms \clearpage
+    \addcontentsline{toc}{chapter}{\lstlistlistingname}
+    \lstlistoflistings \clearpage
+    \printacronyms
+}
