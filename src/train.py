@@ -10,15 +10,15 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 PARAMS = {
     "model_args": {
-        "pretrained_model_name_or_path": "CohereForAI/aya-expanse-8b",
+        "pretrained_model_name_or_path": "gaokerena/gaokerena-v1.0",
         "low_cpu_mem_usage": True,
         "dtype": torch.bfloat16,
     },
     "tokenizer_args": {
-        "pretrained_model_name_or_path": "CohereForAI/aya-expanse-8b",
+        "pretrained_model_name_or_path": "gaokerena/gaokerena-v1.0",
     },
     "dataset_args": {
-        "path_format": "./dataset/pairs/method_no_hint/prefered_rejected_pairs_part{part}.xlsx",
+        "path_format": "../dataset/pairs/method_no_hint/prefered_rejected_pairs_part{part}.xlsx",
         "parts_range": "1-21",
     },
     "lora_config": {
@@ -41,7 +41,7 @@ PARAMS = {
         "warmup_ratio": 0.03,
         "gradient_checkpointing": True,
         "gradient_checkpointing_kwargs": {"use_reentrant": False},
-        "output_dir": "Aya-Trained-16v16-0.05dp",
+        "output_dir": "Aya-Trained-16v16-0.05dp-GaoV",
         "report_to": "tensorboard",
     }
 }

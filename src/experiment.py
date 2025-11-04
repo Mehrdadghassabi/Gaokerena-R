@@ -13,7 +13,7 @@ from collections import Counter
 from peft.peft_model import PeftModel
 import argparse
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 
 def parse_args():
@@ -26,6 +26,7 @@ def parse_args():
 args = parse_args()
 
 task_to_dir = {
+    "kopp": "kopp",
     "mmlu-anatomy": "MMLU_Anatomy",
     "mmlu-professional_medicine": "MMLU-professional_medicine",
     "mmlu-college_biology": "MMLU-college_biology",
@@ -311,8 +312,8 @@ def format_examples(examples):
 
 
 def task_load(task, base_path, split):
-    if task == "kopp":
-        df = pd.read_excel(task + ".xlsx")
+    if  "kopp" in task:
+        df = pd.read_excel(f"{base_path}/{task}.xlsx")
         ds = get_ds_from_df(df, task)
         questions = [ds[i]["Question"] for i in range(len(ds))]
         answer_choices = [
@@ -399,7 +400,7 @@ def run_inference(
 # @title model setting
 
 print("RUNNING NORMAL IMPLEMENTATION")
-ENGINE = "./Aya-Trained-16v16-0.05dp/checkpoint-2479"
+ENGINE = "./Aya-Trained-16v16-0.05dp-GaoV/checkpoint-2479"
 SPLIT = "test"
 ENGINE_TEMPERATURE = 1
 MAX_TOKEN_OUTPUT = 1024
@@ -415,8 +416,8 @@ model = AutoModelForCausalLM.from_pretrained(
 model.eval()
 ## OUTPUT RUN INFO:
 print("Model Running: " + ENGINE)
-base_path = f'./{task_to_dir[TASK]}'
-out_path = f'{base_path}/zeroshot-COT/gaokerena-r1.0/aya_trained_16v16_0.05dp_experiment_no_{EXP_NUM}.xlsx'
+base_path = f'../evaluations/zeroshot-COT/{task_to_dir[TASK]}'
+out_path = f'{base_path}/gaokerena-vr1.0/aya_trained_16v16_0.05dp_experiment_no_{EXP_NUM}.xlsx'
 # @title Load the test
 question_list, answer_choices_list, correct_answer_list = task_load(TASK, base_path, SPLIT)
 print(
