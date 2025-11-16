@@ -106,7 +106,7 @@
 %\topmargin=-30pt
 \vspace{-10mm}
 
-
+% دستورات تک‌آرمه
 \centerline{{\includegraphics[width=5cm]{logo}}}
 \centerline{\bf \@university}
 \centerline{\large\bfseries\@faculty}
@@ -117,14 +117,17 @@
 \vskip 5mm
 \if@bscthesis 
 	{\large\bfseries{پروژه کارشناسی \@subject}
-	
+	\ifx\@field\undefined%
+		\relax
+	\else
+		گرایش \@field
+	\fi
 	}
 \else
 	{\large\bfseries \@projectLabel\ \writtenfor
 	\@degree{} 
 	}
 	{\large\bfseries{در رشته \@subject}}
-	\vskip .2cm
 	
 \fi	
 \vskip 1cm
@@ -174,26 +177,28 @@
 %\topmargin=-30pt
 \vspace{-10mm}
 
-
+% دستورات تک‌آرمه
 \centerline{{\includegraphics[width=5cm]{logo}}}
 \centerline{\bf \@university}
 \centerline{\large\bfseries\@faculty}
-
+% بعد از آرم‌ها
 \centering
 \vskip 1.5cm
 {\huge\titlefont\bfseries \@title}\par
 \vskip 5mm
 \if@bscthesis 
 	{\large\bfseries{پروژه کارشناسی \@subject}
-
+	\ifx\@field\undefined%
+		\relax
+	\else
+		گرایش \@field
+	\fi
 	}
 \else
 	{\large\bfseries \@projectLabel{} \writtenfor
 	\@degree{} 
 	}
 	{\large\bfseries{در رشته \@subject}}
-	\vskip .2cm
-	
 \fi	
 \vskip 1cm
 \par
@@ -261,24 +266,31 @@
 %\setcounter{page}{1}
 \thispagestyle{empty}
 
-\centerline{{\includegraphics[width=3cm]{logo}}}
-\centerline{\bf \@university}
-\centerline{\large\bfseries\@faculty}
+\begin{center}
+  % ---- Logo (centered) ----
+  \begin{minipage}{4cm}
+    \centering
+    \includegraphics[height=3cm]{logo}   % <-- your logo file
+  \end{minipage}\\[1ex]   % small vertical gap
+
+\end{center}
+
 
 \begin{center}
 {\Large\bfseries
-	گواهی دفاع از \@projectLabel{}ٔ \@degree{}
+	گواهی دفاع از \@projectLabel{}
+	\@degree{}
 }
 \end{center}
 %\vspace{.5cm}
-هیأت داوران \@projectLabel{}ٔ \@degree{} آقای \@name{} \@surname{} به شمارهٔ دانشجویی \@studentID{} در رشته \@subject{} را در تاریخ ............ با عنوان «\@title{}»\\
+هیات داوران \@projectLabel{}ٔ \@degree{} آقای \@name{} \@surname{} به شمارهٔ دانشجویی \@studentID{} در رشته \@field{} را در تاریخ ............ با عنوان «\@title{}»\\
 \makebox[\textwidth][l]{
 \parbox{0.7\textwidth}{
 \makebox[2cm]{}\hspace{1ex}\makebox[2cm]{به عدد}\makebox[5cm]{به حروف}\\
-\makebox[2cm][l]{با نمرهٔ نهایی}\hspace{1ex}\framebox[2cm]{\strut}\framebox[5cm]{\strut}
+\makebox[2cm][l]{با نمره نهایی}\hspace{1ex}\framebox[2cm]{\strut}\framebox[5cm]{\strut}
 \\
 \\
-\makebox[2cm][l]{و درجه}\hspace{1ex}\framebox[3cm]{\strut}\hspace{1ex}
+\makebox[2cm][l]{و درجهٔ}\hspace{1ex}\framebox[3cm]{\strut}\hspace{1ex}
 ارزیابی کرد.
 }
 }
@@ -289,7 +301,7 @@
 \begin{onehalfspacing}
 \begin{tabular}{| >{\centering\arraybackslash}m{0.03\textwidth} | >{\centering\arraybackslash}m{.17\textwidth} | >{\centering\arraybackslash}m{.17\textwidth} |>{\centering\arraybackslash}m{.1\textwidth}|>{\centering\arraybackslash}m{.2\textwidth}|>{\centering\arraybackslash}m{.15\textwidth}|}
 \hline
-{\bfseries\begin{sideways}ردیف\end{sideways}} & {\bfseries مشخصات هیات داوران} & {\bfseries نام و نام خانوادگی} & {\bfseries مرتبه دانشگاهی} &	{\bfseries دانشگاه یا مؤسسه} & {\bfseries امضا} \\
+{\bfseries\begin{sideways}ردیف\end{sideways}} & {\bfseries مشخصات هیات داوران} & {\bfseries نام و نام خانوادگی} & {\bfseries مرتبه دانشگاهی} &	{\bfseries دانشگاه یا موسسه} & {\bfseries امضا} \\
 \hline
 \ifx\@firstsupervisor\undefined
 \else \stepcounter{davaranCounter}
@@ -316,12 +328,12 @@
 \fi
 \ifx\@externaljudge\undefined%
 \else \stepcounter{davaranCounter}
-\arabic{davaranCounter} & استاد داور خارجی & \@externaljudge & \@externaljudgerank & دانشگاه اصفهان & \rule[-.3\baselineskip]{0pt}{2\normalbaselineskip} \\
+\arabic{davaranCounter} & استاد مدعو & \@externaljudge & \@externaljudgerank & دانشگاه اصفهان & \rule[-.3\baselineskip]{0pt}{2\normalbaselineskip} \\
 \hline
 \fi
 \ifx\@graduatedeputy\undefined%
 \else \stepcounter{davaranCounter}
-\arabic{davaranCounter} & نماینده تحصیلات تکمیلی دانشکده & \@graduatedeputy & \@graduatedeputyrank &  دانشگاه تهران & \rule[-.3\baselineskip]{0pt}{2\normalbaselineskip} \\
+\arabic{davaranCounter} & نمایندهٔ تحصیلات تکمیلی دانشکده & \@graduatedeputy & \@graduatedeputyrank &  دانشگاه اصفهان & \rule[-.3\baselineskip]{0pt}{2\normalbaselineskip} \\
 \hline
 \fi
 \end{tabular}
@@ -332,7 +344,15 @@
 \noindent
 	\begin{minipage}{0.45\textwidth}
 		\begin{center}
-		
+			نام و نام خانوادگی معاون تحصیلات تکمیلی و پژوهشی دانشکده~/~گروه:\\
+			تاریخ و امضا:
+		\end{center}
+	\end{minipage}
+	\hspace{0.08\textwidth}
+	\begin{minipage}{0.45\textwidth}
+		\begin{center}
+			نام و نام خانوادگی معاون آموزشی و تحصیلات تکمیلی پردیس دانشکده‌های فنی:\\
+			تاریخ و امضا:
 		\end{center}
 	\end{minipage}
 \end{center}
@@ -344,10 +364,10 @@
 \thispagestyle{empty}
 \begin{center}
 {\Large \titlefont\bfseries
-تعهدنامهٔ اصالت اثر\\
+تعهدنامه اصالت اثر\\
 }
 \vspace{.5cm}
-باسمه تعالی 
+به نام خدا 
 \vspace{.5cm}
 \end{center}
 \doublespacing 
@@ -384,7 +404,7 @@ inner xsep=-1.3cm,inner ysep=0.4cm]
 
 \textbf{کلیهٔ حقوق مادی  و معنوی این اثر}
  
-\textbf{متعلّق به دانشگاه تهران است.}
+\textbf{متعلق به دانشگاه اصفهان است.}
 
 \end{center}
 \end{persian}
