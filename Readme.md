@@ -47,7 +47,7 @@ In this method, a teacher model critiques the student’s answer and guides it t
 | **MMLU(avg)**         | **52.98**          | 49.31                     | 46.64   | 
 | **IBMSEE Sept 2023**   | **46.42**          | 38.69                    | 34.52   |
 | **Prompt**         | COT for the main model & Straight for the verifier          | Straight                   | Straight   | 
-| **Inference_time**         | $\approx 5 \times 35 + 8 s$       |  $\approx 10s$     | $\approx 10s$  | 
+| **Inference_time**         | $\approx 5 \times 35 + 10s + 8s $       |  $\approx 10s$     | $\approx 10s$  | 
 
 
 ## ⚠️ Risks and Limitations
