@@ -163,13 +163,14 @@
 } % end of coverPage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\besmPage}{
-%% بسم الله الرحمن الرحیم
-\cleardoublepage
-\thispagestyle{empty}
-\hfill
-\begin{center}
-\includegraphics[width=10cm]{img/besm}
-\end{center}
+  \cleardoublepage
+  \thispagestyle{empty}
+  \vspace*{\fill}
+  \begin{center}
+    \includegraphics[width=15cm]{img/besm}
+  \end{center}
+  \vspace*{4cm} % optional space from bottom
+  \clearpage
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% فرم داخلی جلد به فارسی (دارای استاد مشاور)
