@@ -1,6 +1,7 @@
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/7de132f8-a8fb-4bfd-86d9-6a0134b1ff67"/>
+  <img width="512" height="512" alt="logo_with_bg" src="https://github.com/user-attachments/assets/e029d223-4e85-40a9-8310-436fa7c430fc" />
 </div>
+
 <p align="center">
 📃 <a href="https://arxiv.org/pdf/2510.20059" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/gaokerena" target="_blank">huggingface repository</a>
 </p>
