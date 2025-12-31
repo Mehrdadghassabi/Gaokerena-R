@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/fa5782f3-bf6e-4ff1-987d-517e6f2d135f"/>
+  <img src="https://github.com/user-attachments/assets/7de132f8-a8fb-4bfd-86d9-6a0134b1ff67"/>
 </div>
 <p align="center">
 📃 <a href="https://arxiv.org/pdf/2510.20059" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/gaokerena" target="_blank">huggingface repository</a>
