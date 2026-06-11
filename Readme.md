@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-📃 <a href="https://arxiv.org/pdf/2510.20059" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/gaokerena" target="_blank">huggingface repository</a>
+📃 <a href="https://arxiv.org/pdf/2510.20059" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/gaokerena/gaokerena-r1.0" target="_blank">huggingface repository</a>
 </p>
 
 ## 📒 Table of Contents
