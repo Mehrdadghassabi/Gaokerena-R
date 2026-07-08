@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-📃 <a href="https://arxiv.org/pdf/2510.20059" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/gaokerena/gaokerena-r1.0" target="_blank">huggingface repository</a> | ✅ <a href="10.1109/ICSPIS68676.2025.11551719" target="_blank">DOI</a>
+🖋 <a href="https://arxiv.org/pdf/2510.20059" target="_blank">arxiv</a> ｜🤗 <a href="https://huggingface.co/gaokerena/gaokerena-r1.0" target="_blank">huggingface repository</a> | 📃 <a href="[10.1109/ICSPIS68676.2025.11551719](https://ieeexplore.ieee.org/document/11551719)" target="_blank">paper</a>
 </p>
 
 ## 📒 Table of Contents
