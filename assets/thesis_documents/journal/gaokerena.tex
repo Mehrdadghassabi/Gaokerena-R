@@ -1,148 +1,80 @@
 \documentclass[manuscript,screen,review]{acmart}
+\usepackage{booktabs}
 
 \AtBeginDocument{%
-  \providecommand\BibTeX{{%
-    Bib\TeX}}}
+  \providecommand\BibTeX{{Bib\TeX}}}
 
-%% Rights management --- replace with values from your rights form
+%% Replace publication-rights metadata with the values supplied by ACM.
 \setcopyright{acmlicensed}
 \copyrightyear{2026}
 \acmYear{2026}
 \acmDOI{XXXXXXX.XXXXXXX}
-
-%% Journal identifier --- REQUIRED for TALLIP
 \acmJournal{TALLIP}
 
 \begin{document}
 
 \title[Gaokerena]{Gaokerena: A Small Persian Medical Language Model Family}
 
-%% --- Authors and Affiliations ---
-
 \author{Mehrdad Ghassabi}
-\affiliation{%
-  \institution{University of Isfahan}
-  \city{Isfahan}
-  \country{Iran}}
-
+\affiliation{\institution{University of Isfahan}\city{Isfahan}\country{Iran}}
 \author{Hamidreza Baradaran Kashani}
-\affiliation{%
-  \institution{University of Isfahan}
-  \city{Isfahan}
-  \country{Iran}}
-
+\affiliation{\institution{University of Isfahan}\city{Isfahan}\country{Iran}}
 \author{Pedram Rostami}
-\affiliation{%
-  \institution{University of Tehran}
-  \city{Tehran}
-  \country{Iran}}
-
+\affiliation{\institution{University of Tehran}\city{Tehran}\country{Iran}}
 \author{Sadra Hakim}
-\affiliation{%
-  \institution{University of Windsor}
-  \city{Windsor}
-  \state{ON}
-  \country{Canada}}
-
+\affiliation{\institution{University of Windsor}\city{Windsor}\state{ON}\country{Canada}}
 \author{Zahra Kazemi}
-\affiliation{%
-  \institution{Alzahra University}
-  \city{Tehran}
-  \country{Iran}}
-
+\affiliation{\institution{Alzahra University}\city{Tehran}\country{Iran}}
 \author{Amirhossein Poursina}
-\affiliation{%
-  \institution{Isfahan University of Medical Sciences}
-  \city{Isfahan}
-  \country{Iran}}
-
+\affiliation{\institution{Isfahan University of Medical Sciences}\city{Isfahan}\country{Iran}}
 \author{Milad Tavakoli}
-\affiliation{%
-  \institution{University of Isfahan}
-  \city{Isfahan}
-  \country{Iran}}
-
+\affiliation{\institution{University of Isfahan}\city{Isfahan}\country{Iran}}
 \author{Audrina Ebrahimi}
-\affiliation{%
-  \institution{University of Texas at Dallas}
-  \city{Dallas}
-  \state{TX}
-  \country{USA}}
-  \email{audrina.ebrahimi@utdallas.edu}
-  \authornote{Corresponding author.}
-
+\authornote{Corresponding author.}
+\email{audrina.ebrahimi@utdallas.edu}
+\affiliation{\institution{University of Texas at Dallas}\city{Dallas}\state{TX}\country{USA}}
 \renewcommand{\shortauthors}{Ghassabi et al.}
 
-%% --- Abstract ---
-
 \begin{abstract}
-Language resources for Persian medical natural language processing remain scarce, which limits the development of small medical language models for low-resource settings. We present Gaokerena, an open suite of Persian medical resources and two compact models built on them. The resources are: an 85.5-million-word corpus of 101,954 articles crawled from Persian medical magazines and health portals; MF3QA, a 24,000-pair patient--doctor question--answering dataset distilled from 186,029 raw forum pairs; a 2,967-question multiple-choice benchmark that brings together 1,878 items from the Iranian Basic Medical Science Entrance Exam (KOPP), 1,710 of them added in this article, and 1,089 translated MMLU medical items (FA\_MED\_MMLU); and an 18,000-question machine-translated MedMCQA training set filtered by two LLM referees. We characterise the corpus, MF3QA and the benchmarks in detail, including composition, orthography, redundancy, selection effects, privacy and sensitive content. Using these resources we train Gaokerena-V, by domain adaptation and instruction tuning, and Gaokerena-R, by preference-based reasoning distillation (RLAIF with DPO). On translated medical MMLU, Gaokerena-V reaches 49.31\% accuracy under direct prompting, against 46.65\% for its Aya-Expanse-8B backbone; this 2.66-point difference is not statistically significant ($p=0.21$). Gaokerena-R reaches 52.80\% with chain-of-thought prompting, five-sample self-consistency and a verifier tie-break, significantly above the directly prompted backbone ($p=0.004$) but at several times the inference cost. Under matched chain-of-thought self-consistency without the verifier, Gaokerena-R (48.7\%) is not significantly different from the backbone (46.9\%, $p=0.41$) but is clearly above Gaokerena-V (40.1\%). On the same questions in English the Aya-Expanse-8B backbone reaches 59.04\% (direct) and 63.18\% (CoT-SC), 12--16 points above its Persian accuracy; our resources and models narrow this gap but do not close it. These are single-run, unpaired comparisons, and we discuss their limits. Claim-level uncertainty heads for both models are summarised but reported elsewhere. All resources and models are openly released.
-\end{abstract}
+Persian medical natural language processing remains limited by the scarcity of domain-specific resources and by insufficient public characterization of their coverage, quality, and limitations. We present Gaokerena, a suite of Persian medical resources, and evaluate two Aya-Expanse-8B-derived models as application case studies. The suite comprises an 85.5-million-word corpus of 101,954 web articles; MF3QA, a 24,000-pair patient--doctor question--answering dataset selected from a raw crawl of 186,029 pairs and supplemented with 201 translated K-QA items; 1,878 Iranian medical-exam questions (KOPP); 1,089 manually translated medical MMLU questions (FA\_MED\_MMLU); and approximately 18,000 machine-translated MedMCQA training items filtered by two language-model evaluators. We characterize source composition, orthographic variation, redundancy, topical coverage, QA selection effects, privacy indicators, answer-key balance, extraction artefacts, and translation limitations.
 
-%% --- CCS Concepts ---
-%% IDs below should be re-checked at https://dl.acm.org/ccs
+On translated medical MMLU, Gaokerena-V achieves 49.31\% accuracy under direct prompting, compared with 46.65\% for Aya-Expanse-8B. The difference is not significant under the unpaired test ($p=0.21$); a paired exact McNemar test yields $p=0.0502$, just above the conventional 0.05 threshold and therefore statistically inconclusive. Gaokerena-R reaches 52.80\% with five-sample self-consistency and a verifier, although this higher-compute configuration is not matched to the directly prompted backbone. Under matched five-sample chain-of-thought self-consistency without a verifier, Gaokerena-R scores 48.58\% (529/1,089), versus 46.92\% (511/1,089) for Aya-Expanse-8B; the paired exact McNemar test is not significant ($p=0.190$). English evaluation also reveals a substantial performance gap relative to Persian. Overall, this work contributes a characterized suite of Persian medical resources; the model results are protocol-specific case studies and do not establish an isolated training advantage or clinical readiness.
+\end{abstract}
 
 \begin{CCSXML}
 <ccs2012>
- <concept>
-  <concept_id>10010147.10010178.10010179</concept_id>
-  <concept_desc>Computing methodologies~Natural language processing</concept_desc>
-  <concept_significance>500</concept_significance>
- </concept>
- <concept>
-  <concept_id>10010147.10010257</concept_id>
-  <concept_desc>Computing methodologies~Machine learning</concept_desc>
-  <concept_significance>300</concept_significance>
- </concept>
- <concept>
-  <concept_id>10010405.10010444.10010449</concept_id>
-  <concept_desc>Applied computing~Health informatics</concept_desc>
-  <concept_significance>300</concept_significance>
- </concept>
+ <concept><concept_id>10010147.10010178.10010179</concept_id><concept_desc>Computing methodologies~Natural language processing</concept_desc><concept_significance>500</concept_significance></concept>
+ <concept><concept_id>10010147.10010257</concept_id><concept_desc>Computing methodologies~Machine learning</concept_desc><concept_significance>300</concept_significance></concept>
+ <concept><concept_id>10010405.10010444.10010449</concept_id><concept_desc>Applied computing~Health informatics</concept_desc><concept_significance>300</concept_significance></concept>
 </ccs2012>
 \end{CCSXML}
-
 \ccsdesc[500]{Computing methodologies~Natural language processing}
 \ccsdesc[300]{Computing methodologies~Machine learning}
 \ccsdesc[300]{Applied computing~Health informatics}
-
-\keywords{small medical language model, low-resource languages, Persian, reasoning language models, reinforcement learning with AI feedback}
-
+\keywords{Persian, medical language resources, low-resource languages, small language models, medical question answering, reasoning language models}
 \maketitle
 
 %% ------------------------------------------------------------------
 \section{Introduction}\label{sec1}
 
-Language resources and models for Persian medical natural language processing (NLP) have only recently begun to emerge, with Gaokerena-V~\cite{b1}, Gaokerena-R~\cite{b2}, and claim-level uncertainty estimation for them~\cite{b3} among the first open efforts. The transformer architecture~\cite{b4} has driven rapid progress in NLP and the spread of large language models (LLMs) into high-stakes domains, including medicine, where they are used to support diagnosis, patient care and administrative workflows.
+Persian medical natural language processing (NLP) faces two related constraints: a limited supply of domain-specific resources and limited public evidence about the coverage, quality, and suitability of the resources that do exist. Medical NLP depends not only on model architectures but also on the data used to train, adapt, and evaluate them. Relevant Persian material is distributed across health websites, patient--doctor forums, translated medical question sets, and national examination papers. These sources differ in genre, editorial practice, orthographic conventions, reliability, and intended use, and should not be treated as interchangeable or uniformly representative.
 
-Modern language models range from a few billion parameters to architectures far larger. Large models offer broad knowledge and strong reasoning, but their computational requirements preclude deployment on consumer-grade local hardware. In clinical settings this creates privacy and data-security concerns, because sensitive patient information must often be sent to external servers. Small medical language models that can run locally on edge devices are therefore attractive.
+Compact language models are one possible way to make domain-specific NLP more accessible. Compared with remote general-purpose systems, models that can run locally may offer benefits in cost, latency, connectivity, and data governance. Those benefits depend on the deployment setting, however, and model size alone does not establish medical competence or safety. For medical applications, resource provenance, data quality, evaluation design, and limitations are as important as headline accuracy.
 
-English-centric small medical models exist, such as MedReason~\cite{b5}, but non-English languages are far less served. For Persian, to the best of our knowledge, the only existing medical language model at the beginning of this research was Sina-BERT~\cite{b6}, which is closed with respect to both weights and training data and is a non-generative encoder, which limits its use for conversational clinical tasks.
+Persian language technology has benefited from multilingual models such as Aya-Expanse~\cite{b12,b13} and Persian--English models such as PersianMind~\cite{b14}; the Persian medical domain has also been addressed by resources such as Sina-BERT~\cite{b6}. These efforts do not remove the need for accessible generative models and domain-specific datasets whose construction and limitations can be inspected. Public medical text and patient--doctor exchanges can contain repeated material, uneven answer quality, orthographic variation, sensitive information, and strong source-specific biases. Benchmark questions may also carry extraction errors or translation artefacts. Characterizing these properties is necessary for researchers to interpret model performance and to decide whether a dataset is suitable for a particular use.
 
-The scarcity of Persian medical data is, in part, a matter of under-use of existing digital assets. Persian medical forums (e.g., Drhast, Doctor-yab) and online medical magazines (e.g., Hidoctor, Niniban) host large repositories of expert-written content and authentic patient--doctor interactions. Annual high-stakes medical examinations are another untapped resource if they are extracted from legacy PDF formats. Translating established English medical datasets offers a further route to narrowing the gap.
+This article presents Gaokerena as a suite of Persian medical language resources and uses two small models, Gaokerena-V and Gaokerena-R, to illustrate how the resources can support domain adaptation, instruction tuning, and reasoning-oriented post-training. The central contribution is the resource suite and its characterization: a medical web corpus, a patient--doctor QA dataset, a structured Iranian medical-exam collection, a translated medical benchmark, and a translated MCQ training resource. The model experiments show what these resources can support under particular evaluation protocols; they do not isolate the causal contribution of each resource or establish a general training advantage. We also compare Aya-Expanse-8B on corresponding English and Persian medical MMLU questions to describe the observed language gap under the protocols used here.
 
-This paper presents a suite of data resources and two open small language models for the Persian medical domain, \textbf{Gaokerena-V} and \textbf{Gaokerena-R}, the latter trained for step-by-step reasoning. We evaluate both on newly curated benchmarks and test the reported differences for statistical significance. All artefacts, including datasets, model weights and generated model responses, are available at \url{https://github.com/Mehrdadghassabi/Gaokerena-V} and \url{https://github.com/Mehrdadghassabi/Gaokerena-R}.
-
-\paragraph{Relation to earlier publications.} This article extends our conference papers on Gaokerena-V~\cite{b1} and Gaokerena-R~\cite{b2}. Compared with them, it adds the characterisation of the medical corpus, MF3QA and the MCQ benchmarks (Sections~\ref{subsubsec:corpus_analysis}, \ref{subsubsec:mf3qa_analysis} and \ref{subsubsec:mcq_analysis}), 1,710 further KOPP questions (the conference papers used the September 2023 session only), which are released together with FA\_MED\_MMLU as one benchmark, a unified evaluation of both models with confidence intervals and significance tests, an English--Persian comparison (Section~\ref{subsec6.3}), and a summary of the uncertainty heads of~\cite{b3}. Some numbers differ from the conference versions, always by less than one percentage point, for two reasons. First, the pooled MMLU averages reported here are computed from question counts, whereas some averages in the conference papers did not exactly equal the pooled subject-level results (for example, 52.98\% in~\cite{b2} against 52.80\% here for Gaokerena-R with the verifier, and 46.28\% against 46.10\% for Gaokerena-R under straight prompting). Second, in the conference papers the chosen option was extracted from each model's raw response text by an automatic, AI-based step; for this article we manually rechecked these extractions and corrected some of them. The figures in this article supersede the earlier ones. The GPT-4o preference evaluation of free-form answers in~\cite{b1} is not repeated, because we subsequently found GPT-4o unreliable as a judge of Persian medical text. The matched chain-of-thought self-consistency results of~\cite{b2} are included in Section~\ref{subsec6.2} with significance tests.
+\paragraph{Relation to earlier publications.} This article extends our conference papers on Gaokerena-V~\cite{b1} and Gaokerena-R~\cite{b2}, and summarizes the separately reported claim-level uncertainty heads~\cite{b3}. The earlier papers introduced the models and reported initial experiments. Audrina Ebrahimi is a co-author of this expanded journal article but was not an author of the two earlier conference papers; her contribution applies to the present extended study and is specified in the Author Contributions statement. This article adds systematic analyses of corpus composition, orthography, redundancy, boilerplate, and topic coverage; analyses of MF3QA source confounding, selection effects, alignment, repetition, overlap, privacy-related indicators, and sensitive content; and a consolidated analysis of KOPP and FA\_MED\_MMLU covering answer-key balance, extraction artefacts, translation limitations, and duplicates. It also adds 1,710 KOPP questions beyond the 168-question September 2023 session used in the conference papers, a unified evaluation with confidence intervals and significance tests, and an English--Persian comparison (Section~\ref{subsec6.3}). These additions shift the emphasis from the initial model demonstrations toward resource provenance, quality, limitations, and appropriate use. Some accuracy values differ from the conference papers because this article pools subject results by question count and manually rechecked answer extraction from raw model responses; the values reported here supersede the earlier values. The GPT-4o preference evaluation of free-form answers in~\cite{b1} is not repeated because we subsequently found GPT-4o unreliable as a judge of Persian medical text. The matched chain-of-thought self-consistency results from~\cite{b2} are included in Section~\ref{subsec6.2}, with their limitations stated explicitly.
 
 The contributions are:
-
 \begin{itemize}
-
-    \item \textbf{A Persian medical corpus.} 101,954 articles (85.5 million words) crawled from Persian medical magazines and health portals, with an analysis of composition, orthography, redundancy, boilerplate and topical coverage.
-
-    \item \textbf{The MF3QA dataset.} 24,000 patient--doctor question--answer pairs (23,799 originally Persian and 201 translated from K-QA), distilled from 186,029 raw forum pairs and split into 20,000 training, 2,000 development and 2,000 test pairs. We analyse split composition, selection effects, question--answer alignment, privacy exposure, sensitive content, duplication, topical coverage and overlap with the corpus.
-
-    \item \textbf{An extended MCQ benchmark.} 2,967 questions: 1,878 from the Iranian Basic Medical Science Entrance Exam (KOPP), of which 168 (the September 2023 session) were used in our conference papers and 1,710 are added here, and 1,089 translated MMLU medical questions (FA\_MED\_MMLU, introduced in~\cite{b1}), released together, with an analysis of composition, answer-key balance, text quality, translation fidelity and duplication.
-
-    \item \textbf{A translated MCQ training set.} About 18,000 Persian medical MCQs obtained by machine translation of MedMCQA and filtered by two LLM referees, intended for training only so that translation artefacts do not affect evaluation.
-
-    \item \textbf{Two reasoning-distillation strategies} (Expert-Guided Synthesis and Iterative Self-Correction) used to train Gaokerena-R.
-
-    \item \textbf{Two small Persian medical language models,} Gaokerena-V and Gaokerena-R, built on Aya-Expanse-8B. They are research artefacts and are not cleared for clinical use.
-
-    \item \textbf{An English--Persian comparison.} The same questions and protocols applied to the backbone in English quantify the language gap and how much of it our resources and methods recover (Section~\ref{subsec6.3}).
-
+  \item \textbf{A characterized Persian medical corpus.} A collection of 101,954 articles (85.5 million normalized words) from 11 Persian medical websites, analyzed for source imbalance, orthography, redundancy, boilerplate, provenance signals, and topical coverage.
+  \item \textbf{MF3QA, a Persian patient--doctor QA resource.} A 24,000-pair dataset comprising 23,799 originally Persian pairs and 201 translated K-QA items, selected from a 186,029-pair raw crawl. We characterize source-specific splits, length-driven selection, QA alignment, repetition, overlap, privacy indicators, sensitive content, and topical differences.
+  \item \textbf{A consolidated medical MCQ collection.} A collection of 1,878 KOPP questions from Iranian medical entrance examinations (including 1,710 questions added beyond the previously used September 2023 session) and 1,089 translated medical MMLU questions. We analyze answer-key balance, extraction artefacts, orthographic variation, translation limitations, and potential duplicates.
+  \item \textbf{A translated training resource.} Approximately 18,000 Persian MedMCQA items produced by machine translation and filtered by two language-model evaluators. This resource is intended for training, not evaluation.
+  \item \textbf{Two model-training case studies.} Documentation of Gaokerena-V, adapted through domain training and instruction tuning, and Gaokerena-R, trained with preference-based reasoning distillation. These experiments illustrate possible uses of the resource suite but do not establish that either recipe is uniformly superior to its backbone.
+  \item \textbf{An English--Persian comparison.} Evaluation of Aya-Expanse-8B on corresponding English and Persian medical MMLU questions to measure the observed gap under the tested protocols and identify factors requiring further controlled study.
 \end{itemize}
 
 %% ------------------------------------------------------------------
@@ -150,58 +82,55 @@ The contributions are:
 
 \subsection{English Small Medical Language Models}\label{subsec2.1}
 
-Meerkat~\cite{b7} fine-tunes small models on medical Chain-of-Thought (CoT)~\cite{b8} reasoning paths extracted from medical textbooks together with complementary biomedical data, shifting the emphasis from factual recall to clinical decision-making processes.
-
-MedS$^3$~\cite{b9} (referred to as MedSSS in earlier versions) pursues reasoning through search and process supervision. It applies Monte Carlo Tree Search over multiple-choice medical questions to generate step-by-step reasoning paths, yielding three synthetic datasets: a supervised fine-tuning set for the policy model, a preference set for reinforcement learning, and a soft-label set for a process reward model that guides generation by scoring intermediate steps.
-
-MedMobile~\cite{b10} targets efficiency rather than reasoning. It fine-tunes Microsoft's Phi-3-mini~\cite{b11} on a blend of human-curated and synthetic medical data so that it can run on resource-constrained mobile devices without a persistent cloud connection.
+Meerkat~\cite{b7} fine-tunes small models on medical chain-of-thought (CoT) reasoning paths extracted from textbooks, together with complementary biomedical data, emphasizing clinical reasoning rather than factual recall alone. MedS$^3$~\cite{b9} uses search and process supervision: Monte Carlo Tree Search over medical MCQs generates supervised fine-tuning, preference, and soft-label datasets, with a process reward model scoring intermediate steps. MedMobile~\cite{b10} targets deployment efficiency, fine-tuning Phi-3-mini~\cite{b11} on human-curated and synthetic medical data for use on resource-constrained devices.
 
 \subsection{Persian Small Language Models}\label{subsec2.2}
 
-Many multilingual models support Persian, but smaller variants often suffer from language mixing, grammatical errors and limited linguistic nuance, because Persian is a small fraction of their training data. Aya-Expanse~\cite{b12,b13} addresses this with a multilingual training recipe that relies partly on synthetic data from stronger models, giving it good Persian syntax and semantics; being general-purpose, it is weaker on specialised medical knowledge. PersianMind~\cite{b14} is an open bilingual Persian--English model built by extending the LLaMA-2~\cite{b15} tokenizer and continuing training. It is also general-purpose and has had no exposure to clinical corpora. Because Aya-Expanse was trained on a larger corpus and has better general knowledge, we chose it as the base for Gaokerena and focused on its medical deficiencies.
+Multilingual models support Persian, but Persian is a relatively small part of many training mixtures, and compact models may exhibit language mixing, grammatical errors, or limited linguistic nuance. Aya-Expanse~\cite{b12,b13} uses a multilingual training recipe that includes synthetic data from stronger models and offers Persian capability, but it is general-purpose rather than medically specialized. PersianMind~\cite{b14} is a bilingual Persian--English model developed by extending the LLaMA-2~\cite{b15} tokenizer and continuing training; it is also general-purpose. Sina-BERT~\cite{b6} addresses Persian medical text with an encoder model, but it is not a generative conversational model. Gaokerena builds on Aya-Expanse-8B and focuses on the availability and characterization of Persian medical resources, while using domain adaptation and preference-based training as two demonstrations of how such resources may be applied.
 
 %% ------------------------------------------------------------------
-\section{Data Collection}\label{sec3}
+\section{Data Collection and Resource Characterization}\label{sec3}
 
-The Persian medical domain lacks both specialised small language models and research-grade datasets, so we assembled our own. The pipeline combines human and machine translation of foreign-language datasets, web scraping, and extraction of multiple-choice questions from PDF documents.
+The resource suite combines web-scraped Persian text, patient--doctor interactions, examination questions extracted from PDFs, and translated MCQs. These sources serve different purposes: the web corpus supplies domain text, MF3QA supplies conversational supervision, KOPP and FA\_MED\_MMLU support evaluation, and translated MedMCQA supplies training examples. The analyses below document both their scale and the limitations that affect how they should be used.
 
 \subsection{Persian Medical Corpus}\label{subsec3.1}
 
-Without domain-specific text, building Persian medical models is difficult. We compiled a corpus of 101,954 articles totalling 85.5 million words from Persian medical magazines and health portals.\footnote{\url{https://huggingface.co/datasets/gaokerena/medical_corpus}} Our earlier publication~\cite{b1} reported about 90M words for this corpus; the difference is due to the counting method. The earlier figure was the number of tokens returned by the Hazm word tokenizer on raw text, which includes punctuation marks as separate tokens, whereas the 85.5M figure counts only words after the normalisation and word-boundary rule described in Section~\ref{subsubsec:corpus_analysis}. Garc\'ia-Ferrero et al.~\cite{b16} compiled medical texts in four languages (English, French, Spanish and Italian); Table~\ref{corpus_comparison} compares sizes. The contribution of each source website is shown in Fig.~\ref{fig1}.
+We compiled 101,954 articles totaling 85.5 million words from Persian medical magazines and health portals.\footnote{\url{https://huggingface.co/datasets/gaokerena/medical_corpus}} Our earlier publication~\cite{b1} reported approximately 90M tokens using the Hazm word tokenizer on raw text, which counts punctuation separately. The 85.5M figure reported here counts words after normalization and the word-boundary rule described below. The quantities are therefore not directly comparable. Garc\'ia-Ferrero et al.~\cite{b16} compiled medical text in English, Spanish, French, and Italian; Table~\ref{corpus_comparison} gives an indicative size comparison, noting that the published token counts and our word count use different counting conventions. Figure~\ref{fig1} shows the contribution of each source website.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=0.5\textwidth]{fig1.png}
-\caption{Medical corpus sources}\label{fig1}
+\caption{Sources of the Persian medical corpus.}\label{fig1}
 \Description{Bar chart showing the distribution of articles across 11 Persian medical websites, with hidoctor.ir dominating at 72.3 percent.}
 \end{figure}
 
-\begin{table}[h]
-\caption{Comparison of our corpus with corpora collected by Garc\'ia-Ferrero et al. (token counts as reported by them; our corpus is measured in words, so the comparison is only indicative).}\label{corpus_comparison}
+\begin{table}[ht]
+\caption{Comparison with corpora collected by Garc\'ia-Ferrero et al. Counts are reported in the source papers; our corpus is measured in words, so the comparison is indicative only.}\label{corpus_comparison}
 \begin{tabular}{@{}lcl@{}}
 \toprule
 Language & Size & Collected by \\
 \midrule
 English & 1.1B & Garc\'ia-Ferrero et al. \\
 Spanish & 950M & Garc\'ia-Ferrero et al. \\
-French  & 675M & Garc\'ia-Ferrero et al. \\
+French & 675M & Garc\'ia-Ferrero et al. \\
 Italian & 143M & Garc\'ia-Ferrero et al. \\
-Persian & 85.5M & This work \\
+Persian & 85.5M words & This work \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsubsection{Corpus Characteristics}\label{subsubsec:corpus_analysis}
 
-We analysed composition, orthographic quality, redundancy, boilerplate content and topical coverage. Word counts are computed on text normalised for Persian/Arabic character variants, digits and punctuation, with the zero-width non-joiner (ZWNJ) treated as a word boundary.
+We analyzed composition, orthographic quality, redundancy, boilerplate content, provenance, and topical coverage. Word counts use text normalized for Persian/Arabic character variants, digits, and punctuation, with the zero-width non-joiner (ZWNJ) treated as a word boundary.
 
-\textbf{Composition.} The corpus has 101,954 articles from 11 websites, 85.5M words and 417M characters. The median article has 620 words (5th--95th percentile: 128--2,198). As Table~\ref{tab:corpus_sources} and Fig.~\ref{fig10} show, a few sources dominate: hidoctor.ir supplies 72.3\% of articles and 62.0\% of words, and the two largest sources together supply 80.7\% of words. Articles from most smaller sources are longer (median 1,013--2,246 words, against 527 for hidoctor.ir; niniban.com at 737 and salammag.com at 882 are the exceptions). Very short articles are rare (502 articles, 0.5\%, have fewer than 50 words), as are very long ones (four exceed 10,000 words).
+\textbf{Composition.} The corpus contains 101,954 articles from 11 websites, 85.5M words, and 417M characters. The median article has 620 words (5th--95th percentile: 128--2,198). The distribution is highly skewed: hidoctor.ir supplies 72.3\% of articles and 62.0\% of words, and the two largest sources provide 80.7\% of words. Most smaller sources contain longer articles (median 1,013--2,246 words, compared with 527 for hidoctor.ir); niniban.com (737) and salammag.com (882) are exceptions. Only 502 articles (0.5\%) contain fewer than 50 words, and four exceed 10,000 words.
 
-\begin{table}[h]
-\caption{Composition of the Persian medical corpus by source. Dup.\ is the share of articles flagged as exact or near duplicates; Boiler.\ is the mean share of an article's characters made up of sentences that recur in at least 20 articles.}\label{tab:corpus_sources}
+\begin{table}[ht]
+\caption{Composition of the Persian medical corpus by source. Dup. is the share of articles flagged as exact or near duplicates; Boiler. is the mean share of article characters belonging to sentences that recur in at least 20 articles.}\label{tab:corpus_sources}
+\small
 \begin{tabular}{@{}lrrrrr@{}}
 \toprule
-Source & Articles & Words (M) & Median words & Dup.\ (\%) & Boiler.\ (\%) \\
+Source & Articles & Words (M) & Median words & Dup. (\%) & Boiler. (\%) \\
 \midrule
 hidoctor.ir & 73,668 & 52.98 & 527 & 1.3 & 0.8 \\
 niniban.com & 18,389 & 16.04 & 737 & 13.5 & 4.6 \\
@@ -220,23 +149,23 @@ Total & 101,954 & 85.50 & 620 & 3.8 & 1.8 \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{fig10.png}
-\caption{Article length distribution (left) and words per source (right) in the Persian medical corpus}\label{fig10}
-\Description{Two-panel figure showing the distribution of article lengths and the total word count per source in the Persian medical corpus.}
+\caption{Article length distribution (left) and words per source (right) in the Persian medical corpus.}\label{fig10}
+\Description{Two-panel figure showing the distribution of article lengths and total word count per source.}
 \end{figure}
 
-\textbf{Script and orthography.} Persian/Arabic-script letters make up 96.6\% of non-whitespace characters and Latin letters 0.6\%; only 36 articles (0.04\%) are more than 20\% Latin. Orthography is nevertheless not uniform. Arabic Yeh or Kaf (instead of the Persian forms) appears in 7.0\% of articles, 88\% of which come from hidoctor.ir; 14.0\% of articles mix Persian and ASCII digits; and ZWNJ frequency ranges from 19 per 1,000 words (extern.ir) to 96 (nabz.site), reflecting different editorial conventions. This fragments the surface forms a tokenizer sees, so we recommend character normalisation before training.
+\textbf{Script and orthography.} Persian/Arabic-script letters account for 96.6\% of non-whitespace characters and Latin letters for 0.6\%; 36 articles (0.04\%) are more than 20\% Latin. Orthographic variation remains substantial: Arabic Yeh or Kaf forms appear in 7.0\% of articles, 88\% of them from hidoctor.ir; 14.0\% of articles mix Persian and ASCII digits; and ZWNJ frequency ranges from 19 per 1,000 words at extern.ir to 96 at nabz.site. These differences fragment surface forms and support normalizing character variants before training.
 
-\textbf{Redundancy.} After normalisation, 2,257 articles (2.2\%) are exact duplicates of an earlier article and 3,903 (3.8\%, including the exact duplicates) are exact or near duplicates, detected by MinHash LSH on 5-word shingles of the first 500 words with a Jaccard threshold of 0.8. Redundancy is concentrated in niniban.com (13.5\%) and darmankade.com (13.1\%), against 1.3\% for hidoctor.ir. Exact duplication across sources is negligible (13 articles), but 423 articles have a near-duplicate in a different source, consistent with syndicated or lightly rewritten content. Removing all flagged articles leaves 98,051 articles and 80.7M words (a 5.6\% reduction in words).
+\textbf{Redundancy.} After normalization, 2,257 articles (2.2\%) are exact duplicates of an earlier article and 3,903 (3.8\%, including exact duplicates) are exact or near duplicates. Near duplicates were detected using MinHash locality-sensitive hashing on five-word shingles of the first 500 words, with Jaccard threshold 0.8. Redundancy is concentrated in niniban.com (13.5\%) and darmankade.com (13.1\%), compared with 1.3\% for hidoctor.ir. Only 13 exact duplicates cross sources, but 423 articles have near duplicates in another source, consistent with syndication or light rewriting. Removing all flagged articles leaves 98,051 articles and 80.7M words, a 5.6\% reduction in words.
 
-\textbf{Boilerplate and provenance.} A total of 2,193 distinct sentences occur in at least 20 articles. On average they make up 1.8\% of an article's characters, and 4,542 articles (4.5\%) exceed 10\%, with the highest mean shares in paziresh24.com (9.2\%), niniban.com (4.6\%) and salammag.com (4.3\%). The most frequent sentences are reuse and attribution footers, promotional calls to action (e.g., booking or online consultation prompts) and standard drug-leaflet warnings. They also show that parts of the corpus are not original professional authorship: a magazine's translation-team credit appears in 1,521 articles, a ``translated and rewritten by'' credit in 618, and a news-agency credit in 977 (counts are per sentence and may overlap).
+\textbf{Boilerplate and provenance.} We identified 2,193 distinct sentences appearing in at least 20 articles. They account for a mean of 1.8\% of article characters; 4,542 articles (4.5\%) exceed 10\%. Mean boilerplate shares are highest at paziresh24.com (9.2\%), niniban.com (4.6\%), and salammag.com (4.3\%). Frequent sentences include reuse and attribution footers, promotional prompts for booking or consultation, and standard drug-leaflet warnings. Attribution phrases also show that some content is translated or republished rather than original: a magazine translation-team credit occurs in 1,521 articles, a ``translated and rewritten by'' credit in 618, and a news-agency credit in 977; these counts may overlap.
 
-\textbf{Topical coverage.} We fitted a 15-component TF-IDF/NMF topic model on a random sample of 20,000 articles and assigned each article to its dominant topic (Table~\ref{tab:corpus_topics}; labels were assigned manually from the top terms). Coverage is broad across clinical areas, with general symptoms and conditions, cardiovascular disease and diabetes, and sleep and mental health the largest groups. A non-trivial part is only loosely medical: cooking recipes (5.4\%) and directory listings of laboratories and clinics (2.7\%) together make up about 8\% of the sample, alongside cosmetics (6.5\%) and general lifestyle content. Topic mixes differ by source; niniban.com, for example, is dominated by pregnancy, childcare and sexual-health topics.
+\textbf{Topical coverage.} A 15-component TF-IDF/NMF topic model was fitted to a random sample of 20,000 articles. Each article was assigned to its dominant topic, and topic labels were manually assigned from top terms (Table~\ref{tab:corpus_topics}). The largest groups concern symptoms and conditions, cardiovascular disease and diabetes, and sleep and mental health. Some content is only loosely medical: cooking recipes (5.4\%) and directory listings for laboratories and clinics (2.7\%) together account for about 8\% of the sample, alongside cosmetics (6.5\%) and general lifestyle content. Topic distributions vary by source; niniban.com emphasizes pregnancy, childcare, and sexual health.
 
-\begin{table}[h]
-\caption{Dominant topics in a 20,000-article sample of the corpus (NMF, 15 components)}\label{tab:corpus_topics}
+\begin{table}[ht]
+\caption{Dominant topics in a 20,000-article sample of the corpus (NMF, 15 components).}\label{tab:corpus_topics}
 \begin{tabular}{@{}lr@{}}
 \toprule
 Topic & Articles (\%) \\
@@ -263,47 +192,46 @@ Dental and oral health & 2.6 \\
 %% ------------------------------------------------------------------
 \subsection{MF3QA}\label{subsec3.2}
 
-Real doctor--patient question--answer data helps language models learn medical terminology, patient concerns and the structure and tone of professional replies. Despite reputable Persian forums such as Drhast, no comprehensive Persian dataset of this kind existed at the start of this work, so we introduce what we believe is the first Medical Free-Form Farsi Question Answering dataset (MF3QA).\footnote{\url{https://huggingface.co/datasets/gaokerena/MF3QA}. The raw crawl before cleaning is at \url{https://huggingface.co/datasets/gaokerena/MF3QA_uncleaned}.} The survey of Liu et al.~\cite{b17} lists several real doctor--patient QA datasets; Table~\ref{mf3qa_comparison} compares them with MF3QA.
+MF3QA (Medical Free-Form Farsi Question Answering) is a Persian patient--doctor QA dataset assembled from publicly accessible medical forums.\footnote{Cleaned dataset: \url{https://huggingface.co/datasets/gaokerena/MF3QA}. Raw crawl: \url{https://huggingface.co/datasets/gaokerena/MF3QA_uncleaned}.} Existing medical QA resources include ChatDoctor~\cite{b18}, CMtMedQA~\cite{b19}, DISC-Med-SFT~\cite{b20}, HuatuoGPT data~\cite{b21,b22}, MedDialog~\cite{b23}, and Medical-Meadow~\cite{b24}. MF3QA adds a Persian resource, although its selection procedure and source-specific limitations mean it should not be interpreted as a representative sample of all Persian medical interactions.
 
-\begin{table}[h]
-\caption{Comparison of our dataset with existing medical QA datasets}\label{mf3qa_comparison}
+We collected 186,029 raw question--answer pairs and applied automated filtering and manual verification. The filtering is intentionally selective: approximately 87\% of the raw records were removed, primarily because many answers were brief, referral-only replies or otherwise too short to provide useful instruction-tuning targets. Before filtering, a portion of short answers (fewer than 50 tokens) was randomly dropped from the training and development pools to shift their length distribution; this omission was not applied to the test split. The test set also draws on Doctor-yab and Isovisit and includes 201 translated K-QA items~\cite{b25}. The final release contains 20,000 training, 2,000 development, and 2,000 test pairs. Personal-data screening was applied during cleaning, but the analysis below identifies residual indicators that should be reviewed before reuse or redistribution.
+
+Drhast exposes a changing collection of roughly 2,000 recent records, each linking to related entries. We modeled the links as a graph and performed repeated breadth-first traversals, using newly posted records as roots and skipping previously visited records. This process collected 120,000 records from an estimated 200,000 over two weeks.
+
+\begin{table}[ht]
+\caption{Comparison with selected medical QA datasets. Record counts are approximate as reported by the respective sources.}\label{mf3qa_comparison}
 \begin{tabular}{@{}llc@{}}
 \toprule
-Dataset name & Language & No. records \\
+Dataset & Language & Records \\
 \midrule
 ChatDoctor~\cite{b18} & English & 100K \\
 CMtMedQA~\cite{b19} & Chinese & 68K \\
 DISC-Med-SFT~\cite{b20} & Chinese & 465K \\
 HuatuoGPT-sft-data-v1~\cite{b21} & Chinese & 226K \\
 Huatuo-26M~\cite{b22} & Chinese & 26M \\
-MedDialog~\cite{b23} & Chinese \& English & 3.66M \\
+MedDialog~\cite{b23} & Chinese and English & 3.66M \\
 Medical-Meadow~\cite{b24} & English & 160K \\
 MF3QA (this work) & Persian & 24K \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-We crawled 186,029 raw question--answer (QA) pairs from prominent Persian medical forums (Fig.~\ref{fig2}) and cleaned them with a hybrid pipeline of automated filtering and manual verification. The approach follows ChatDoctor~\cite{b18}, in which roughly half of the scraped English pairs were discarded by answer length because truncated answers can limit a model's ability to generate full explanations. Persian practitioners online answer much more briefly than their English-speaking counterparts, so the filtering is much more aggressive here: about 87\% of raw records were removed (186,029 reduced to 24,000).
-
-The pipeline has several stages. To shift the token-count distribution towards longer, more informative answers, before the filtering began we randomly dropped a portion of the short answers (fewer than 50 tokens) from the training and development pools. The filtering steps below were applied after this step, and the combined effect behaves as a length floor (see Section~\ref{subsubsec:mf3qa_analysis}). The random omission was not applied to the test split. Instead, every QA pair in the test set was reviewed for factual accuracy and clinical validity. For the test split we also used data from the Doctor-yab and Isovisit platforms and added a translation of the K-QA dataset~\cite{b25} to increase diversity. Training and development records were additionally screened for spam and low-quality entries. We also removed any personal data to ensure compliance with privacy standards. The result is 20,000 training, 2,000 development and 2,000 test pairs. Section~\ref{subsubsec:mf3qa_analysis} quantifies the consequences of this selection.
-
-Drhast exposes only its 2,000 most recent dynamic records, and each record links to about 100 related entries. We modelled the site as a graph and ran repeated Breadth-First Search (BFS) traversals, using newly posted records as fresh roots in later runs and skipping records already visited. This extracted 120,000 records out of an estimated 200,000 in two weeks.
-
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{fig2.png}
-\caption{MF3QA sources}\label{fig2}
+\caption{Sources of the MF3QA question--answer pairs.}\label{fig2}
 \Description{Pie chart showing the proportion of question-answer pairs collected from each Persian medical forum.}
 \end{figure}
 
 \subsubsection{MF3QA Characteristics}\label{subsubsec:mf3qa_analysis}
 
-We analysed the cleaned dataset (24,000 pairs) against its raw crawl (186,029 pairs) along these dimensions: split composition, selection effects of cleaning, token counts, question--answer alignment, answer style, privacy exposure, sensitive content, duplication and leakage, topical coverage, and overlap with the corpus of Section~\ref{subsec3.1}. Lengths are in words on text normalised as for the corpus. Several screens (style, personal data, sensitive content, topics) are keyword- or regular-expression-based heuristics that flag items for review; their counts are approximate, and we did not manually validate their precision. Privacy and sensitive-content percentages are computed over questions unless stated otherwise.
+We compared the cleaned dataset with the raw crawl in terms of split composition, cleaning selection, length, question--answer alignment, answer style, privacy indicators, sensitive content, duplication, topical coverage, and overlap with the medical corpus. Lengths below are word counts on normalized text. Several style, privacy, sensitive-content, and topic screens rely on keywords or regular expressions and were not manually validated for precision; their counts are therefore approximate. Privacy and sensitive-content rates are calculated over questions unless stated otherwise.
 
-\textbf{Split composition.} The splits come from different sources (Table~\ref{tab:mf3qa_splits}). Training combines Drhast (83.0\%) and Niniban (17.0\%); development is entirely Niniban; test is Doctor-yab (85.6\%), Isovisit (4.4\%) and the 201 translated K-QA items (10.1\%). Source is therefore fully confounded with split, and the development split is not drawn from the test distribution. The distributions also differ in length (Fig.~\ref{fig11}): the median test question has 11 words against 51 in training and 45 in development, and two-sample Kolmogorov--Smirnov tests between training and test give $D=0.55$ for question length and $D=0.33$ for answer length ($p<10^{-170}$ for both). The test split therefore measures out-of-distribution generalisation relative to training, and results on it should be reported per source.
+\textbf{Split composition.} The splits use different sources (Table~\ref{tab:mf3qa_splits}). Training combines Drhast (83.0\%) and Niniban (17.0\%); development comes entirely from Niniban; test comprises Doctor-yab (85.6\%), Isovisit (4.4\%), and translated K-QA items (10.1\%). Source is consequently confounded with split, and development does not represent the test distribution. Length also differs (Fig.~\ref{fig11}): median test question length is 11 words, compared with 51 in training and 45 in development. Two-sample Kolmogorov--Smirnov tests between training and test give $D=0.55$ for question length and $D=0.33$ for answer length ($p<10^{-170}$ for both). Results on MF3QA should therefore be reported by source and interpreted as out-of-distribution relative to the training set.
 
-\begin{table}[h]
-\caption{MF3QA composition by split and source. Lengths are in words; ``Raw'' is the uncleaned crawl before filtering.}\label{tab:mf3qa_splits}
+\begin{table}[ht]
+\caption{MF3QA composition by split and source. Lengths are in words; Raw denotes the uncleaned crawl.}\label{tab:mf3qa_splits}
+\small
 \begin{tabular}{@{}llrrrr@{}}
 \toprule
 Split & Source & Rows & Q median & A median & A mean \\
@@ -315,67 +243,75 @@ Test & doctor-yab.ir & 1,711 & 11 & 48 & 58.3 \\
 Test & isovisit.com & 88 & 38 & 37 & 43.7 \\
 Test & K-QA (translated) & 201 & 9 & 100 & 103.3 \\
 \midrule
-Raw & all four sources & 186,029 & 43 & 17 & 25.9 \\
+Raw & all sources & 186,029 & 43 & 17 & 25.9 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{fig11.png}
-\caption{Distribution of question length (left) and answer length (right), in words on a log scale, for the MF3QA splits and the uncleaned crawl}\label{fig11}
-\Description{Two-panel violin or box plots showing the distribution of question and answer lengths across MF3QA splits and the raw crawl.}
+\caption{Question length (left) and answer length (right), shown on a log scale, across MF3QA splits and the raw crawl.}\label{fig11}
+\Description{Two-panel violin or box plots showing distributions of question and answer lengths across the MF3QA splits and raw crawl.}
 \end{figure}
 
-\textbf{Selection effects of cleaning.} Cleaning retained 24,000 of 186,029 raw pairs, and its effect is dominated by answer length (Table~\ref{tab:mf3qa_funnel}). The median raw answer has 17 words, 74.3\% of raw answers are shorter than 30 words, and 13.2\% are short (at most 15 words) referral-only replies that tell the patient to see a physician. Of the raw pairs with answers of at most 25 words (127,454, or 68.5\% of the crawl), 0.4\% were retained, against 80.6\% of those with more than 50 words; question length has only a weak relationship with retention (9.5--20.2\% across length bins). Retention also differs sharply by source (Drhast 13.6\%, Doctor-yab 3.1\%, Niniban 58.9\%), and Doctor-yab contributes only to the test split. As a result, training and development answers are almost never short (0.015\% and 0.0\% under 30 words, and none under 50 tokens), whereas 27.9\% of test answers have fewer than 30 words because the random omission was not applied there; in practice the random omission followed by filtering behaves as a near-deterministic length floor in training and development. Models fine-tuned on MF3QA are consequently exposed to longer and more elaborate replies than are typical of the forums from which it was drawn, and test-set outputs should not be compared with training-style answer lengths without accounting for this. The raw crawl also contains scraping artefacts (83 pairs with an empty question or answer, repeated browser-error and media-player strings, and recurring clinic advertisements), which the length filter removes. All 23,799 originally Persian pairs were matched to a raw record by normalised question text; the 201 translated K-QA items are absent from the crawl by construction. The per-source kept counts in Table~\ref{tab:mf3qa_funnel} total 23,799 Persian pairs, or 24,000 with the 201 translated K-QA items, and equal the per-source split sizes in Table~\ref{tab:mf3qa_splits} (for example, 1,711 Doctor-yab test pairs).
+\textbf{Selection effects of cleaning.} Cleaning retained 24,000 pairs from 186,029 raw records, with answer length dominating retention (Table~\ref{tab:mf3qa_funnel}). The median raw answer has 17 words; 74.3\% of raw answers contain fewer than 30 words, and 13.2\% are referral-only replies of at most 15 words. Of raw pairs with answers of at most 25 words (127,462, or 68.5\% of the crawl), 0.4\% were retained, compared with 80.6\% of answers longer than 50 words. Question length has a weaker relationship with retention (9.5--20.2\% across bins). Retention also varies by source: Drhast 13.6\%, Doctor-yab 3.1\%, and Niniban 58.9\%; Doctor-yab contributes only to test. Training and development therefore contain almost no short answers (0.015\% and 0.0\% below 30 words, respectively, and none below 50 tokens), whereas 27.9\% of test answers have fewer than 30 words. The random omission followed by filtering thus acts as an effective answer-length floor in training and development. Models tuned on these examples see longer responses than are typical of the source forums, and this mismatch should inform the interpretation of downstream outputs.
 
-\begin{table}[h]
-\caption{Survival of raw MF3QA records through cleaning, by source and by answer length (matched on normalised question text). The 201 translated K-QA items are not in the crawl and are added to the by-source kept total.}\label{tab:mf3qa_funnel}
+The raw crawl also contains scraping artefacts, including 83 pairs with empty questions or answers, repeated browser-error and media-player strings, and clinic advertisements. Of the 23,799 retained originally Persian pairs, 23,581 match a raw record by normalized question text and a further 170 by answer text, suggesting that some questions were edited during cleaning; 48 pairs, including three Isovisit pairs, could not be linked to the released crawl. The 201 translated K-QA items are not in the crawl. The source-based retained counts total 23,799 Persian pairs, or 24,000 after adding K-QA. The answer-length bins in Table~\ref{tab:mf3qa_funnel} are computed independently on raw and retained answers rather than through record linkage, so the retention percentages are approximate. Word counts in this subsection use regular-expression word tokenization on normalized text.
+
+\begin{table}[ht]
+\caption{Raw MF3QA records and retained records by source and answer-length bin. Word counts use regular-expression word tokenization on normalized text. The 201 translated K-QA items were added separately and are not part of the raw crawl or of the length bins. Length bins are computed independently on raw and retained answers.}\label{tab:mf3qa_funnel}
+\small
 \begin{tabular}{@{}lrrr@{}}
 \toprule
  & Raw & Kept & Kept (\%) \\
 \midrule
 \multicolumn{4}{@{}l}{\emph{By source}} \\
-drhast.com & 122,233 & 16,596 & 13.57 \\
-doctor-yab.ir & 54,539 & 1,711 & 3.13 \\
-niniban.com & 9,172 & 5,404 & 58.88 \\
-isovisit.com & 88 & 88 & 100.0 \\
+drhast.com & 122,233 & 16,596 & 13.58 \\
+doctor-yab.ir & 54,539 & 1,711 & 3.14 \\
+niniban.com & 9,172 & 5,404 & 58.92 \\
+isovisit.com$^{\dagger}$ & 85 & 88 & --- \\
 K-QA (translated) & --- & 201 & --- \\
 \midrule
-Total kept & & 24,000 & \\
+Total & 186,029 & 24,000 & \\
 \midrule
-\multicolumn{4}{@{}l}{\emph{By answer length (words)}} \\
-$\leq$10 & 50,504 & 146 & 0.3 \\
-11--25 & 76,950 & 359 & 0.5 \\
-26--50 & 38,783 & 7,173 & 18.5 \\
-51--100 & 14,585 & 11,561 & 79.3 \\
-101--200 & 4,386 & 3,645 & 83.1 \\
-$>$200 & 821 & 738 & 89.9 \\
+\multicolumn{4}{@{}l}{\emph{By answer length (words), Persian pairs only}} \\
+$\leq$10 & 50,508 & 137 & 0.3 \\
+11--25 & 76,954 & 347 & 0.5 \\
+26--50 & 38,776 & 7,371 & 19.0 \\
+51--100 & 14,586 & 11,582 & 79.4 \\
+101--200 & 4,385 & 3,623 & 82.6 \\
+$>200$ & 820 & 739 & 90.1 \\
+\midrule
+Total & 186,029 & 23,799 & 12.8 \\
 \bottomrule
 \end{tabular}
+
+\smallskip
+\footnotesize $^{\dagger}$ Three retained Isovisit pairs have no counterpart among the 85 Isovisit records in the released raw crawl.
 \end{table}
 
-\textbf{Token counts.} Token counts depend strongly on the tokenizer. With the Qwen2.5 tokenizer the training split contains 7.28M tokens (3.18M in questions and 4.10M in answers; 2.72 tokens per answer word), the development split 0.82M and the test split 0.51M. Median answer length is 163, 204 and 135 tokens for training, development and test, and 14.95\% of test answers (but no training or development answers) are shorter than 50 tokens. Counts under other tokenizers, including the Aya-Expanse tokenizer used for training, will differ.
+\textbf{Token counts.} Tokenization varies by model. With the Qwen2.5 tokenizer, training contains 7.28M tokens (3.18M in questions and 4.10M in answers, or 2.72 tokens per answer word); development contains 0.82M tokens and test 0.51M. Median answer lengths are 163, 204, and 135 tokens for training, development, and test, respectively. Some 14.95\% of test answers are shorter than 50 tokens, compared with none in training or development. Counts differ for other tokenizers, including the Aya-Expanse tokenizer used for training.
 
-\textbf{Question--answer alignment.} To check for mismatched pairs, we scored each pair by the cosine similarity of multilingual sentence embeddings (paraphrase-multilingual-MiniLM-L12-v2, texts truncated to 600 characters) and compared it with the similarity of randomly re-paired questions and answers (Fig.~\ref{fig12}). True pairs are clearly more similar than random pairs (mean 0.53 against 0.24), but the distributions overlap. Using the median of the random-pair distribution as a conservative threshold, 938 pairs (3.9\%) are flagged as likely mismatches (training 3.9\%, development 2.9\%, test 4.6\%); by source the rate is 2.5\% for Niniban, 4.2\% for Drhast, 4.6\% for Doctor-yab, 3.0\% for K-QA and 8.0\% for Isovisit (88 pairs). A looser criterion, similarity below the 95th percentile of random pairs, flags 36.2\% of pairs (41.3\% for Doctor-yab); this is expected because its questions are very short and doctors' replies are often generic, and it should not be read as an error rate. Because the embedding model is general-purpose, flagged pairs are candidates for manual inspection, not confirmed errors.
+\textbf{Question--answer alignment.} We scored each pair using cosine similarity from paraphrase-multilingual-MiniLM-L12-v2, truncating texts to 600 characters, and compared scores with randomly re-paired question--answer combinations (Fig.~\ref{fig12}). True pairs have higher mean similarity than random pairs (0.53 versus 0.24), although the distributions overlap. Using the median similarity of random pairs as a conservative threshold, 938 pairs (3.9\%) are flagged as potential mismatches: 3.9\% of training, 2.9\% of development, and 4.6\% of test. Rates by source are 2.5\% for Niniban, 4.2\% for Drhast, 4.6\% for Doctor-yab, 3.0\% for K-QA, and 8.0\% for Isovisit (88 pairs). A looser threshold, below the 95th percentile of random-pair similarity, flags 36.2\% overall and 41.3\% of Doctor-yab pairs. Because its questions are often short and answers generic, this is not an error rate. The embedding scores identify candidates for manual review, not confirmed mismatches.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=0.7\textwidth]{fig12.png}
-\caption{Question--answer similarity for true pairs and for randomly shuffled pairs in MF3QA}\label{fig12}
-\Description{Histogram showing the cosine similarity distribution for true question-answer pairs versus randomly shuffled pairs.}
+\caption{Question--answer cosine similarity for true MF3QA pairs and randomly shuffled pairs.}\label{fig12}
+\Description{Histogram comparing cosine similarity distributions for true question-answer pairs and randomly shuffled pairs.}
 \end{figure}
 
-\textbf{Style and provenance.} We used lexical proxies for answer style: stock formal phrases typical of generated text, colloquial verb forms, greetings and ZWNJ density. A combined ``LLM-like'' flag (a stock phrase, or a ZWNJ-rich formal register with no colloquial forms in answers of at least 60 words) fires on 10.3\% of pairs, stock phrases alone on 7.9\% and colloquial forms on 15.3\%. Flag rates are highest for the translated K-QA items (40.3\%, with 27.9\% stock phrases and no colloquial forms), consistent with translated text, and are 9.0\% for Drhast, 12.4\% for Niniban, 15.4\% for Doctor-yab and 1.1\% for Isovisit. Register differs systematically by source: Niniban answers are formal (0.3\% contain colloquial forms and none starts with a greeting), whereas Drhast answers are colloquial (20.2\%) and mostly open with a greeting (69.0\%). Within the training split the flag rate varies between 5.3\% and 13.7\% across position deciles with no monotonic trend. Formal phrases such as ``it is recommended'' are also common in human medical writing, so we do not read these rates as evidence of machine generation; they show that the register of the supervision signal depends on the source.
+\textbf{Style and provenance.} We used lexical proxies for answer style, including stock formal phrases, colloquial verb forms, greetings, and ZWNJ density. A combined ``LLM-like'' flag fires on 10.3\% of pairs; stock phrases alone occur in 7.9\%, and colloquial forms in 15.3\%. The combined flag is most frequent in translated K-QA (40.3\%, including 27.9\% with stock phrases and no colloquial forms), consistent with translation effects. Rates are 9.0\% for Drhast, 12.4\% for Niniban, 15.4\% for Doctor-yab, and 1.1\% for Isovisit. Registers also vary by source: only 0.3\% of Niniban answers contain colloquial forms and none starts with a greeting, whereas 20.2\% of Drhast answers are colloquial and 69.0\% start with a greeting. Formal medical language is common in human-authored text, so these proxies are not evidence of machine generation; they document source-dependent register differences.
 
-\textbf{Duplication and leakage.} The cleaning pipeline did not include a deduplication step, so we measured the duplication that remains in the released data. Exact duplication is rare: 17 training questions (0.09\%), one development question and none in the test split repeat an earlier question in the same split, and 11 training and one development pairs repeat an earlier question--answer pair in full. Three development questions also occur in training (two with identical answers), and no test question occurs in either of the other splits. With MinHash LSH on 3-word shingles of questions of at least five words (Jaccard threshold 0.8) we find about 77 near-duplicate question pairs inside training, one inside development, one inside test, and 10 development questions with a near-duplicate in training; no test question has a near-duplicate in training. The nearest training question to a test question has a median TF-IDF cosine similarity of 0.16 (95th percentile 0.34), and one test question (0.05\%) reaches 0.8, against 16 development questions (0.8\%). Train--test leakage through near-duplicate questions is therefore negligible, and train--development leakage is small. Answers are more repetitive than questions: 3.7\% of cleaned pairs share their answer with at least four other pairs. The most frequent answer occurs 118 times and is a canned reply on fetal sex selection; the most repeated answers are dominated by pregnancy and emergency-contraception replies. Some recommend home procedures for which we know of no supporting evidence, which shows that a physician-authored source does not guarantee that every answer is clinically sound, and that a model trained on MF3QA will reproduce frequently repeated content most strongly.
+\textbf{Duplication and leakage.} The cleaning pipeline did not deduplicate records. Within-split exact duplicates are uncommon: 17 training questions (0.09\%), one development question, and no test questions repeat an earlier question in the same split. Eleven training pairs and one development pair repeat both question and answer. Three development questions also occur in training (two with identical answers); no test question occurs in another split. MinHash LSH on three-word shingles for questions of at least five words (Jaccard threshold 0.8) finds about 77 near-duplicate question pairs within training, one within development, one within test, and 10 development questions with a near duplicate in training. No test question has a near duplicate in training. The nearest training question to a test question has median TF--IDF cosine similarity 0.16 (95th percentile 0.34); one test question (0.05\%) reaches 0.8, compared with 16 development questions (0.8\%). Answers are more repetitive: 3.7\% of cleaned pairs share an answer with at least four other pairs. The most frequent answer occurs 118 times and concerns fetal sex selection. Some repeated answers recommend home procedures without clear supporting evidence, illustrating that source authorship alone does not guarantee clinical soundness.
 
-\textbf{Personal data.} Apart from the personal-data removal applied during cleaning (Section~\ref{subsec3.2}), the text is distributed as it appeared on public pages, so we screened for residual direct contact details with regular expressions (URLs, e-mail addresses, mobile and landline numbers, social-media handles). Cleaning removed most of them: among raw answers, 1.08\% contain a mobile number, 0.58\% a landline number, 0.41\% a URL and 0.08\% a social handle (largely clinic advertisements), whereas the cleaned dataset has at most 18 of 24,000 pairs with any of these (12 through the question: 11 in training and one e-mail address in development; 6 through the answer: four in training and two in test). Named physicians are a separate category: a regex for a name following ``Dr.'' fires on 12.8\%, 9.2\% and 5.7\% of training, development and test questions, and on 2.8\%, 10.5\% and 0.4\% of answers respectively. This detector is approximate and over-counts (for example, forms of address), but answers do contain physician signature lines and questions may name treating physicians. We applied no further anonymisation, and users who need a stricter release should filter or mask these items; the screening script exports row identifiers rather than the matched values.
+\textbf{Personal data.} The text is distributed largely as it appeared on public pages, so we screened for residual contact details using regular expressions for URLs, email addresses, mobile and landline numbers, and social-media handles. In raw answers, 1.08\% contain a mobile number, 0.58\% a landline number, 0.41\% a URL, and 0.08\% a social handle, often in clinic advertisements. In the cleaned dataset, at most 18 of 24,000 pairs contain one of these indicators: 12 through the question (including 11 in training and one email address in development) and six through the answer (four in training and two in test). A separate detector for a name following ``Dr.'' fires on 12.8\%, 9.2\%, and 5.7\% of training, development, and test questions, and on 2.8\%, 10.5\%, and 0.4\% of answers. The detector is approximate and may over-count forms of address, but physician signatures and names of treating physicians also occur. These checks do not establish full anonymization; further review and appropriate masking or release restrictions may be needed before redistribution.
 
-\textbf{Sensitive content.} Patient questions cover intimate and high-risk topics (Table~\ref{tab:mf3qa_sensitive}). Keyword screens flag a self-harm term in 0.6\% of training questions (119) and 0.7\% of test questions (14), a first-person age below 18 in 0.8\% of training and 1.3\% of test questions, a child together with a dosing term in 5.6\% of training questions (1,111), and sexual-health terms in 4.2\%. Rates in the raw crawl are of the same order, so cleaning did not remove this content. The development split is a special case: 55.9\% of its questions mention pregnancy, against 17.0\% in training and 2.8\% in test, a consequence of its coming only from Niniban. Pediatric dosing is a particular hazard for generated advice because errors can cause direct harm, and a model fine-tuned on this data has had no safety-specific filtering of such cases. We therefore advise against using MF3QA-trained models for dosing advice and recommend manual review of flagged questions, with a content note for users, before any broader release.
+\textbf{Sensitive content.} Keyword screens identify self-harm terms in 0.6\% of training questions (119) and 0.7\% of test questions (14); a first-person age below 18 in 0.8\% of training and 1.3\% of test; a child together with a dosing term in 5.6\% of training questions (1,111); and sexual-health terms in 4.2\% overall. The development split is atypical: 55.9\% of its questions mention pregnancy, versus 17.0\% in training and 2.8\% in test, because development comes entirely from Niniban. These heuristics may over- or under-count. Pediatric dosing and self-harm-related content require particular care; MF3QA-trained models should not be used for dosing advice, and flagged content should be reviewed before use in deployment-oriented settings.
 
-\begin{table}[h]
-\caption{Keyword-screen flags on MF3QA questions (\% of questions; counts in parentheses). Screens are heuristic and over- and under-count.}\label{tab:mf3qa_sensitive}
+\begin{table}[ht]
+\caption{Keyword-screen flags on MF3QA questions. Percentages are per split, with counts in parentheses; screens are heuristic.}\label{tab:mf3qa_sensitive}
 \small
 \begin{tabular}{@{}lrrrr@{}}
 \toprule
@@ -383,7 +319,7 @@ Flag & Train & Dev & Test & Raw crawl \\
 \midrule
 Rows & 20,000 & 2,000 & 2,000 & 186,029 \\
 Self-harm term & 0.6 (119) & 0.0 (0) & 0.7 (14) & 0.5 (868) \\
-First-person age $<$18 & 0.8 (154) & 0.5 (10) & 1.3 (25) & 1.1 (2,117) \\
+First-person age $<18$ & 0.8 (154) & 0.5 (10) & 1.3 (25) & 1.1 (2,117) \\
 Child + dosing term & 5.6 (1,111) & 7.9 (158) & 1.1 (22) & 3.9 (7,320) \\
 Sexual-health term & 4.2 (840) & 6.7 (133) & 3.1 (62) & 6.9 (12,758) \\
 Pregnancy term & 17.0 (3,405) & 55.9 (1,118) & 2.8 (56) & 15.7 (29,117) \\
@@ -391,10 +327,10 @@ Pregnancy term & 17.0 (3,405) & 55.9 (1,118) & 2.8 (56) & 15.7 (29,117) \\
 \end{tabular}
 \end{table}
 
-\textbf{Topical coverage.} A 12-component TF-IDF/NMF model fitted on a random sample of 20,000 of the 24,000 pairs (questions and answers concatenated; labels assigned manually from top terms) shows that the splits cover different content (Table~\ref{tab:mf3qa_topics}). The first topic is better described as an informal, first-person register (relationships, sexual concerns, general complaints) than as a medical subject. Reproductive-health topics (conception, contraception and menstruation, pregnancy, childbirth, pregnancy tests, infertility) account for 22.6\% of the training sample, 69.8\% of the development sample and 11.0\% of the test sample, whereas general diagnosis, treatment and surgery accounts for 40.0\% of the test sample but only 12.3\% of training and 1.9\% of development. The topic gap between development and test, like the gap in length, is a reason not to use the development split as a proxy for test performance.
+\textbf{Topical coverage.} A 12-component TF-IDF/NMF model was fitted to a random sample of 20,000 QA pairs using concatenated questions and answers; labels were assigned manually from top terms (Table~\ref{tab:mf3qa_topics}). The largest topic is better described as an informal first-person register concerning relationships, sexual concerns, and general complaints than as a single medical subject. Reproductive-health topics account for 22.6\% of the training sample, 69.8\% of development, and 11.0\% of test. General diagnosis, treatment, and surgery accounts for 40.0\% of test but 12.3\% of training and 1.9\% of development. This difference reinforces the need to avoid treating the development split as a proxy for test performance.
 
-\begin{table}[h]
-\caption{Dominant topics in a 20,000-pair sample of MF3QA (NMF, 12 components): share of the sample overall and within each split (\%).}\label{tab:mf3qa_topics}
+\begin{table}[ht]
+\caption{Dominant topics in a 20,000-pair sample of MF3QA (NMF, 12 components), as a share of all sampled pairs and within each split (\%).}\label{tab:mf3qa_topics}
 \small
 \begin{tabular}{@{}lrrrr@{}}
 \toprule
@@ -416,27 +352,26 @@ Emergency contraception and menstrual disturbance & 1.7 & 1.3 & 6.4 & 0.6 \\
 \end{tabular}
 \end{table}
 
-\textbf{Overlap with the medical corpus.} Gaokerena-V is trained on both the corpus and MF3QA, so we measured how much MF3QA text also occurs in the corpus, using 8-gram overlap on normalised question--answer text against all 101,954 articles (an upper bound on what the model saw, since only 60\% of the corpus was used for domain adaptation). Some overlap is expected from shared boilerplate, so we report two thresholds. At least one shared 8-gram occurs in 14.6\% of training, 41.0\% of development and 18.5\% of test pairs; for 2.2\%, 11.7\% and 2.1\% of pairs respectively, more than half of the pair's 8-grams also occur in the corpus, a stronger indication of copied or syndicated content. The elevated development figures coincide with the development split's coming entirely from Niniban, which is also a corpus source (Table~\ref{tab:corpus_sources}); we did not verify the origin of individual matches. The main results of this paper use the MCQ benchmarks of Section~\ref{subsec3.3} and are not affected, but a free-form evaluation on the MF3QA development split after domain adaptation would not be independent of the training data, and about 2\% of test pairs (roughly 40) should be excluded or reported separately in such an evaluation.
+\textbf{Overlap with the medical corpus.} Because Gaokerena-V was trained on the corpus and MF3QA, we measured normalized 8-gram overlap between QA text and all 101,954 corpus articles. This is an upper bound on overlap with training because only 60\% of the corpus was used for domain adaptation. At least one shared 8-gram occurs in 14.6\% of training, 41.0\% of development, and 18.5\% of test pairs. More than half of a pair's 8-grams overlap with corpus text for 2.2\%, 11.7\%, and 2.1\% of pairs, respectively. Shared boilerplate may explain some matches; individual matches were not manually verified. Development overlap is higher in part because its source, Niniban, also contributes to the corpus. The results in this article use MCQ benchmarks, but independent free-form evaluation on MF3QA would need to exclude or report separately pairs with substantial overlap.
 
-\textbf{Implications for use.} MF3QA is best used as an instruction-tuning resource whose training distribution (longer, selected answers from Drhast and Niniban) differs deliberately from its test distribution (shorter questions, mostly Doctor-yab, plus translated items). We recommend reporting test results per source, treating the development split as source-specific, filtering or masking the flagged personal-data and near-duplicate rows, reviewing flagged sensitive and mismatched pairs before deployment-oriented use, and bearing in mind that frequently repeated answers are over-represented in the training signal.
+\textbf{Implications for use.} MF3QA is most appropriately treated as a selected instruction-tuning resource whose training distribution differs from its test distribution. We recommend per-source test reporting, source-specific interpretation of the development split, review of privacy and sensitive-content flags, and care around highly repeated answers. The current analysis documents known limitations; it does not establish that every released record is clinically valid, representative, or fully anonymized.
 
 %% ------------------------------------------------------------------
-\subsection{Persian Medical Multiple Choice Question Dataset}\label{subsec3.3}
+\subsection{Persian Medical Multiple-Choice Questions}\label{subsec3.3}
 
-Multiple-choice question (MCQ) datasets complement free-form QA. Some training recipes, such as that of MedS$^3$~\cite{b9}, require MCQ data for instruction tuning, and MCQ accuracy offers an objective, quantifiable measure of a model's diagnostic and pharmacological knowledge, although it is only a partial proxy for clinical competence.
+Multiple-choice questions (MCQs) provide a structured evaluation format, although accuracy on MCQs is only a partial proxy for medical competence. We assembled two evaluation resources. KOPP contains 1,878 questions extracted from Iranian Basic Medical Science Entrance Exams from 2021--2024.\footnote{\url{https://huggingface.co/datasets/gaokerena/KOPP}} The September 2023 session contains 168 questions used in our earlier conference studies; the remaining 1,710 are added in this article. FA\_MED\_MMLU contains 1,089 manually translated questions from the medical portion of MMLU~\cite{b26}.\footnote{\url{https://huggingface.co/datasets/gaokerena/FA_MED_MMLU}} These two evaluation resources are released as a consolidated collection, but their source and construction differences remain relevant to analysis.
 
-We curated two evaluation sets. First, we extracted 1,878 questions from the Iranian Basic Medical Science Entrance Exams (2021--2024) and converted them from PDF to a structured format (KOPP).\footnote{\url{https://huggingface.co/datasets/gaokerena/KOPP}} The September 2023 session (168 questions) was already used in our conference papers~\cite{b1,b2}; the other 1,710 questions are added in this article. Second, we manually translated the medical portion of the Massive Multitask Language Understanding (MMLU) dataset~\cite{b26}, 1,089 questions, to allow comparison with global benchmarks (FA\_MED\_MMLU),\footnote{\url{https://huggingface.co/datasets/gaokerena/FA_MED_MMLU}} which was introduced in~\cite{b1}.
-
-Training data tolerates minor semantic variation better than evaluation data, so for training we used a scalable machine-translation pipeline. No comprehensive Persian medical MCQ dataset existed at the time, so we used DeepSeek-V3~\cite{b27} to translate a portion of MedMCQA~\cite{b28} from English to Persian.\footnote{\url{https://github.com/Mehrdadghassabi/Gaokerena-R/tree/main/dataset/medmcqa_translation_filterd}} Questions were sampled randomly from MedMCQA to cover disciplines such as physiology, pharmacology, pathology and clinical practice. For quality control, two independent LLM referees, Grok-3-mini~\cite{b29} and GPT-4.1-mini~\cite{b30}, scored each translated question and its options for semantic accuracy, fluency and preservation of medical terminology. A translation was accepted only if both referees gave a perfect score of five out of five, which yielded about 18,000 Persian MCQs. These scores are LLM judgements and were not validated against human annotators.
+For training, we translated a portion of MedMCQA~\cite{b28} from English to Persian using DeepSeek-V3~\cite{b27}.\footnote{\url{https://github.com/Mehrdadghassabi/Gaokerena-R/tree/main/dataset/medmcqa_translation_filterd}} Items were sampled across disciplines including physiology, pharmacology, pathology, and clinical practice. Two language-model evaluators, Grok-3-mini~\cite{b29} and GPT-4.1-mini~\cite{b30}, independently rated semantic accuracy, fluency, and preservation of medical terminology. An item was retained only if both evaluators assigned a perfect score of five, yielding approximately 18,000 translated MCQs. The ratings were not validated against human annotators, so they should be interpreted as an automated filter rather than a human quality guarantee.
 
 \subsubsection{MCQ Benchmark Characteristics}\label{subsubsec:mcq_analysis}
 
-We analysed the released versions of KOPP and FA\_MED\_MMLU for size and composition, subject coverage, answer-key and format properties, text quality, translation fidelity and duplication. The text-quality and answer-length screens are regular-expression heuristics whose counts are approximate; we did not manually validate their precision.
+We analyzed size, subject coverage, answer-key balance, format, text quality, translation fidelity, and duplication. Quality screens based on regular expressions detect only specific artefacts and were not manually validated for precision.
 
-\textbf{Size and composition.} The released KOPP contains 1,878 four-option questions, split into \texttt{sept23} (168 items, the September 2023 session) and \texttt{other\_years} (1,710 items). FA\_MED\_MMLU contains 1,089 items in six subject splits whose sizes (Table~\ref{tab:mcq_composition}) equal those of the English MMLU test sets for the same subjects, so the translation covers the complete test partition of each subject. Together the two benchmarks contain 2,967 questions. All items are single-answer with exactly four options, so chance is 25\%.
+\textbf{Size and composition.} KOPP contains 1,878 four-option questions, split into \texttt{sept23} (168 items) and \texttt{other\_years} (1,710 items). FA\_MED\_MMLU contains 1,089 items across six subjects; these counts match the corresponding English MMLU test subsets, so the Persian translation covers each selected subject's test partition. Together the resources contain 2,967 questions. All items have four options and a single designated answer, giving a nominal chance level of 25\%.
 
-\begin{table}[h]
-\caption{Composition of the MCQ benchmarks.}\label{tab:mcq_composition}
+\begin{table}[ht]
+\caption{Composition of the medical MCQ benchmarks.}\label{tab:mcq_composition}
+\small
 \begin{tabular}{@{}llrr@{}}
 \toprule
 Benchmark & Split / subject & Items & Share (\%) \\
@@ -456,138 +391,123 @@ FA\_MED\_MMLU & all & 1,089 & 100.0 \\
 \end{tabular}
 \end{table}
 
-\textbf{Subject coverage.} The \texttt{sept23} split spans 9 subjects: anatomy (32.1\%, 54 items), physiology (21.4\%), biochemistry and principles of health services (11.9\% each), bacteriology (9.5\%), parasitology (6.0\%), virology and mycology (3.0\% each) and entomology (1.2\%, 2 items), so several subjects are too small to report separately. The remaining sessions cover 17 subjects after merging spelling variants, led by anatomy (27.0\%), physiology (17.9\%), bacteriology (10.8\%) and biochemistry (9.9\%), and including immunology, pathology, genetics, clinical psychology, epidemiology and medical physics, which do not occur in \texttt{sept23}. In FA\_MED\_MMLU, professional medicine and clinical knowledge together make up 49.3\% of items (537 of 1,089), so any pooled statistic is dominated by these two subjects and per-subject reporting is more informative.
+\textbf{Subject coverage.} The September 2023 KOPP session spans nine subjects: anatomy (32.1\%, 54 items), physiology (21.4\%), biochemistry and principles of health services (11.9\% each), bacteriology (9.5\%), parasitology (6.0\%), virology and mycology (3.0\% each), and entomology (1.2\%, two items). Some subjects are too small for separate inferential comparisons. The other sessions span 17 subjects after merging spelling variants, led by anatomy (27.0\%), physiology (17.9\%), bacteriology (10.8\%), and biochemistry (9.9\%). FA\_MED\_MMLU is dominated by professional medicine and clinical knowledge, which together comprise 49.3\% of its questions. Pooled scores should therefore be complemented by per-subject results.
 
-\textbf{Answer key and format.} The correct option is in position 1/2/3/4 for 32.1/26.8/16.1/25.0\% of KOPP \texttt{sept23} items, 27.3/24.6/25.0/23.2\% of \texttt{other\_years} items and 21.6/23.3/22.8/32.3\% of FA\_MED\_MMLU items. The departure from a uniform key is significant for \texttt{sept23} (chi-square $p=0.029$; option 3 is correct for only 16.1\%) and strongly so for FA\_MED\_MMLU ($p=5.7\times10^{-7}$; option 4 is correct for 32.3\%), but not for \texttt{other\_years} ($p=0.12$). A constant-position guess therefore reaches 32.1\%, 27.3\% and 32.3\% respectively, above the nominal 25\% chance level; we did not check whether the FA\_MED\_MMLU skew is inherited from the English source. Option length gives no cue: the unique longest option is correct for 23.2\%, 20.8\% and 25.3\% of items (ties excluded). KOPP stems have a median of 13 words and options of 2 words, against 17 and 4 in FA\_MED\_MMLU. The two releases use different schemas (an integer answer index in KOPP, a string label in FA\_MED\_MMLU), which we recommend harmonising in a future version.
+\textbf{Answer key and format.} The correct option is in positions 1/2/3/4 for 32.1/26.8/16.1/25.0\% of September 2023 KOPP items, 27.3/24.6/25.0/23.2\% of other KOPP items, and 21.6/23.3/22.8/32.3\% of FA\_MED\_MMLU items. The departure from a uniform key is significant for the September 2023 session ($\chi^2$ test, $p=0.029$) and FA\_MED\_MMLU ($p=5.7\times10^{-7}$), but not for other KOPP sessions ($p=0.12$). A constant-position guess would score 32.1\%, 27.3\%, and 32.3\%, respectively. We did not determine whether the FA\_MED\_MMLU skew is inherited from the English source. The unique longest option is correct for 23.2\%, 20.8\%, and 25.3\% of items, respectively, when ties are excluded, so option length does not appear to provide a reliable cue. Median stem and option lengths are 13 and two words for KOPP and 17 and four words for FA\_MED\_MMLU. KOPP stores the answer as an integer index whereas FA\_MED\_MMLU uses a string label; harmonizing schemas would ease downstream use.
 
-\textbf{Text quality.} KOPP was extracted from PDF exam booklets, and a manual read of the first page of the dataset viewer for \texttt{sept23} shows artefacts typical of automatic extraction of right-to-left text with embedded Latin and numerals: (i) numerals reordered or truncated, so that quantitative items are not answerable as written (an arterial blood-gas item gives pH ``64.7'' and $\mathrm{P_{CO_2}}$ ``.7'', and an ECG item gives a mean QRS axis ``31-'' and a voltage sum ``.41''); (ii) a stem replaced by a copy of an option from the preceding item; (iii) stray text appended to a stem; (iv) unbalanced parentheses; (v) missing whitespace at Persian--Latin boundaries; and (vi) mixed Arabic and Persian forms of Yeh and Kaf, the same variation reported for the corpus in Section~\ref{subsubsec:corpus_analysis}. These were found by inspection and are not an estimate of prevalence. Over all 1,878 KOPP items, heuristic screens flag 4 items (0.2\%) with reordered or truncated numerals, 2 (0.1\%) whose stem equals an option of the same or the preceding item, 13 (0.7\%) with duplicate options, 5 (0.3\%) with unbalanced parentheses in the stem (option-level truncations are not covered), 124 (6.6\%) with no whitespace at a Persian--Latin boundary, and 605 (32.2\%) with Arabic Yeh or Kaf; the last rate is 62.5\% in \texttt{sept23} against 29.2\% in the other sessions, so orthography differs by exam session. Latin letters occur in the stem of 20.4\% of items. Subject labels are affected too: the 17 distinct KOPP subjects appear under 24 strings because of Arabic/Persian letter variants and invisible directional control characters inherited from the PDFs. In FA\_MED\_MMLU the same screens flag 0.4\% (numerals), 0.2\% (duplicate options), 1.6\% (script boundary) and 0.7\% (Arabic Yeh or Kaf) of items, in line with its being translated rather than extracted text. The screens detect only specific patterns, so we recommend reviewing the exported flagged items before the benchmark is used for fine-grained comparison.
+\textbf{Text quality.} PDF extraction introduces artefacts in KOPP, especially for right-to-left text containing Latin terms and numbers. Manual inspection found examples of reordered or truncated numerical values, stems copied from preceding options, appended stray text, unbalanced parentheses, missing whitespace at Persian--Latin boundaries, and mixed Arabic/Persian letter forms. These examples are qualitative, not prevalence estimates. Across 1,878 KOPP items, heuristic screens flag four items (0.2\%) with reordered or truncated numerals, two (0.1\%) whose stem equals an option from the same or previous question, 13 (0.7\%) with duplicate options, five (0.3\%) with unbalanced parentheses in stems, 124 (6.6\%) with no whitespace at a Persian--Latin boundary, and 605 (32.2\%) using Arabic Yeh or Kaf forms. The latter is 62.5\% in September 2023 versus 29.2\% in other sessions. Latin letters occur in 20.4\% of stems. Seventeen distinct subjects appear under 24 strings because of letter variants and invisible directional controls. The same screens flag 0.4\% of FA\_MED\_MMLU items for numeral artefacts, 0.2\% for duplicate options, 1.6\% for script-boundary issues, and 0.7\% for Arabic Yeh or Kaf. These screens are incomplete; flagged items should be reviewed before fine-grained comparison.
 
-\textbf{Translation fidelity.} FA\_MED\_MMLU inherits the properties of its English source. Translated items show the usual artefacts: anatomical and clinical terms are sometimes left in Latin script (e.g., \emph{levator veli palatini}), transliterated, or translated inconsistently across options of one item, and some ambiguities of the English wording are not preserved in Persian. We did not perform a back-translation or second-annotator audit; we recommend a stratified audit across the six subjects reporting the rate of items whose key changes meaning under translation. Annotation errors present in the English MMLU medical subsets are carried over, and the key of a translated item should not be assumed to be more reliable than the original.
+\textbf{Translation fidelity.} Some translated items leave anatomical and clinical terms in Latin script (e.g., \emph{levator veli palatini}), transliterate them, or translate terms inconsistently across options. Some ambiguity in the English wording may not have been preserved. We did not conduct a back-translation study or a second-annotator audit. A stratified human audit across the six subjects should measure how often translation changes the item's meaning or correct key. Annotation errors in the English MMLU subsets are also carried over to the translation.
 
-\textbf{Duplication.} Matching on normalised stems alone, 95 distinct stems occur more than once among the 2,967 items, and 199 stem pairs have a character $n$-gram TF--IDF cosine of at least 0.8, of which 6 pairs are between KOPP and FA\_MED\_MMLU. Because only stems are compared, short generic stems can match despite different options, so these counts are upper bounds on true duplicates; the flagged identifiers are exported for review.
+\textbf{Duplication.} Matching normalized stems, 95 distinct stems occur more than once among the 2,967 questions, and 199 stem pairs have character $n$-gram TF--IDF cosine similarity of at least 0.8; six pairs cross between KOPP and FA\_MED\_MMLU. Since the comparison uses stems alone, short generic stems can match despite different options. These counts are therefore upper bounds on true duplicates, and the flagged identifiers should be manually reviewed.
 
-\textbf{Implications for use.} KOPP is a small, session-structured benchmark whose \texttt{sept23} split has only 168 items, and FA\_MED\_MMLU is a complete translated test partition dominated by two subjects. We recommend reporting results per subject and per session, and excluding or repairing the flagged items (or reporting with and without them).
+\textbf{Implications for use.} KOPP is a session-structured benchmark, with only 168 questions in the September 2023 split, while FA\_MED\_MMLU is a complete translated test partition dominated by two subjects. We recommend per-subject and per-session reporting and, where appropriate, analyses both including and excluding repaired or flagged items.
 
 %% ------------------------------------------------------------------
-\section{Gaokerena Models}\label{sec4}
+\section{Gaokerena Models as Resource Applications}\label{sec4}
 
-Both models are built on Aya-Expanse-8B~\cite{b12,b13}. Gaokerena-V~\cite{b1} is obtained by domain adaptation on a subset of our corpus followed by instruction tuning on MF3QA. Gaokerena-R~\cite{b2} is post-trained on MCQs to distil medical reasoning from a larger teacher model.
+Both models use Aya-Expanse-8B~\cite{b12,b13} as their backbone. Gaokerena-V~\cite{b1} is obtained through domain adaptation on part of the medical corpus followed by instruction tuning on MF3QA. Gaokerena-R~\cite{b2} is post-trained on MCQs using preference-based reasoning distillation. The models illustrate different uses of the assembled resources, but the evaluation below does not isolate the effect of each resource or training stage.
 
 \subsection{Gaokerena-V}\label{subsec4.1}
 
-We adapt the 8B Aya-Expanse checkpoint in two LoRA~\cite{b31} stages (hyperparameters in Table~\ref{ft_it_training_details}), training on about 54 million new words in total (the conference version~\cite{b1} reported 57 million tokens, counted with the earlier tokenizer-based method explained in Section~\ref{subsec3.1}). In the domain-adaptation stage we continue pre-training on 60\% of the medical corpus (roughly 51M of its 85.5M words) to expose the model to Persian medical terminology; LoRA keeps the update lightweight and limits forgetting (loss in Fig.~\ref{fig3}). In the instruction-tuning stage we use the full MF3QA training split to refine conversational and QA behaviour, with a lower LoRA rank and alpha and a higher dropout rate to limit overfitting (loss in Fig.~\ref{fig4}). As Section~\ref{subsubsec:mf3qa_analysis} shows, this split is source-selected and length-filtered, and at most about 2\% of its pairs overlap heavily with the domain-adaptation corpus.
+We adapted Aya-Expanse-8B in two LoRA~\cite{b31} stages. Domain adaptation used 60\% of the medical corpus, approximately 51M of the 85.5M normalized words, to expose the model to Persian medical terminology. The second stage used the MF3QA training split for instruction tuning and conversational QA. In total, the process used about 54 million new words; the earlier conference paper~\cite{b1} reported 57 million tokens under the previous tokenizer-based counting method. The MF3QA training split is source-selected and length-filtered, and part of the dataset overlaps with the full corpus as described in Section~\ref{subsubsec:mf3qa_analysis}.
 
-\begin{table}[h]
-\caption{Gaokerena-V training hyperparameters}\label{ft_it_training_details}
+\begin{table}[ht]
+\caption{Gaokerena-V training hyperparameters.}\label{ft_it_training_details}
+\small
 \begin{tabular}{@{}lcc@{}}
 \toprule
  & Domain adaptation & Instruction tuning \\
 \midrule
 Training data & medical\_corpus & MF3QA \\
-Number of epochs & 1 & 1 \\
+Epochs & 1 & 1 \\
 Batch size & 2 & 2 \\
 Gradient accumulation steps & 16 & 16 \\
 Optimizer & AdamW & AdamW \\
-Learning rate & 5E-4 & 5E-4 \\
+Learning rate & $5\times10^{-4}$ & $5\times10^{-4}$ \\
 Maximum gradient norm & 0.3 & 0.3 \\
 Warmup ratio & 0.03 & 0.03 \\
-Weight decay rate & 0.1 & 0.5 \\
+Weight decay & 0.1 & 0.5 \\
 Maximum context length & 1024 & 1024 \\
-Padding strategy & left-side padding & left-side padding \\
+Padding strategy & Left & Left \\
 LoRA rank & 8 & 2 \\
 LoRA alpha & 16 & 2 \\
-LoRA dropout rate & 0.05 & 0.4 \\
-Target modules & all linear layers & all linear layers \\
+LoRA dropout & 0.05 & 0.4 \\
+Target modules & All linear layers & All linear layers \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{fig3.png}
-\caption{Fine-tuning (domain-adaptation) loss curve}\label{fig3}
-\Description{Line plot showing the training loss decreasing over steps during domain adaptation.}
+\caption{Training loss during domain adaptation.}\label{fig3}
+\Description{Line plot showing training loss decreasing over domain-adaptation steps.}
 \end{figure}
-
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{fig4.png}
-\caption{Instruction-tuning loss curve}\label{fig4}
-\Description{Line plot showing the training loss decreasing over steps during instruction tuning.}
+\caption{Training loss during instruction tuning.}\label{fig4}
+\Description{Line plot showing training loss decreasing over instruction-tuning steps.}
 \end{figure}
 
 \subsection{Gaokerena-R}\label{subsec4.2}
 
-Gaokerena-R is trained with an RLAIF~\cite{b32} pipeline that builds a preference dataset $\mathcal{D}=\{(x,y_w,y_l)\}$, where $x$ is a medical question, $y_w$ a preferred reasoning trajectory and $y_l$ a rejected response, and optimises the student policy $\pi_\theta$ with Direct Preference Optimization (DPO)~\cite{b33} (Eq.~\eqref{fr:DPOloss}; loss in Fig.~\ref{fig5}). The student $\pi_S$ is the baseline Aya-Expanse-8B and the teacher $\pi_T$ is DeepSeek-R1~\cite{b34}. Questions come from the translated MedMCQA training set. Two strategies generate the pairs.
+Gaokerena-R uses reinforcement learning from AI feedback (RLAIF)~\cite{b32} to create preference pairs $\mathcal{D}=\{(x,y_w,y_l)\}$, where $x$ is a medical question, $y_w$ is a preferred reasoning trajectory, and $y_l$ is a rejected response. The model is optimized using Direct Preference Optimization (DPO)~\cite{b33}. Aya-Expanse-8B is the student and DeepSeek-R1~\cite{b34} the teacher; questions are drawn from the translated MedMCQA training resource.
 
-In \textit{Expert-Guided Synthesis}, an incorrect initial student response $y_{\text{init}}$ becomes $y_l$, and the teacher, given the ground-truth answer, writes a correct Chain-of-Thought explanation as $y_w$ (Fig.~\ref{fig6}). In \textit{Iterative Self-Correction}, the teacher instead critiques $y_{\text{init}}$ without revealing the answer; if the student's retry $y_{\text{retry}}$ is correct, it becomes $y_w$ and $y_{\text{init}}$ becomes $y_l$, which keeps preferred trajectories close to the student's own distribution (Fig.~\ref{fig7}). The first strategy dominates: for every 19 pairs it yields, about one comes from the second. The final dataset has about 11,000 pairs (roughly 2 million preferred and 2.5 million rejected tokens).
+Two strategies construct preference pairs. In \textit{Expert-Guided Synthesis}, an incorrect initial student response $y_{\text{init}}$ becomes the rejected answer, while the teacher receives the ground-truth answer and writes a correct CoT explanation as the preferred answer. In \textit{Iterative Self-Correction}, the teacher critiques the initial response without revealing the answer; if the student's retry is correct, that retry becomes preferred and the initial answer rejected. The first strategy supplies approximately 19 pairs for every pair produced by the second. The final dataset contains about 11,000 pairs, with roughly 2 million preferred-response tokens and 2.5 million rejected-response tokens.
 
 \begin{equation}
-\mathcal{L}_{\text{DPO}} =
--\mathbb{E}_{(x,y_w,y_l)\sim\mathcal{D}}
-\left[
-\log \sigma\left(
-\beta \log\frac{\pi_{\theta}(y_w\mid x)}{\pi_{\text{ref}}(y_w\mid x)}
--\beta \log\frac{\pi_{\theta}(y_l\mid x)}{\pi_{\text{ref}}(y_l\mid x)}
-\right)
-\right]
+\mathcal{L}_{\text{DPO}}=-\mathbb{E}_{(x,y_w,y_l)\sim\mathcal{D}}\left[\log\sigma\left(\beta\log\frac{\pi_{\theta}(y_w\mid x)}{\pi_{\text{ref}}(y_w\mid x)}-\beta\log\frac{\pi_{\theta}(y_l\mid x)}{\pi_{\text{ref}}(y_l\mid x)}\right)\right]
 \label{fr:DPOloss}
 \end{equation}
 
-Here $\sigma$ is the sigmoid function, $\pi_{\text{ref}}$ the reference model and $\beta$ controls the strength of the update relative to it. Minimising $\mathcal{L}_{\text{DPO}}$ raises the probability of $y_w$ relative to $y_l$, which transfers the teacher's reasoning style to Gaokerena-R.
+Here $\sigma$ is the sigmoid function, $\pi_{\text{ref}}$ is the reference model, and $\beta$ controls the strength of the update relative to the reference policy. Minimizing the objective raises the probability of preferred responses relative to rejected responses. The available results evaluate the resulting model but do not include ablations that isolate the contribution of the two pair-generation strategies.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{fig5.png}
-\caption{DPO loss curve}\label{fig5}
-\Description{Line plot showing the DPO training loss decreasing over steps.}
+\caption{DPO training loss.}\label{fig5}
+\Description{Line plot showing DPO training loss over optimization steps.}
 \end{figure}
-
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{fig6.png}
-\caption{Block diagram of Method 1 (Expert-Guided Synthesis)}\label{fig6}
-\Description{Flow diagram showing the Expert-Guided Synthesis pipeline: student generates incorrect response, teacher receives ground-truth answer and produces correct chain-of-thought explanation.}
+\caption{Expert-Guided Synthesis preference-pair construction.}\label{fig6}
+\Description{Flow diagram in which the student produces an incorrect response and the teacher, given the ground-truth answer, produces the preferred chain-of-thought response.}
 \end{figure}
-
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{fig7.png}
-\caption{Block diagram of Method 2 (Iterative Self-Correction)}\label{fig7}
-\Description{Flow diagram showing the Iterative Self-Correction pipeline: teacher critiques student response without revealing answer, student retries, and correct retry becomes preferred response.}
+\caption{Iterative Self-Correction preference-pair construction.}\label{fig7}
+\Description{Flow diagram in which a teacher critiques a student response without revealing the answer, the student retries, and a correct retry becomes the preferred response.}
 \end{figure}
 
 %% ------------------------------------------------------------------
-\section{Companion Work: Uncertainty Heads}\label{sec:uhead}
+\section{Companion Work: Claim-Level Uncertainty Heads}\label{sec:uhead}
 
-Small medical language models can produce fluent but unsupported statements, so we also equip both models with claim-level uncertainty heads. These are lightweight auxiliary modules trained on top of the frozen backbone: from a single forward pass, and using only the backbone's internal signals (attention maps and token probabilities), they estimate whether each generated claim is likely to be supported or hallucinated. They need no external retrieval or repeated sampling and leave the models' generative behaviour unchanged. In a preliminary check on the 168-question KOPP Sept 2023 session, across five generations per question Gaokerena-V produced the same option on only 14 questions and Gaokerena-R on 37, which motivated a claim-level rather than response-level detector. Trained on 1,600 Persian responses per backbone, the heads reach PR-AUCs of 0.4820 and 0.4652 (2.30 and 2.66 times the random baseline) and ROC-AUCs of 0.7852 and 0.7810 on held-out test splits. Dataset construction, architecture, training and full evaluation are reported in~\cite{b3}; the results of this paper do not depend on the heads.
+A companion study~\cite{b3} investigates claim-level uncertainty heads for Gaokerena-V and Gaokerena-R. These auxiliary modules use internal model signals, including attention maps and token probabilities, to estimate whether a generated claim is supported or hallucinated, without external retrieval or repeated sampling. They do not change the backbone's generation process. The heads were trained using 1,600 Persian responses per backbone and obtained PR-AUC values of 0.4820 and 0.4652 (2.30 and 2.66 times the respective random baselines) and ROC-AUC values of 0.7852 and 0.7810 on held-out splits. In a preliminary analysis of five generations for each of the 168 September 2023 KOPP questions, all five generations selected the same option on only 14 Gaokerena-V questions and 37 Gaokerena-R questions. The full uncertainty-head methodology and evaluation are reported in~\cite{b3}; those results are separate from the resource characterization and do not affect the model comparisons below.
 
 %% ------------------------------------------------------------------
 \section{Experiments and Results}\label{sec:results}
 
-Small multilingual models often struggle with under-represented languages such as Persian. Aya-Expanse~\cite{b12,b13} improves Persian fluency, but general-purpose multilingual models still trade off domain performance. This section evaluates our models against general-purpose alternatives on Persian medical MCQs.
+The experiments illustrate how the resources can be used to evaluate compact Persian medical models. They are not designed to estimate the independent causal contribution of each dataset or training stage. We evaluate on the six Persian-translated medical MMLU subsets (FA\_MED\_MMLU, 1,089 questions) and the September 2023 KOPP session (168 questions); other KOPP sessions are not evaluated in this article. Baselines are Aya-Expanse-8B, the backbone of both Gaokerena models; Qwen2.5~\cite{b35} (7.6B); and PersianMind~\cite{b14}. Results come from one evaluation run per configuration. Except for Table~\ref{tab:cotsc}, accuracies are calculated from per-question predictions; Table~\ref{tab:cotsc} is pooled by question count from subject-level results reported in~\cite{b2}.
 
-\subsection{Setup}\label{subsec6.0}
+\subsection{Evaluation Setup and Statistical Methods}\label{subsec6.0}
 
-We report accuracy on the six Persian-translated MMLU medical subsets (FA\_MED\_MMLU, 1,089 questions) and on the KOPP Sept.\ 2023 session (``IBMSEE Sept.\ 2023'', 168 questions). The remaining KOPP sessions are not evaluated here. Baselines are Aya-Expanse-8B (the backbone of both Gaokerena models), Qwen2.5~\cite{b35} (7.6B) and PersianMind~\cite{b14}. All accuracies in the tables are computed from per-question predictions and rounded to two decimals, except those of Table~\ref{tab:cotsc}, which are derived from the per-subject results reported in~\cite{b2}; the MMLU average is pooled over all 1,089 questions, not a mean of subject scores. Results are from a single evaluation run per configuration.
-
-\paragraph{Statistical methods.} Uncertainty from the finite number of test questions is quantified with 95\% Wilson score intervals for each accuracy. Pairwise differences between systems are tested with two-sided two-proportion $z$-tests computed from the number of correct answers. These tests treat the two systems as independent samples; because all systems answer the same questions, a paired test (exact McNemar test on per-question correctness) would normally be more powerful, so the $p$-values reported here should be regarded as conservative approximations. We test the five comparisons per benchmark that correspond to claims made in the text (Table~\ref{tab:significance}) and, separately, the three pairwise comparisons among the matched CoT-SC systems (Table~\ref{tab:cotsc_sig}). These comparisons were chosen after seeing the results, not pre-registered. The tables report uncorrected $p$-values, and the text states where a Holm correction (over the ten tests of Table~\ref{tab:significance}, and over the six matched tests respectively) changes a conclusion. Accuracy against the 36\% pass mark of the entrance exam is tested with a one-sided exact binomial test. We test only pooled accuracy: the per-subject sets (100--272 items) and the 168-item KOPP session are too small to resolve differences of a few points, so per-subject differences in the tables are descriptive. These tests account for sampling variability over test questions only; they do not account for variability across training seeds or across sampling seeds in CoT-SC decoding, which we did not measure. The English--Persian comparisons of Section~\ref{subsec6.3} use the same unpaired tests; Persian counts are recovered from the reported percentages.
+We report accuracy and 95\% Wilson score intervals. The original pairwise comparisons use two-sided unpaired two-proportion $z$-tests; because systems answer shared questions, we additionally conducted exact two-sided McNemar tests on paired per-question correctness indicators for (i) direct-prompting Gaokerena-V versus Aya-Expanse-8B and (ii) Gaokerena-R versus Aya-Expanse-8B under matched five-sample CoT self-consistency without a verifier. Pairing was based on subject, question text, and gold answer. Let $b$ denote items answered correctly only by Gaokerena-V and $c$ items answered correctly only by Aya-Expanse-8B; the exact McNemar test uses the binomial distribution conditional on $b+c$. The paired results are summarized in Table~\ref{tab:mcnemar}. The comparisons reported in Tables~\ref{tab:significance} and~\ref{tab:cotsc_sig} were selected after results were observed, not pre-registered. The tables show uncorrected $p$-values; Holm corrections are reported for the ten comparisons in Table~\ref{tab:significance} and the six comparisons in Table~\ref{tab:cotsc_sig}. Accuracy against the 36\% entrance-exam pass mark is tested with a one-sided exact binomial test. Only pooled differences are tested; per-subject comparisons are descriptive. These tests capture uncertainty across questions, not across model-training or decoding seeds. English--Persian comparisons use the same unpaired approach, and some Persian counts are reconstructed from rounded percentages.
 
 \subsection{Gaokerena-V Results}\label{subsec6.1}
 
-Table~\ref{tab:model_results_vs_general_purpose_languages} reports all models under straight (direct, zero-shot) prompting; Gaokerena-R under its preferred CoT-SC strategy is in Section~\ref{subsec6.2}. Confidence intervals and pairwise tests are in Tables~\ref{tab:ci} and~\ref{tab:significance}.
+Table~\ref{tab:model_results_vs_general_purpose_languages} reports direct, zero-shot prompting results. Gaokerena-V has the highest pooled MMLU accuracy among the directly prompted systems (49.31\%, 537/1,089), compared with 46.65\% (508/1,089) for Aya-Expanse-8B and 44.81\% (488/1,089) for Qwen2.5. It has the highest score in five of the six subjects; Gaokerena-R is highest on college medicine. However, the difference between Gaokerena-V and its backbone is 2.66 percentage points and is not statistically significant under the reported unpaired test ($p=0.21$). As a paired sensitivity analysis, Gaokerena-V was correct on 536 items and Aya-Expanse-8B on 507; there were 117 items correct only for Gaokerena-V and 88 correct only for Aya-Expanse-8B. The exact two-sided McNemar test yielded $p=0.0502$, just above the conventional 0.05 threshold. This near-threshold result remains statistically inconclusive and should be interpreted cautiously because the comparisons are exploratory. Its 4.50-point difference from Qwen2.5 has uncorrected $p=0.035$ but does not survive the stated Holm correction. These results are compatible with a modest improvement, but do not establish that domain adaptation and instruction tuning caused one.
 
-Gaokerena-V has the highest pooled MMLU accuracy among directly prompted models (49.31\%, 537 of 1,089 questions, against 508 for its backbone and 488 for Qwen2.5) and the best score in five of the six subjects; Gaokerena-R under straight prompting is best on college medicine. The margin over the backbone is small, however: +2.66 points with overlapping intervals (46.35--52.28\% against 43.70--49.62\%), and the difference is not statistically significant ($p=0.21$). The difference to Qwen2.5 (+4.50 points) is nominally significant ($p=0.035$) but does not survive a Holm correction over the ten tests. The data are therefore consistent with a modest improvement from domain adaptation and instruction tuning, but do not establish one.
+On the September 2023 KOPP session, Gaokerena-V scores 38.69\% (65/168), above the nominal 36\% pass mark. Its 95\% Wilson interval is 31.66--46.23\%, which includes the pass mark, and the one-sided exact binomial test is not significant ($p=0.26$). It answers seven more questions correctly than Aya-Expanse-8B, a difference of 4.17 points ($p=0.43$ under the unpaired test). Because a constant-position guess reaches 32.1\% on this session due to answer-key imbalance (Section~\ref{subsubsec:mcq_analysis}), the result should be interpreted as a point estimate on one small session, not as evidence of exam readiness.
 
-On KOPP Sept.\ 2023, Gaokerena-V scores 38.69\% (65 of 168 questions), above the 36\% pass mark of the Iranian Basic Medical Science Entrance Exam, while all other directly prompted models in Table~\ref{tab:model_results_vs_general_purpose_languages} score below it. This result should be read with care. With 168 questions the 95\% Wilson interval for 38.69\% is 31.66--46.23\%, which includes the pass mark, and the one-sided exact binomial test against 36\% is not significant ($p=0.26$). The difference to Aya-Expanse-8B is seven questions (+4.17 points, $p=0.43$), and a constant-position guess already reaches 32.1\% on this session because of its skewed answer key (Section~\ref{subsubsec:mcq_analysis}). We therefore claim only that the Gaokerena-V point estimate on this single session is above the pass mark, not that the difference is established.
+The largest subject-level gain over the backbone is in anatomy (7.4 points, or 10 additional correct answers out of 135); this comparison is descriptive and was not tested. A possible explanation is that the corpus contains relevant anatomy material, but this was not tested. PersianMind is fastest in the reported setup, but its pooled accuracy is 25.90\% (95\% interval 23.38--28.58\%) and its tendency to produce very short answers may affect answer extraction.
 
-The largest subject gain over the backbone is in anatomy (7.4 percentage points, 10 more correct answers out of 135); with 135 questions this difference is descriptive and untested. Anatomy-focused material may be relatively abundant in reputable Persian digital publications, but we did not test this explanation. Gains in other subjects are smaller; we suspect that the limited volume and uneven quality of Persian medical text restricts further improvement, though we did not test this either.
-
-PersianMind has the lowest inference time, which likely reflects its tendency to give truncated, very short responses. In several subjects its accuracy is close to chance (25.90\% pooled; interval 23.38--28.58\%, which includes the 25\% chance level).
-
-\begin{table}[h]
-\caption{Performance of Gaokerena models and general-purpose baselines with straight (direct, zero-shot) prompting (accuracy, \%, single run). Aya-Expanse-8B is the backbone of both Gaokerena models. Subject rows are the Persian-translated MMLU subsets; the MMLU average is pooled over 1,089 questions. Best values in bold. Confidence intervals and significance tests are in Tables~\ref{tab:ci} and~\ref{tab:significance}.}\label{tab:model_results_vs_general_purpose_languages}
-\footnotesize
+\begin{table}[ht]
+\caption{Direct (zero-shot) prompting results. Accuracy is in percent; the MMLU score is pooled over 1,089 questions. Confidence intervals and tests are in Tables~\ref{tab:ci} and~\ref{tab:significance}.}\label{tab:model_results_vs_general_purpose_languages}
+\scriptsize
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}lccccc@{}}
 \toprule
@@ -600,26 +520,26 @@ College medicine & 43.93 & \textbf{46.24} & 44.51 & 43.35 & 20.23 \\
 Clinical knowledge & \textbf{55.47} & 52.45 & 52.08 & 47.92 & 25.28 \\
 Professional medicine & \textbf{47.06} & 41.91 & 45.59 & 43.01 & 23.90 \\
 College biology & \textbf{47.22} & 44.44 & 45.14 & 42.36 & 32.64 \\
-MMLU avg.\ (pooled) & \textbf{49.31} & 46.10 & 46.65 & 44.81 & 25.90 \\
-IBMSEE Sept.\ 2023 & \textbf{38.69} & 35.12 & 34.52 & 33.33 & 19.64 \\
+MMLU avg. (pooled) & \textbf{49.31} & 46.10 & 46.65 & 44.81 & 25.90 \\
+IBMSEE Sept. 2023 & \textbf{38.69} & 35.12 & 34.52 & 33.33 & 19.64 \\
 \midrule
 Parameters & 8B & 8B & 8B & 7.6B & 6.8B \\
-Prompt type & Straight & Straight & Straight & Straight & Straight \\
+Prompt type & Direct & Direct & Direct & Direct & Direct \\
 Inference time & $\approx$10 s & $\approx$10 s & $\approx$10 s & $\approx$15 s & $\approx$2 s \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
-\caption{Pooled accuracy with 95\% Wilson confidence intervals (\%). Gaokerena-R is shown under both straight prompting and its preferred CoT-SC configuration (not compute-matched to the direct baselines). MMLU: $n=1{,}089$; KOPP Sept.\ 2023: $n=168$.}\label{tab:ci}
+\begin{table}[ht]
+\caption{Pooled accuracy with 95\% Wilson confidence intervals. MMLU $n=1,089$; KOPP September 2023 $n=168$. The Gaokerena-R CoT-SC-plus-verifier configuration is not compute-matched to direct baselines.}\label{tab:ci}
 \small
 \begin{tabular}{@{}lcc@{}}
 \toprule
-System & MMLU pooled (95\% CI) & KOPP Sept.\ 2023 (95\% CI) \\
+System & MMLU pooled (95\% CI) & KOPP Sept. 2023 (95\% CI) \\
 \midrule
 Gaokerena-V (direct) & 49.31 [46.35, 52.28] & 38.69 [31.66, 46.23] \\
 Gaokerena-R (direct) & 46.10 [43.16, 49.07] & 35.12 [28.31, 42.60] \\
-Gaokerena-R (CoT-SC) & 52.80 [49.83, 55.75] & 46.43 [39.05, 53.97] \\
+Gaokerena-R (CoT-SC + verifier) & 52.80 [49.83, 55.75] & 46.43 [39.05, 53.97] \\
 Aya-Expanse-8B (direct) & 46.65 [43.70, 49.62] & 34.52 [27.75, 41.99] \\
 Qwen2.5 (direct) & 44.81 [41.88, 47.78] & 33.33 [26.65, 40.76] \\
 PersianMind (direct) & 25.90 [23.38, 28.58] & 19.64 [14.34, 26.30] \\
@@ -627,38 +547,32 @@ PersianMind (direct) & 25.90 [23.38, 28.58] & 19.64 [14.34, 26.30] \\
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
-\caption{Pairwise comparisons of accuracy: difference in percentage points (first system minus second) and two-sided $p$-value from an unpaired two-proportion $z$-test. $p$-values are uncorrected; after Holm correction over all ten tests only the starred comparison (MMLU, Gaokerena-R CoT-SC vs.\ Aya-Expanse-8B) remains significant at 0.05. Paired McNemar tests on per-question correctness would normally be more powerful.}\label{tab:significance}
+\begin{table}[ht]
+\caption{Pairwise accuracy differences (percentage points) and uncorrected $p$-values from unpaired two-proportion $z$-tests. The reported Holm correction covers ten tests; only the MMLU comparison of Gaokerena-R CoT-SC plus verifier against the directly prompted backbone remains significant. Reanalysis with paired per-question tests is recommended.}\label{tab:significance}
 \small
 \begin{tabular}{@{}lrrrr@{}}
 \toprule
- & \multicolumn{2}{c}{MMLU pooled} & \multicolumn{2}{c}{KOPP Sept.\ 2023} \\
+ & \multicolumn{2}{c}{MMLU pooled} & \multicolumn{2}{c}{KOPP Sept. 2023} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 Comparison & $\Delta$ & $p$ & $\Delta$ & $p$ \\
 \midrule
-Gaokerena-V vs.\ Aya-Expanse-8B (direct) & $+2.66$ & 0.21 & $+4.17$ & 0.43 \\
-Gaokerena-V vs.\ Qwen2.5 (direct) & $+4.50$ & 0.035 & $+5.36$ & 0.31 \\
-Gaokerena-R (CoT-SC) vs.\ Gaokerena-V (direct) & $+3.49$ & 0.10 & $+7.74$ & 0.15 \\
-Gaokerena-R (CoT-SC) vs.\ Aya-Expanse-8B (direct) & $+6.15$ & 0.004$^{*}$ & $+11.90$ & 0.026 \\
-Gaokerena-R (direct) vs.\ Aya-Expanse-8B (direct) & $-0.55$ & 0.80 & $+0.60$ & 0.91 \\
+Gaokerena-V vs. Aya-Expanse-8B (direct) & +2.66 & 0.21 & +4.17 & 0.43 \\
+Gaokerena-V vs. Qwen2.5 (direct) & +4.50 & 0.035 & +5.36 & 0.31 \\
+Gaokerena-R (CoT-SC + verifier) vs. Gaokerena-V (direct) & +3.49 & 0.10 & +7.74 & 0.15 \\
+Gaokerena-R (CoT-SC + verifier) vs. Aya-Expanse-8B (direct) & +6.15 & 0.004$^{*}$ & +11.90 & 0.026 \\
+Gaokerena-R (direct) vs. Aya-Expanse-8B (direct) & -0.55 & 0.80 & +0.60 & 0.91 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{Gaokerena-R Results}\label{subsec6.2}
 
-Gaokerena-R is designed to use structured reasoning, so we evaluate it under chain-of-thought (CoT) prompting as well as direct prompting. Under straight prompting it does not outperform its backbone (46.10\% against 46.65\% pooled; $p=0.80$; Table~\ref{tab:model_results_vs_general_purpose_languages}), so the system prompt must instruct it to reason step by step.
+Gaokerena-R is designed for reasoning-style output, so we evaluate it with chain-of-thought (CoT) prompting as well as direct prompting. Under direct prompting, it does not outperform its backbone (46.10\% versus 46.65\%, reported $p=0.80$).
 
-\paragraph{Matched CoT self-consistency.} We first compare the three models under identical conditions (Table~\ref{tab:cotsc}). Each model receives a CoT prompt and generates five responses per question at temperature 1.0, and a self-consistency rule~\cite{b36} accepts an answer only when at least three of the five responses choose the same option; otherwise the question is left unanswered and counted as incorrect. All three models therefore receive the same inference computation, and no verifier is used. Gaokerena-R reaches 48.67\% pooled MMLU accuracy against 46.92\% for the backbone ($+1.75$ points, $p=0.41$) and 40.13\% for Gaokerena-V. The difference to Gaokerena-V ($+8.54$ points, $p<0.001$) is significant, but the difference to the backbone is not significant on MMLU or on KOPP (38.69\% against 35.71\%, $p=0.57$). In this setting Gaokerena-V scores significantly below its own backbone ($-6.80$ points, $p=0.001$): domain adaptation and instruction tuning do not help, and appear to hurt, CoT self-consistency accuracy. Because unanswered questions count as errors, this may partly reflect more abstentions rather than more wrong answers, and we did not record coverage separately. Under matched computation, the data therefore do not establish that DPO improves on the backbone; they do show that Gaokerena-R is far better than Gaokerena-V when both are asked to reason.
+\paragraph{Matched CoT self-consistency.} Each model receives a CoT prompt and generates five answers per question at temperature 1.0. A self-consistency rule~\cite{b36} accepts an option only if at least three responses agree; otherwise the item is unanswered and counted as incorrect. No verifier is used. Gaokerena-R obtains 48.58\% pooled MMLU accuracy (529/1,089), compared with 46.92\% for Aya-Expanse-8B (511/1,089; +1.65 points). The unpaired two-proportion test gives $p=0.44$. On the same 1,089 paired questions, Gaokerena-R is correct when Aya-Expanse-8B is incorrect on 93 items, while the reverse occurs on 75 items; the exact two-sided McNemar test is not significant ($p=0.190$). Gaokerena-V obtains 40.13\%. The reported difference between Gaokerena-R and Gaokerena-V is significant ($+8.45$ points, $p<0.001$), while the Gaokerena-R/backbone difference is not significant on MMLU or KOPP. Gaokerena-V scores 6.80 points below its backbone under this protocol (reported $p=0.001$). This may reflect greater abstention under the three-vote rule, but coverage was not recorded separately. Under matched inference computation, the results do not establish a DPO improvement over the backbone, though Gaokerena-R has a higher point estimate than Gaokerena-V in this setting.
 
-\paragraph{Adding a verifier.} Gaokerena-R's preferred configuration resolves questions without a three-vote majority by asking Aya-Expanse-8B, the backbone, to act as an external verifier on the conflicting responses. This raises pooled MMLU accuracy from 48.67\% to 52.80\% (575 of 1,089 questions, 45 more correct answers), and KOPP Sept.\ 2023 accuracy to 46.43\%, at roughly 19 times the per-question inference time of the direct baselines (about 193 s against about 10 s; Table~\ref{tab:med_opns_comparison}). Compared with the directly prompted systems of Table~\ref{tab:med_opns_comparison}, Gaokerena-R is 3.49 points above Gaokerena-V and 6.15 points above Aya-Expanse-8B. The difference to Aya-Expanse-8B is significant on pooled MMLU ($p=0.004$, which survives Holm correction) and nominally on KOPP ($p=0.026$, which does not survive correction over ten tests); the difference to Gaokerena-V is not significant on either benchmark ($p=0.10$ and $p=0.15$). On KOPP, the interval for Gaokerena-R (39.05--53.97\%) lies above the 36\% pass mark (one-sided exact binomial $p=0.003$), in contrast to Gaokerena-V.
-
-This comparison is not compute-matched: CoT prompting, five samples and a verifier give Gaokerena-R substantially more inference computation than the directly prompted baselines, so Table~\ref{tab:med_opns_comparison} shows the best configuration of each model, not the effect of DPO alone. The missing control is the backbone run through the identical CoT-SC-plus-verifier pipeline; we did not run it, so we cannot say how much of the 6.15-point gain comes from training and how much from test-time computation and the verifier, which is itself the backbone.
-
-\paragraph{Why direct and CoT results differ.} The three models respond very differently to the change from direct prompting to CoT self-consistency. Pooled MMLU accuracy moves from 46.10\% to 48.67\% for Gaokerena-R ($+2.6$ points), from 46.65\% to 46.92\% for the backbone ($+0.3$) and from 49.31\% to 40.13\% for Gaokerena-V ($-9.2$ points; $p<0.001$, unpaired). We did not design experiments to explain this, and the two settings differ in more than prompt format (a single response against five samples at temperature 1.0, and a rule that counts unanswered questions as errors), so we offer hypotheses, not conclusions. (i)~\emph{Format match.} The preferred responses used to train Gaokerena-R are teacher-written chain-of-thought explanations, so step-by-step output is within its training distribution, whereas Gaokerena-V was adapted on corpus text and on MF3QA answers, which are direct, free-form replies rather than explicit reasoning; long reasoning chains may lie further from what it was trained to produce. (ii)~\emph{Sampling instability.} Gaokerena-V's answers vary widely between samples (Section~\ref{sec:uhead}: across five generations on KOPP Sept.\ 2023, all five picked the same option for only 14 of 168 questions, against 37 for Gaokerena-R), so it fails the three-vote rule more often, and every failure counts as an error; at temperature 1.0, long chains also compound small sampling deviations. (iii)~\emph{Additional failure modes.} Direct prompting tests whether the correct option is the model's immediate preference, whereas CoT adds ways to fail, since an early incorrect or unsupported step can steer the final answer away from a correct recall. (iv)~\emph{Output problems.} We did not measure how often CoT outputs lacked a parsable final option or drifted into another language, either of which would lower CoT accuracy. We therefore do not conclude that training on raw corpora damages reasoning, only that Gaokerena-V scores lower under this CoT-SC protocol. Separating these explanations would require reporting coverage and per-sample accuracy under CoT, answer-extraction failure rates, and direct prompting and CoT at matched temperature (or greedy decoding).
-
-\begin{table}[h]
-\caption{Matched comparison: CoT prompting, five samples at temperature 1.0 and a three-vote majority, without a verifier (accuracy, \%, single run). Questions without a majority are unanswered and counted as incorrect. Values are the per-subject results reported in~\cite{b2}, converted to counts and pooled by us (MMLU: $n=1{,}089$; KOPP Sept.\ 2023: $n=168$); the pooled averages therefore differ slightly from those printed in~\cite{b2}. Best values in bold.}\label{tab:cotsc}
+\begin{table}[ht]
+\caption{Matched CoT self-consistency comparison: five samples at temperature 1.0 and a three-vote majority, without a verifier. Items without a majority are counted as incorrect. Values were pooled from subject-level results in~\cite{b2}.}\label{tab:cotsc}
 \small
 \begin{tabular}{@{}lccc@{}}
 \toprule
@@ -670,36 +584,56 @@ College medicine & 47.98 & 37.57 & \textbf{48.55} \\
 Clinical knowledge & \textbf{55.85} & 46.79 & 54.72 \\
 Professional medicine & \textbf{44.85} & 37.13 & 43.75 \\
 College biology & \textbf{48.61} & 36.81 & 43.75 \\
-MMLU avg.\ (pooled) & \textbf{48.67} & 40.13 & 46.92 \\
-\quad 95\% CI & [45.71, 51.64] & [37.26, 43.07] & [43.98, 49.89] \\
-IBMSEE Sept.\ 2023 & \textbf{38.69} & 29.76 & 35.71 \\
+MMLU avg. (pooled) & \textbf{48.58} & 40.13 & 46.92 \\
+\quad 95\% CI & [45.62, 51.54] & [37.26, 43.07] & [43.98, 49.89] \\
+IBMSEE Sept. 2023 & \textbf{38.69} & 29.76 & 35.71 \\
 \quad 95\% CI & [31.66, 46.23] & [23.36, 37.07] & [28.86, 43.21] \\
 \midrule
 Prompt & CoT & CoT & CoT \\
-Decoding & CoT-SC (no verifier) & CoT-SC (no verifier) & CoT-SC (no verifier) \\
-Generation time & $\approx 5\times 35$ s & $\approx 5\times 35$ s & $\approx 5\times 35$ s \\
+Decoding & CoT-SC, no verifier & CoT-SC, no verifier & CoT-SC, no verifier \\
+Generation time & $\approx5\times35$ s & $\approx5\times35$ s & $\approx5\times35$ s \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
-\caption{Pairwise comparisons among the matched CoT-SC systems of Table~\ref{tab:cotsc}: difference in percentage points (first system minus second) and two-sided $p$-value from an unpaired two-proportion $z$-test (uncorrected). After Holm correction over these six tests, the two MMLU comparisons with Gaokerena-V remain significant at 0.05; the others do not.}\label{tab:cotsc_sig}
+\begin{table}[ht]
+\caption{Pairwise comparisons among matched CoT-SC systems. Differences are percentage points; $p$-values are uncorrected unpaired two-proportion $z$-tests.}\label{tab:cotsc_sig}
 \small
 \begin{tabular}{@{}lrrrr@{}}
 \toprule
- & \multicolumn{2}{c}{MMLU pooled} & \multicolumn{2}{c}{KOPP Sept.\ 2023} \\
+ & \multicolumn{2}{c}{MMLU pooled} & \multicolumn{2}{c}{KOPP Sept. 2023} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 Comparison & $\Delta$ & $p$ & $\Delta$ & $p$ \\
 \midrule
-Gaokerena-R vs.\ Aya-Expanse-8B & $+1.75$ & 0.41 & $+2.98$ & 0.57 \\
-Gaokerena-R vs.\ Gaokerena-V & $+8.54$ & $<$0.001 & $+8.93$ & 0.085 \\
-Aya-Expanse-8B vs.\ Gaokerena-V & $+6.80$ & 0.001 & $+5.95$ & 0.25 \\
+Gaokerena-R vs. Aya-Expanse-8B & +1.65 & 0.44 & +2.98 & 0.57 \\
+Gaokerena-R vs. Gaokerena-V & +8.45 & $<0.001$ & +8.93 & 0.085 \\
+Aya-Expanse-8B vs. Gaokerena-V & +6.80 & 0.001 & +5.95 & 0.25 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
-\caption{Performance of Gaokerena models with the preferred prompting strategy of each model (accuracy, \%, single run). The configurations are not compute-matched; the matched comparison is in Table~\ref{tab:cotsc}. Subject rows are the Persian-translated MMLU subsets; the MMLU average is pooled over 1,089 questions. Best values in bold. Confidence intervals and significance tests are in Tables~\ref{tab:ci} and~\ref{tab:significance}.}\label{tab:med_opns_comparison}
+\begin{table}[ht]
+\caption{Paired exact McNemar tests comparing each Gaokerena model with Aya-Expanse-8B on shared medical MMLU questions. $b$ and $c$ are discordant pairs: questions answered correctly only by the first-listed model and only by Aya-Expanse-8B, respectively. $p$-values are two-sided and unadjusted.}
+\label{tab:mcnemar}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Comparison & $b$ & $c$ & Exact $p$ \\
+\midrule
+Gaokerena-V (direct) vs. Aya-Expanse-8B (direct) & 117 & 88 & 0.0502 \\
+Gaokerena-R (CoT-SC, no verifier) vs. Aya-Expanse-8B (CoT-SC, no verifier) & 93 & 75 & 0.190 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Adding a verifier.} In the preferred Gaokerena-R configuration, questions without a three-vote majority are passed to Aya-Expanse-8B, the backbone, as a verifier. Accuracy rises from 48.58\% to 52.80\% on pooled MMLU (575/1,089, 46 additional correct answers) and reaches 46.43\% on KOPP. Reported inference time is approximately 193 seconds per question, about 19 times the direct baselines (about 10 seconds). Against directly prompted Aya-Expanse-8B, the reported MMLU difference is +6.15 points ($p=0.004$, surviving the stated Holm correction); the KOPP difference is +11.90 points ($p=0.026$ before correction). The difference from directly prompted Gaokerena-V is not significant in either benchmark ($p=0.10$ and $p=0.15$). The reported KOPP interval is 39.05--53.97\%, and the one-sided exact test against the 36\% pass mark gives $p=0.003$.
+
+This comparison is not compute-matched. Five samples, CoT prompting, and a verifier provide more inference computation than direct prompting, and the backbone was not run through the identical CoT-SC-plus-verifier pipeline. The 52.80\% result therefore describes the best tested system configuration, not the isolated contribution of DPO or of any specific training resource.
+
+\paragraph{Why direct and CoT results differ.} Pooled MMLU accuracy rises from 46.10\% to 48.58\% for Gaokerena-R (+2.5 points), changes from 46.65\% to 46.92\% for the backbone (+0.3), and falls from 49.31\% to 40.13\% for Gaokerena-V (-9.2). These settings differ in sample count, temperature, and treatment of unanswered questions, so the results do not identify the cause. Plausible explanations include a closer match between Gaokerena-R's reasoning-style training targets and CoT prompting, greater sample variability for Gaokerena-V, error propagation during longer reasoning outputs, and failures to produce a parsable final option. We did not measure coverage or extraction failure rates, so these explanations remain hypotheses. Future comparisons should report per-sample accuracy, abstention/coverage, answer-extraction failures, and direct versus CoT results under better-matched decoding settings.
+
+\begin{table}[ht]
+\caption{Gaokerena models under their preferred tested prompting strategies. The configurations are not compute-matched; Table~\ref{tab:cotsc} is the matched comparison without a verifier. Accuracy is in percent.}\label{tab:med_opns_comparison}
 \small
 \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccc}
 \toprule
@@ -711,73 +645,70 @@ College medicine & \textbf{50.29} & 43.93 & 44.51 \\
 Clinical knowledge & \textbf{58.87} & 55.47 & 52.08 \\
 Professional medicine & \textbf{48.90} & 47.06 & 45.59 \\
 College biology & \textbf{54.86} & 47.22 & 45.14 \\
-MMLU avg.\ (pooled) & \textbf{52.80} & 49.31 & 46.65 \\
-IBMSEE Sept.\ 2023 & \textbf{46.43} & 38.69 & 34.52 \\
+MMLU avg. (pooled) & \textbf{52.80} & 49.31 & 46.65 \\
+IBMSEE Sept. 2023 & \textbf{46.43} & 38.69 & 34.52 \\
 \midrule
 Prompt & CoT & Direct & Direct \\
-Decoding & CoT-SC (with verifier) & Zero-shot & Zero-shot \\
-Inference time & $\approx 5\times 35+10+8$ s & $\approx$10 s & $\approx$10 s \\
+Decoding & CoT-SC + verifier & Zero-shot & Zero-shot \\
+Inference time & $\approx5\times35+10+8$ s & $\approx10$ s & $\approx10$ s \\
 \bottomrule
 \end{tabular*}
 \end{table}
 
-Because Gaokerena-R is sampled several times per question, we also use the \emph{pass@k} metric of Brown et al.~\cite{b37}, the probability that at least one of $k$ sampled answers is correct (Eq.~\eqref{fr:passatk}), where $M=5$ is the number of samples per question and $C$ the number of correct samples. We report the average pass@k for $k\leq 3$ over the full test set. Higher $k$ is omitted because with four options a model that selects every option would trivially reach 100\% at $k=4$. As Figs.~\ref{fig8} and~\ref{fig9} show, the Gaokerena-R curve lies above those of Gaokerena-V and the Aya-Expanse-8B baseline in nearly all categories, with anatomy the exception, where Gaokerena-V is slightly better. We read this as evidence that Gaokerena-R's correct answers are more often among its first few samples. All three models were sampled under identical CoT prompting (five samples, temperature 1.0, no verifier), so unlike Table~\ref{tab:med_opns_comparison} this comparison is matched in computation. We did not test the pass@k differences for significance, so the curves should be read together with the tests of Table~\ref{tab:cotsc_sig}, which find no significant gap to the backbone. We do not interpret the curves as evidence of calibrated confidence, which we did not measure. The high response variability we observed for Gaokerena-V (Section~\ref{sec:uhead}) may inflate its pass@k at larger $k$, where random guessing is more effective, but we did not test this.
-
+We also report pass@k~\cite{b37}, the probability that at least one of $k$ sampled answers is correct. With $M=5$ samples and $C$ correct samples, pass@k is computed as
 \begin{equation}
-\text{pass@k} = 1 - \frac{\binom{M-C}{k}}{\binom{M}{k}}
+\mathrm{pass@k}=1-\frac{\binom{M-C}{k}}{\binom{M}{k}}.
 \label{fr:passatk}
 \end{equation}
+We average pass@k for $k\leq3$ over all questions; $k=4$ is omitted because a system could trivially cover all four options. In Figs.~\ref{fig8} and~\ref{fig9}, the Gaokerena-R curve is above those of Gaokerena-V and the backbone in nearly all categories, with anatomy an exception. This suggests that Gaokerena-R's correct options are more often present among its first few samples, but pass@k differences were not tested for significance and should be read alongside Table~\ref{tab:cotsc_sig}. These curves do not measure calibrated confidence. Gaokerena-V's response variability may improve pass@k at higher $k$, but that possibility was not tested.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{fig8.png}
-\caption{Pass@k results on the Persian-translated medical portion of the MMLU dataset}\label{fig8}
-\Description{Line plot showing pass@k scores for Gaokerena-R, Gaokerena-V, and Aya-Expanse-8B across k values 1 to 3 on the translated MMLU medical subset.}
+\caption{Pass@k on the Persian-translated medical MMLU subsets.}\label{fig8}
+\Description{Line plot showing pass@k scores for Gaokerena-R, Gaokerena-V, and Aya-Expanse-8B for k values from one to three.}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=0.8\textwidth]{fig9.png}
-\caption{Pass@k results on the IBMSEE Sept.\ 2023 dataset}\label{fig9}
-\Description{Line plot showing pass@k scores for Gaokerena-R, Gaokerena-V, and Aya-Expanse-8B across k values 1 to 3 on the IBMSEE Sept 2023 dataset.}
+\caption{Pass@k on the September 2023 KOPP session.}\label{fig9}
+\Description{Line plot showing pass@k scores for Gaokerena-R, Gaokerena-V, and Aya-Expanse-8B for k values from one to three.}
 \end{figure}
 
-%% ------------------------------------------------------------------
-\subsection{English--Persian Gap}\label{subsec6.3}
+\subsection{English--Persian Performance Gap}\label{subsec6.3}
 
-The Persian MMLU medical subsets are translations of the English test partitions (Section~\ref{subsubsec:mcq_analysis}), so the same questions can be put to the backbone in English. This gives a direct reference for how much is lost when the language changes. We ran Aya-Expanse-8B on the original English questions of the six subjects (1,089 questions) under the two protocols used for Persian: straight prompting, and CoT prompting with five experiments and the three-vote self-consistency rule of Section~\ref{subsec6.2} (no verifier; questions without a three-vote majority count as incorrect). The English prompts are a direct translation of the Persian prompts, with the instruction to answer in English. Where an English experiment file contains more than one generation per question, we used the first one, so each English CoT-SC result is computed from five generations per question. Accuracies are pooled over all 1,089 questions, as in the Persian tables.
+Because FA\_MED\_MMLU is translated from English MMLU items, the corresponding English questions can be used to compare language conditions on the same underlying questions. Aya-Expanse-8B was evaluated on the original English questions under direct prompting and under CoT self-consistency with five generations and the three-vote rule. English prompts were translated from the Persian prompts and instructed the model to answer in English. Where experiment files included more than one generation per question, the first was used; CoT-SC uses five generations per question. These are single-run comparisons, and exact prompt, translation, extraction, and contamination equivalence across languages is not established.
 
-\paragraph{Results.} Table~\ref{tab:en_fa} shows that the model answers the same questions much more accurately in English. Under straight prompting, Aya-Expanse-8B reaches 59.04\% in English (643 of 1,089; 95\% Wilson interval 56.10--61.93\%) against 46.65\% in Persian, a gap of 12.40 points ($p<0.001$, unpaired two-proportion $z$-test). Under CoT-SC the English accuracy is 63.18\% (688 of 1,089; interval 60.27--65.99\%; 88.9\% of questions reach a three-vote majority), against 46.92\% in Persian, a gap of 16.25 points ($p<0.001$). CoT-SC raises English accuracy by 4.13 points over straight prompting ($p=0.048$, unpaired), whereas it leaves the Persian backbone unchanged ($+0.27$ points), so the gap is larger when the model is asked to reason.
+Under direct prompting, Aya-Expanse-8B obtains 59.04\% in English (643/1,089; 95\% Wilson interval 56.10--61.93\%) compared with 46.65\% in Persian, a difference of 12.40 points under the reported unpaired test ($p<0.001$). Under CoT-SC, the English score is 63.18\% (688/1,089; interval 60.27--65.99\%; 88.9\% of questions reach a three-vote majority), versus 46.92\% in Persian, a difference of 16.25 points ($p<0.001$). CoT-SC improves the English result by 4.13 points over direct prompting ($p=0.048$ under the unpaired test), while the Persian backbone changes by 0.27 points. Paired tests on per-question predictions would be preferable for formal inference.
 
-\begin{table}[h]
-\caption{Pooled accuracy (\%) on the six medical MMLU subjects (1,089 questions) in English and Persian, single runs. For each Persian system, $\Delta$ is English Aya-Expanse-8B minus that system (percentage points) and $p$ is from an unpaired two-proportion $z$-test (uncorrected); the English row has no counterpart and is left blank. The verifier configuration has no English counterpart, so its two $\Delta$/$p$ entries compare it against English straight prompting and English CoT-SC, respectively. Persian counts are recovered from the percentages of Tables~\ref{tab:model_results_vs_general_purpose_languages} and~\ref{tab:cotsc}.}\label{tab:en_fa}
+\begin{table}[ht]
+\caption{Pooled accuracy on the six medical MMLU subjects (1,089 questions) in English and Persian. $\Delta$ is English Aya-Expanse-8B minus the Persian system in percentage points. Reported $p$-values use unpaired two-proportion $z$-tests and are uncorrected. The verifier configuration has no English counterpart; its two differences compare it with English direct prompting and English CoT-SC, respectively.}\label{tab:en_fa}
 \small
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}llccc@{}}
 \toprule
-Prompting & Model & Accuracy & $\Delta$ vs.\ English & $p$ \\
+Prompting & Model & Accuracy & $\Delta$ vs. English & $p$ \\
 \midrule
 Straight & English Aya-Expanse-8B & 59.04 & --- & --- \\
-         & Persian Aya-Expanse-8B & 46.65 & $+12.40$ & $<$0.001 \\
-         & Persian Gaokerena-V    & 49.31 & $+9.73$  & $<$0.001 \\
-         & Persian Gaokerena-R    & 46.10 & $+12.95$ & $<$0.001 \\
+ & Persian Aya-Expanse-8B & 46.65 & +12.40 & $<0.001$ \\
+ & Persian Gaokerena-V & 49.31 & +9.73 & $<0.001$ \\
+ & Persian Gaokerena-R & 46.10 & +12.95 & $<0.001$ \\
 \midrule
 CoT-SC, no verifier & English Aya-Expanse-8B & 63.18 & --- & --- \\
-                    & Persian Aya-Expanse-8B & 46.92 & $+16.25$ & $<$0.001 \\
-                    & Persian Gaokerena-V    & 40.13 & $+23.05$ & $<$0.001 \\
-                    & Persian Gaokerena-R    & 48.67 & $+14.51$ & $<$0.001 \\
+ & Persian Aya-Expanse-8B & 46.92 & +16.25 & $<0.001$ \\
+ & Persian Gaokerena-V & 40.13 & +23.05 & $<0.001$ \\
+ & Persian Gaokerena-R & 48.58 & +14.60 & $<0.001$ \\
 \midrule
-CoT-SC + verifier & Persian Gaokerena-R & 52.80 & $+6.24$ / $+10.38$ & 0.003 / $<$0.001 \\
+CoT-SC + verifier & Persian Gaokerena-R & 52.80 & +6.24 / +10.38 & 0.003 / $<0.001$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\paragraph{How much of the gap the Persian resources close.} Relative to the English reference, Gaokerena-V under straight prompting narrows the gap from 12.40 to 9.73 points, and Gaokerena-R with CoT-SC and the verifier (52.80\%) is 6.24 points below English straight prompting and 10.38 below English CoT-SC. These are the largest reductions in the gap that we observe, but they should be read with the caveats of Sections~\ref{subsec6.1} and~\ref{subsec6.2}. The Gaokerena-V improvement over the backbone is not significant ($p=0.21$); the Gaokerena-R configuration uses several times the inference computation of the straight-prompted English model and the backbone was never run through the same verifier pipeline; and under matched CoT-SC without the verifier the gap is 14.51 points for Gaokerena-R against 16.25 for the backbone, a narrowing of 1.75 points that is not significant ($p=0.41$, Section~\ref{subsec6.2}). Gaokerena-V widens the gap under CoT-SC (23.05 points). In every configuration the Persian systems remain significantly below the English backbone.
+Relative to the English reference, Gaokerena-V narrows the direct-prompting gap from 12.40 to 9.73 points in the observed results. Gaokerena-R with the verifier is 6.24 points below English direct prompting and 10.38 points below English CoT-SC. These are point-estimate comparisons rather than evidence of a causal effect from training. Gaokerena-V's direct-prompting improvement over the backbone is not significant ($p=0.21$), and Gaokerena-R's verifier configuration uses substantially more inference computation. Under matched CoT-SC without a verifier, the gap is 14.60 points for Gaokerena-R and 16.25 for the backbone, a narrowing of 1.65 points. The paired exact McNemar test for Gaokerena-R versus the backbone is not significant ($p=0.190$). Gaokerena-V widens the gap under CoT-SC to 23.05 points.
 
-\paragraph{By subject.} Table~\ref{tab:en_fa_subject} gives the straight-prompting results per subject. The gap is uneven: it is largest in college biology (27.08 points for the backbone) and anatomy (18.52), and almost absent in professional medicine (2.20), where English straight-prompting accuracy is itself the lowest of the six subjects. Gaokerena-V reduces the gap most in anatomy (to 11.11 points), the subject with its largest gain over the backbone, and in clinical knowledge (from 13.20 to 9.81). With 100--272 questions per subject these differences are descriptive and are not tested.
-
-\begin{table}[h]
-\caption{Straight-prompting accuracy (\%) per subject, English against Persian. Gap columns are English Aya-Expanse-8B minus the Persian system (percentage points). Descriptive; single runs.}\label{tab:en_fa_subject}
+\begin{table}[ht]
+\caption{Direct-prompting accuracy by subject in English and Persian. Gap columns are English Aya-Expanse-8B minus the indicated Persian system, in percentage points. Values are descriptive single-run results.}\label{tab:en_fa_subject}
 \small
 \begin{tabular}{@{}lrrrrr@{}}
 \toprule
@@ -795,58 +726,50 @@ Pooled & 1,089 & 59.04 & 46.65 & 49.31 & 12.40 / 9.73 \\
 \end{tabular}
 \end{table}
 
-\paragraph{Interpretation and caveats.} The results show a large and statistically clear gap between English and Persian for the same questions and the same 8B model. Our working explanation is that it reflects the much smaller amount of Persian medical text available to the model: Persian medical resources were scarce at the start of this work (Section~\ref{sec1}), and the data, reasoning distillation and test-time computation we add recover only part of what is lost, at the price of substantially higher inference cost for the best configuration. We stress that this explanation is a hypothesis; our experiments were not designed to isolate its cause, and the following factors are confounded with it. (i)~\emph{Contamination.} MMLU is public and in English, so the English questions may be better represented in the pretraining or post-training data of Aya-Expanse than their translations; we did not test this. (ii)~\emph{Translation.} The Persian items are translations with the artefacts described in Section~\ref{subsubsec:mcq_analysis}, which can lower accuracy independently of model ability. (iii)~\emph{General Persian proficiency.} Part of the gap may reflect weaker Persian language understanding, tokenisation efficiency or answer-format following in general, not missing medical knowledge. (iv)~\emph{Protocol.} Prompts, decoding and answer extraction were not identical across the two languages, and the English runs are a single evaluation with first-generation selection. (v)~\emph{Statistics.} The tests are unpaired and conservative for same-question comparisons, with Persian counts reconstructed from rounded percentages, and, as before, only variability over test questions is quantified.
+The largest direct-prompting gaps occur in college biology (27.08 points for the backbone) and anatomy (18.52 points); the gap is small in professional medicine (2.20 points), where English accuracy is itself relatively low. Gaokerena-V narrows the gap most in anatomy and clinical knowledge. Subject subsets contain 100--272 questions, so these differences are descriptive rather than tested.
 
-We therefore conclude that a substantial English--Persian gap exists in this setting, that our resources, reasoning training and self-consistency narrow it in point estimate but do not close it, and that the evidence that the narrowing comes from the training methods, as opposed to additional inference computation, is suggestive rather than conclusive. Establishing the role of Persian data scarcity would need further experiments: running the backbone and Gaokerena models through identical protocols in both languages, paired per-question analysis, repeated runs across seeds, controls for contamination and for translation quality (for example, a back-translated or re-annotated subset), and training-data scaling experiments.
+A plausible explanation for the observed language gap is the smaller quantity of Persian medical data available to multilingual models, but this study does not isolate that mechanism. English questions may be better represented in training data; translation artefacts may affect Persian question difficulty; the result may partly reflect general Persian proficiency, tokenization, or answer-format adherence rather than medical knowledge alone; and prompts, decoding, extraction, and generation selection were not fully identical across languages. As with the other results, single-run unpaired tests do not quantify seed variability or use the pairing among questions. The experiments establish a substantial English--Persian performance gap under the tested conditions, but do not establish what fraction of it is caused by data scarcity or what fraction is recovered by the training methods.
 
-\paragraph{Why not translate?} The English--Persian gap raises the obvious alternative of translating Persian questions into English, answering them with an English medical model and translating the answer back. We did not evaluate this alternative here, and stronger translators than the small on-device ones tried in~\cite{b1}, which performed poorly, may make it competitive. Even so, there are reasons to develop models that work directly in Persian. A single local model avoids the memory and latency cost of a multi-model pipeline and the translation errors that such a pipeline compounds on medical terminology. It also keeps patient data on the device without relying on external translation services, and it does not leave Persian-speaking communities dependent on resources built for another language. Our results suggest that part of the gap can be narrowed with modest, self-funded resources (about 19 GPU-hours on one A100 for Gaokerena-V~\cite{b1} and about one GPU-hour on one H100 for the DPO stage of Gaokerena-R, excluding data generation~\cite{b2}), but they do not show that it can be closed: the Persian systems remain significantly below the English backbone in every configuration, and the evidence that training, rather than extra inference computation, drives the narrowing is suggestive rather than conclusive. We therefore present direct Persian models as a direction worth pursuing for access and equity, not as a demonstrated replacement for translation.
+\paragraph{Why not translate at inference time?} A possible alternative is to translate Persian questions into English, answer them with an English medical model, and translate the response back into Persian. We did not evaluate this pipeline, and stronger translators than the small on-device systems tried in~\cite{b1} may make it competitive. Direct Persian models may still be useful where local deployment, latency, privacy, or avoidance of compounded translation errors matters. They may also reduce reliance on resources designed primarily for another language. The training work reported here used modest compute (about 19 GPU-hours on one A100 for Gaokerena-V~\cite{b1} and about one GPU-hour on one H100 for the DPO stage of Gaokerena-R, excluding data generation~\cite{b2}), but the model results do not show that direct Persian models can replace English systems or translation pipelines. We present direct Persian modeling as a direction worth pursuing, not a demonstrated replacement for translation.
 
 %% ------------------------------------------------------------------
 \section{Limitations}\label{sec:limitations}
 
 \begin{itemize}
-
-\item \textbf{Evaluation scope.} Results are single runs. We report confidence intervals and unpaired significance tests, which capture sampling variability over test questions but not variability across training or decoding seeds, and the unpaired tests are conservative relative to paired tests. Several pairwise comparisons are not significant (notably Gaokerena-V against its backbone), and none of the KOPP differences survive correction for multiple comparisons. The KOPP evaluation uses one 168-question session, and the MMLU evaluation is dominated by two subjects. The headline Gaokerena-R configuration (CoT-SC with verifier) is not compute-matched to the direct baselines, and the backbone has not been run through the same CoT-SC-plus-verifier pipeline; the matched comparison without verifier shows no significant gain over the backbone (Section~\ref{subsec6.2}), and its pooled accuracies are derived from subject-level results and record unanswered questions as errors without reporting coverage. We provide no ablations of the domain-adaptation and instruction-tuning stages or of the two distillation strategies.
-
-\item \textbf{English--Persian comparison.} The comparison does not separate Persian data scarcity from contamination of the English public benchmark, translation artefacts, general Persian proficiency and protocol differences, and the English runs were evaluated only once.
-
-\item \textbf{MF3QA is not evaluated.} We do not report free-form evaluation of Gaokerena-V on MF3QA (automatic metrics, LLM-judge or expert review). Overlap with the corpus makes the development split unsuitable for this purpose (Section~\ref{subsubsec:mf3qa_analysis}). The GPT-4o preference evaluation in the conference version~\cite{b1} is not repeated because we found GPT-4o unreliable as a judge of Persian medical text, and no validated judge or expert review is available.
-
-\item \textbf{Contamination.} We checked overlap between MF3QA and the corpus, and duplication among the benchmarks, but not overlap between the training sources (the corpus, translated MedMCQA, the DPO data) and the evaluation sets.
-
-\item \textbf{Benchmark quality.} KOPP contains PDF-extraction artefacts and answer-key skew, and FA\_MED\_MMLU inherits English annotation errors and was not audited by back-translation or a second annotator. The MCQ format itself is a limited proxy for clinical competence.
-
-\item \textbf{Training data.} The corpus includes loosely medical and syndicated content, and MF3QA contains repeated answers, some recommending unsupported home procedures, and has no safety-specific filtering. The models inherit these properties.
-
-\item \textbf{Baselines.} The baselines are limited to three general-purpose models of similar size. We did not compare with other recent multilingual small models or with larger models.
-
-\item \textbf{Intended use.} Gaokerena-V and Gaokerena-R are research artefacts and are not cleared for clinical use. They should not be used for medical advice, in particular for dosing.
-
+\item \textbf{Resource representativeness and quality.} The corpus is dominated by a small number of websites and includes syndicated, promotional, and loosely medical material. MF3QA is strongly selected by answer length, has source-confounded splits, contains repetitive answers, and includes sensitive medical content. Its test distribution differs from training. A small number of retained pairs (48) could not be linked to the released raw crawl. KOPP includes PDF-extraction artefacts and answer-key imbalance; FA\_MED\_MMLU was translated but not audited through back-translation or a second annotator.
+\item \textbf{Privacy, permissions, and release conditions.} Automated screens identify some residual contact details and references to physicians, but they do not establish that all identifying or sensitive information has been removed. Public accessibility does not itself establish permission for redistribution or all downstream uses. The resources should be reused in accordance with applicable source terms, dataset/model licenses, and any necessary privacy or access controls. This analysis is not a legal determination or a guarantee of anonymization.
+\item \textbf{Evaluation scope.} Results are single runs and quantify sampling variability over questions, not over training or decoding seeds. Main comparisons use unpaired tests despite shared question sets; paired per-question tests and confidence intervals for paired differences are preferable. KOPP evaluation covers only one 168-question session, and pooled MMLU results are weighted toward two subjects. Gaokerena-R's 52.80\% configuration uses CoT self-consistency and a verifier and is not compute-matched to the direct baselines. The backbone was not tested through the same pipeline. Under matched CoT-SC without a verifier, Gaokerena-R's advantage over the backbone is not significant, and unanswered questions count as incorrect without separate coverage reporting.
+\item \textbf{Training effects.} The experiments do not isolate corpus adaptation, MF3QA instruction tuning, the two preference-generation strategies, or DPO through ablations. The observed results therefore do not identify the independent contribution of each resource or training stage. Training data and preference pairs have not been comprehensively checked for contamination against evaluation sets.
+\item \textbf{English--Persian comparison.} The observed gap does not isolate Persian data scarcity from benchmark contamination, translation artefacts, general Persian proficiency, answer extraction, or protocol differences. English and Persian runs were evaluated once, and stronger controls would require paired analysis and better-matched prompts and decoding.
+\item \textbf{Free-form evaluation and baselines.} We do not report a validated free-form evaluation of Gaokerena-V on MF3QA. Corpus overlap also makes the development split unsuitable as an independent evaluation without filtering. Baselines are limited to three general-purpose models of similar size; newer multilingual models and larger systems were not tested.
+\item \textbf{Intended use.} The models are research artefacts, not clinically validated systems, and should not be used to provide medical advice, particularly medication-dosing advice. MCQ accuracy is a limited proxy for medical knowledge and does not establish clinical safety or competence.
 \end{itemize}
 
 %% ------------------------------------------------------------------
 \section{Ethical Considerations}\label{sec:ethics}
 
-This study involved no direct interaction with human participants. The corpus, MF3QA and the other text resources were collected from publicly accessible Persian medical websites and forums; no private or access-restricted data were collected. Beyond the personal-data removal applied during cleaning (Section~\ref{subsec3.2}), we applied no additional anonymisation: the text is distributed as it appeared on the public pages. Section~\ref{subsubsec:mf3qa_analysis} quantifies the residual personal data in MF3QA: at most 18 of the 24,000 cleaned pairs contain a phone number, e-mail address, URL or social-media handle, and named physicians and sensitive health topics (including questions from self-identified minors) occur in the text.
+This study involved no direct interaction with human participants. The text resources were collected from publicly accessible Persian medical websites and forums; no private or access-restricted pages were intentionally collected. Public availability does not, on its own, resolve questions of consent, privacy, copyright, website terms, or redistribution rights. The article reports automated screening for contact information and other indicators, but these heuristics can miss identifying details and can produce false positives. The cleaned MF3QA release may still include references to physicians and sensitive medical topics, including questions that appear to come from minors. These characteristics should not be interpreted as proof that the data are fully anonymized or suitable for every downstream use.
 
-We recommend that users of MF3QA apply the filtering and masking steps in Section~\ref{subsubsec:mf3qa_analysis} before any redistribution.
+Before continued distribution or reuse, the relevant source terms and licenses should be checked for each resource, and residual privacy risks should be reviewed against the intended release conditions. Any additional filtering, masking, access restriction, or record removal should be documented and applied to the distributed artefacts where needed, rather than left solely to downstream users. The licenses and use conditions of both derived models should be stated in the release documentation, taking account of the terms applicable to the Aya-Expanse-8B backbone. Gaokerena-V and Gaokerena-R are research models and are not validated for clinical use.
 
 %% ------------------------------------------------------------------
 \section{Conclusion}\label{sec:conclusion}
 
-We released an open suite of Persian medical resources, namely a corpus, a patient--doctor QA dataset, a medical MCQ benchmark and a translated MCQ training set, together with detailed characterisations that document their composition, selection effects and limitations. We also released two small models built on them. On translated medical MMLU, Gaokerena-V is 2.66 percentage points above its Aya-Expanse-8B backbone under direct prompting, a difference that is not statistically significant ($p=0.21$), while Gaokerena-R reaches 52.80\% with CoT-SC and a verifier, significantly above the directly prompted backbone ($p=0.004$) but not significantly above Gaokerena-V ($p=0.10$). Under matched CoT self-consistency without the verifier, Gaokerena-R is clearly above Gaokerena-V (48.7\% against 40.1\%) but not significantly above the backbone (46.9\%, $p=0.41$), and Gaokerena-V scores below the backbone. Run on the same questions in English, the backbone is 12--16 points more accurate than in Persian, so a substantial gap remains that our resources and methods only partly narrow. Because these comparisons are single-run and use unpaired tests, and the headline configuration is not compute-matched, the evidence for the training methods is suggestive rather than conclusive. Future work includes paired tests and repeated runs across seeds, running the backbone through the full CoT-SC-plus-verifier pipeline, ablations, free-form evaluation on MF3QA, an audit of the translated benchmark, stronger baselines, and expert evaluation of safety.
+This article presents and characterizes a suite of Persian medical language resources: an 85.5-million-word web corpus, MF3QA patient--doctor QA pairs, an expanded collection of Iranian medical-exam questions, translated medical MMLU questions, and a machine-translated MCQ training set. The analyses document scale and topical coverage as well as source imbalance, orthographic variation, redundancy, selection effects, differences between QA splits, benchmark artefacts, and privacy-related indicators. These characterizations are a central contribution because they make visible the conditions under which the resources can be used and the limitations that future users should account for.
+
+Gaokerena-V and Gaokerena-R provide an application study of the resources. Under direct prompting, Gaokerena-V reaches 49.31\% on translated medical MMLU, 2.66 percentage points above Aya-Expanse-8B, but the difference is not statistically significant under the reported test ($p=0.21$). Gaokerena-R reaches 52.80\% with five-sample self-consistency and a verifier, but this higher-cost configuration is not compute-matched to the directly prompted backbone. Under matched CoT self-consistency without a verifier, Gaokerena-R scores 48.58\% versus 46.92\% for the backbone; the paired exact McNemar test is not significant ($p=0.190$; unpaired $p=0.44$). The English comparison also shows a substantial performance gap for the corresponding questions, but the experiments do not isolate training effects from translation, benchmark exposure, or inference-time computation.
+
+The evidence therefore supports the value of assembling and systematically characterizing Persian medical resources, while the model results should be read as protocol-specific demonstrations rather than proof of a general training advantage or clinical readiness. Priorities for further work include paired per-question analyses, repeated runs, contamination checks, fuller audits of translation and source quality, training ablations, validated free-form evaluation, and appropriate privacy and licensing review for all distributed artefacts.
 
 %% ------------------------------------------------------------------
 \section*{Data and Code Availability}
 
-The medical corpus, MF3QA (and its uncleaned crawl), the benchmarks (KOPP and FA\_MED\_MMLU) and the translated MedMCQA training set are available at \url{https://huggingface.co/datasets/gaokerena} (the translated MedMCQA set is in the Gaokerena-R repository). Code, model weights and generated model responses are available at \url{https://github.com/Mehrdadghassabi/Gaokerena-V} and \url{https://github.com/Mehrdadghassabi/Gaokerena-R}.
+The medical corpus, MF3QA and its uncleaned crawl, the KOPP and FA\_MED\_MMLU benchmarks, and the translated MedMCQA training set are hosted at \url{https://huggingface.co/datasets/gaokerena} (the translated MedMCQA set is in the Gaokerena-R repository). Code, model weights, and generated responses are available through \url{https://github.com/Mehrdadghassabi/Gaokerena-V} and \url{https://github.com/Mehrdadghassabi/Gaokerena-R}. Availability does not imply unrestricted reuse: each artefact should be used according to its applicable license, source terms, and stated privacy and safety limitations. The release documentation should identify these conditions for each dataset and model.
 
 \section*{Author Contributions}
-
-M.G. led and carried out all aspects of the work. H.B.K. supervised the research. Z.K. and M.T. were responsible for data collection. A.P. was responsible for translation. P.R., S.H. and A.E. contributed to technical aspects of the work. All authors read and approved the final manuscript.
+M.G. led and carried out the core research. H.B.K. supervised the research. Z.K. and M.T. were responsible for data collection. A.P. was responsible for translation. P.R. and S.H. contributed to technical aspects of the work. A.E. contributed to the technical aspects of the present extended journal study. A.E. was not an author of the two earlier conference papers cited in this article; her contribution is to this expanded manuscript. All authors read and approved the final manuscript.
 
 \section*{Competing Interests}
-
 The authors declare no competing interests.
 
 \begin{acks}
@@ -968,5 +891,4 @@ Wang, Xuezhi, et al. ``Self-consistency improves chain of thought reasoning in l
 Brown, Bradley, et al. ``Large language monkeys: Scaling inference compute with repeated sampling.'' arXiv preprint arXiv:2407.21787 (2024).
 
 \end{thebibliography}
-
 \end{document}
